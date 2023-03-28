@@ -11,6 +11,7 @@ environment:
 
 dependencies:
   dio: ^5.0.1
+  equatable: ^2.0.5
   flutter:
     sdk: flutter
   flutter_form_builder: ^7.8.0

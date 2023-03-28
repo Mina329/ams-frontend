@@ -1,4 +1,4 @@
-import 'package:ams_frontend/src/features/auth/model/user.dart';
+import 'package:ams_frontend/src/apis/AMSApi/ams_api.dart';
 import 'package:ams_frontend/src/konstants/konstants.dart';
 import 'package:ams_frontend/src/features/auth/view/auth_controller.dart';
 import 'package:ams_frontend/src/routing/routing.dart';
@@ -20,8 +20,8 @@ class SignPage extends ConsumerWidget {
       authControllerProvider,
       (previous, next) {
         next.when(
-          data: (data) {
-            if (data) {
+          data: (user) {
+            if (user != null) {
               context.goNamed(AppRoute.home.name);
             }
           },

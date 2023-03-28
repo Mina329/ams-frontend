@@ -15,9 +15,9 @@ enum AppRoute {
   settings,
 }
 
-final goRouterProvider = Provider<GoRouter>((ref) {
+final goRouterProvider = Provider.autoDispose<GoRouter>((ref) {
   final onboardingRepository = ref.watch(onboardingRepositoryProvider);
-  final authRepository = ref.watch(authRepositoryProvider);
+  final user = ref.watch(authUserProfider);
   return GoRouter(
     initialLocation: '/',
     debugLogDiagnostics: true,
@@ -25,7 +25,7 @@ final goRouterProvider = Provider<GoRouter>((ref) {
       if (state.subloc == '/') {
         if (!onboardingRepository.isOnBoardingComplete()) {
           return '/${AppRoute.onboarding.name}';
-        } else if (!authRepository.checkUser()) {
+        } else if (user == null) {
           return '/${AppRoute.login.name}';
         } else {
           return '/';

@@ -1,12 +1,8 @@
+import 'package:ams_frontend/src/apis/AMSApi/ams_api.dart';
 import 'package:ams_frontend/src/apis/AMSApi/dto/api_user.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'user.freezed.dart';
-
-enum UserType {
-  attendee,
-  instructor,
-}
 
 @freezed
 class User with _$User {
@@ -22,21 +18,12 @@ class User with _$User {
 }
 
 extension IntoUser on ApiUser {
-  User intoAttendee() => User(
+  User intoAuthUser() => User(
         id: id,
         number: number,
         name: name,
         email: email,
         type: UserType.attendee,
-        createAt: createAt,
-        updatedAt: updatedAt,
-      );
-  User intoInstructor() => User(
-        id: id,
-        number: number,
-        name: name,
-        email: email,
-        type: UserType.instructor,
         createAt: createAt,
         updatedAt: updatedAt,
       );
