@@ -1,5 +1,4 @@
-import 'package:ams_frontend/src/core/providers.dart';
-import 'package:ams_frontend/src/features/onboarding/data/onboarding_repository.dart';
+import 'package:ams_frontend/src/core/provider_observer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 // ignore: depend_on_referenced_packages
@@ -13,11 +12,11 @@ void main() async {
   usePathUrlStrategy();
   runApp(ProviderScope(
     overrides: [
-      onboardingRepositoryProvider.overrideWithValue(
-        OnBoardingRepository(await SharedPreferences.getInstance()),
+      sharedPreferencesProvider.overrideWithValue(
+        await SharedPreferences.getInstance(),
       )
     ],
-    observers: [Logger()],
+    observers: [LoggerObserver()],
     child: const MyApp(),
   ));
 }

@@ -2,5 +2,23 @@
   "appTitle": "ams_frontend",
   "@appTitle": {
     "description": "The title of the application"
-  }
+  },
+  "login": "Log In",
+  "loginTitle": "Login",
+  "userEmail": "User Email",
+  "password": "Password",
+  "forgotPassword": "Forgot Password ?",
+  
+  "homeTitle": "Attendance Management System",
+  "homeDrawerItem": "Home",
+
+  "settingsTitle": "Settings",
+  "settingsDrawerItem": "Settings",
+
+  "aboutTitle": "About",
+  "aboutDrawerItem": "About",
+  
+  "attendee": "Attendee",
+  "instructor": "Instructor",
+  "loginAs": "Login As"
 }
