@@ -1,0 +1,29 @@
+import 'package:ams_frontend/src/apis/AMSApi/ams_api.dart';
+import 'package:ams_frontend/src/apis/AMSApi/dto/api_subject.dart';
+import 'package:ams_frontend/src/features/auth/models/user.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
+
+part 'subject_model.freezed.dart';
+
+@freezed
+class Subject with _$Subject {
+  const factory Subject({
+    required String id,
+    required String name,
+    required User instructor,
+    required DateTime createAt,
+    required String cronExpr,
+    required DateTime updatedAt,
+  }) = _Subject;
+}
+
+extension IntoSubject on ApiSubject {
+  Subject intoSubject() => Subject(
+        id: id,
+        name: name,
+        instructor: instructor.intoUser(UserType.instructor),
+        createAt: createAt,
+        cronExpr: cronExpr,
+        updatedAt: updatedAt,
+      );
+}

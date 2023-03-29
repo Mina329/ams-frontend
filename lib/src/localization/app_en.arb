@@ -20,5 +20,7 @@
   
   "attendee": "Attendee",
   "instructor": "Instructor",
-  "loginAs": "Login As"
+  "loginAs": "Login As",
+
+  "subjects": "Subjects"
 }

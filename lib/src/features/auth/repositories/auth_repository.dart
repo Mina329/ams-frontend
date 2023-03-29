@@ -1,22 +1,15 @@
 import 'package:ams_frontend/src/apis/AMSApi/ams_api.dart';
 import 'package:ams_frontend/src/apis/AMSApi/dto/api_auth_payload.dart';
 import 'package:ams_frontend/src/features/auth/auth_error.dart';
-import 'package:ams_frontend/src/features/auth/model/user.dart';
-import 'package:equatable/equatable.dart';
+import 'package:ams_frontend/src/features/auth/models/user.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class AuthRepository extends Equatable {
+class AuthRepository {
   final AMSApi _amsApi;
 
-  User? _user;
+  bool get userCached => _amsApi.credsCached;
 
-  User? get user => _user;
-
-  AuthRepository(this._amsApi) {
-    _amsApi.loginCached().then((value) {
-      _user = value?.data?.intoAuthUser();
-    });
-  }
+  AuthRepository(this._amsApi);
 
   Future<User?> login({
     String? email,
@@ -24,7 +17,15 @@ class AuthRepository extends Equatable {
     UserType? userType,
   }) async {
     if (email == null || password == null || userType == null) {
-      return null;
+      final response = await _amsApi.loginCached();
+      if (response == null) {
+        return null;
+      }
+      if (!response.status) {
+        throw AuthError.unauthorized(response.message);
+      }
+      userType = _amsApi.userType;
+      return response.data!.intoUser(userType!);
     }
 
     final response = await _amsApi.login(
@@ -36,17 +37,10 @@ class AuthRepository extends Equatable {
       throw AuthError.unauthorized(response.message);
     }
 
-    return response.data!.intoAuthUser();
+    return response.data!.intoUser(userType);
   }
-
-  @override
-  List<Object?> get props => [_user];
 }
 
 final authRepositoryProvider = Provider.autoDispose<AuthRepository>((ref) {
   return AuthRepository(ref.watch(amsApiProvider));
 });
-
-final authUserProfider = Provider.autoDispose(
-  (ref) => ref.watch(authRepositoryProvider).user,
-);

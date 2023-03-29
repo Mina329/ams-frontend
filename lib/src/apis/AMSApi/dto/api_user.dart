@@ -13,6 +13,5 @@ class ApiUser with _$ApiUser {
     required DateTime updatedAt,
   }) = _ApiUser;
 
-  factory ApiUser.fromJson(Map<String, Object?> json) =>
-      _$ApiUserFromJson(json);
+  factory ApiUser.fromJson(Map<String, Object?> json) => _$ApiUserFromJson(json);
 }

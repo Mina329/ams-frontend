@@ -1,9 +1,10 @@
-import 'package:ams_frontend/src/features/auth/repo/auth_repository.dart';
+import 'package:ams_frontend/src/features/auth/repositories/auth_repository.dart';
 import 'package:ams_frontend/src/features/auth/view/login_page.dart';
-import 'package:ams_frontend/src/features/home/view/home_page.dart';
+import 'package:ams_frontend/src/features/home/view/pages/home_page.dart';
 import 'package:ams_frontend/src/features/onboarding/repo/onboarding_repository.dart';
-import 'package:ams_frontend/src/features/onboarding/view/onboarding_page.dart';
+import 'package:ams_frontend/src/features/onboarding/view/pages/onboarding_page.dart';
 import 'package:ams_frontend/src/features/settings/view/view.dart';
+import 'package:ams_frontend/src/features/subjects/view/screens/subject_details_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -12,12 +13,13 @@ enum AppRoute {
   onboarding,
   home,
   login,
+  subjects,
   settings,
 }
 
 final goRouterProvider = Provider.autoDispose<GoRouter>((ref) {
   final onboardingRepository = ref.watch(onboardingRepositoryProvider);
-  final user = ref.watch(authUserProfider);
+  final authRepository = ref.watch(authRepositoryProvider);
   return GoRouter(
     initialLocation: '/',
     debugLogDiagnostics: true,
@@ -25,7 +27,7 @@ final goRouterProvider = Provider.autoDispose<GoRouter>((ref) {
       if (state.subloc == '/') {
         if (!onboardingRepository.isOnBoardingComplete()) {
           return '/${AppRoute.onboarding.name}';
-        } else if (user == null) {
+        } else if (!authRepository.userCached) {
           return '/${AppRoute.login.name}';
         } else {
           return '/';
@@ -47,6 +49,21 @@ final goRouterProvider = Provider.autoDispose<GoRouter>((ref) {
             pageBuilder: (context, state) => const MaterialPage(
               child: SignPage(),
             ),
+          ),
+          GoRoute(
+            path: '${AppRoute.subjects.name}/:id',
+            name: AppRoute.subjects.name,
+            pageBuilder: (context, state) {
+              final String? id = state.params['id'];
+              if (id != null) {
+                return MaterialPage(
+                  child: SubjectDetailsScreen(id),
+                );
+              }
+              return const MaterialPage(
+                child: Placeholder(),
+              );
+            },
           ),
           GoRoute(
             path: AppRoute.onboarding.name,

@@ -1,5 +1,6 @@
 import 'package:ams_frontend/src/apis/AMSApi/dto/api_auth_body.dart';
 import 'package:ams_frontend/src/apis/AMSApi/dto/api_response.dart';
+import 'package:ams_frontend/src/apis/AMSApi/dto/api_subject.dart';
 import 'package:ams_frontend/src/apis/AMSApi/dto/api_user.dart';
 import 'package:ams_frontend/src/apis/AMSApi/dto/api_auth_payload.dart';
 import 'package:ams_frontend/src/apis/apis.dart';
@@ -42,7 +43,7 @@ class AMSApi {
     }
   }
 
-  set _userType(UserType? userType) {
+  set userType(UserType? userType) {
     if (userType != null) {
       _sharedPreferences.setInt('userType', userType.index);
     } else {
@@ -56,23 +57,23 @@ class AMSApi {
     return value;
   }
 
-  UserType? get _userType {
+  UserType? get userType {
     final value = UserType.values[_sharedPreferences.get('userType') as int];
     return value;
   }
 
   bool get credsCached {
-    return _jwtToken != null && _userType != null;
+    return _jwtToken != null && userType != null;
   }
 
   Future<ApiResponse<ApiUser>?> loginCached() async {
-    if (_jwtToken == null || _userType == null) {
+    if (_jwtToken == null || userType == null) {
       return null;
     }
 
     logger.d('found cached credentials');
 
-    var user = await _dio.get('/${_userType?.name}s/login');
+    var user = await _dio.get('/${userType?.name}s/login');
 
     return ApiResponse.fromJson(
       user.data,
@@ -103,12 +104,44 @@ class AMSApi {
         (p0) => ApiUser.fromJson(p0 as dynamic),
       );
       if (user.data != null) {
-        _userType = userType;
+        userType = userType;
       }
       return user;
     } on DioError catch (e) {
       throw ApiError.internal(e.toString());
     }
+  }
+
+  Future<ApiResponse<ApiSubject>> subject(String id) async {
+    final response = await _dio.get('/subjects/$id');
+
+    return ApiResponse.fromJson(
+      response.data,
+      (p0) => ApiSubject.fromJson(p0 as dynamic),
+    );
+  }
+
+  Future<ApiResponse<List<ApiSubject>>> subjects({
+    String? userId,
+    UserType? userType,
+  }) async {
+    Response response;
+    if (userId != null && userType != null) {
+      response = await _dio.get('/${userType.name}s/$userId/subjects');
+    } else {
+      response = await _dio.get('/subjects');
+    }
+
+    return ApiResponse.fromJson(
+      response.data,
+      (p0) {
+        List<ApiSubject> subjects = [];
+        for (var s in p0 as List<dynamic>) {
+          subjects.add(ApiSubject.fromJson(s));
+        }
+        return subjects;
+      },
+    );
   }
 }
 

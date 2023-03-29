@@ -18,12 +18,12 @@ class User with _$User {
 }
 
 extension IntoUser on ApiUser {
-  User intoAuthUser() => User(
+  User intoUser(UserType userType) => User(
         id: id,
         number: number,
         name: name,
         email: email,
-        type: UserType.attendee,
+        type: userType,
         createAt: createAt,
         updatedAt: updatedAt,
       );

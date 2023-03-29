@@ -4,3 +4,4 @@ targets:
       freezed:
         options:
           generic_argument_factories: true
+

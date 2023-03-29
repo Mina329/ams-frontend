@@ -1,12 +1,12 @@
+import 'package:ams_frontend/src/features/onboarding/providers/onboarding_provider.dart';
 import 'package:ams_frontend/src/konstants/konstants.dart';
-import 'package:ams_frontend/src/features/onboarding/provider/onboarding_list_provider.dart';
-import 'package:ams_frontend/src/features/onboarding/view/onboarding_controller.dart';
+import 'package:ams_frontend/src/features/onboarding/providers/onboarding_list_provider.dart';
 import 'package:ams_frontend/src/routing/routing.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
-import 'widgets/onboarding_widget.dart';
+import '../widgets/onboarding_widget.dart';
 
 class OnboardingPage extends ConsumerWidget {
   const OnboardingPage({super.key});

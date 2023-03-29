@@ -1,6 +1,6 @@
 import 'package:ams_frontend/src/apis/AMSApi/ams_api.dart';
+import 'package:ams_frontend/src/features/auth/providers/auth_provider.dart';
 import 'package:ams_frontend/src/konstants/konstants.dart';
-import 'package:ams_frontend/src/features/auth/view/auth_controller.dart';
 import 'package:ams_frontend/src/routing/routing.dart';
 import 'package:ams_frontend/src/utils/extensions.dart';
 import 'package:ams_frontend/src/utils/logger.dart';
@@ -17,7 +17,7 @@ class SignPage extends ConsumerWidget {
     final formKey = GlobalKey<FormBuilderState>();
 
     ref.listen(
-      authControllerProvider,
+      authProvider,
       (previous, next) {
         next.when(
           data: (user) {
@@ -141,7 +141,7 @@ class LoginButtonWidget extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final user = ref.watch(authControllerProvider);
+    final user = ref.watch(authProvider);
     return user.isLoading
         ? const CircularProgressIndicator()
         : ElevatedButton(
@@ -161,11 +161,11 @@ class LoginButtonWidget extends ConsumerWidget {
       UserType userType = formState.value[context.l10n.loginAs];
       if (userType == UserType.attendee) {
         ref
-            .read(authControllerProvider.notifier)
+            .read(authProvider.notifier)
             .loginAttendee(email: email, password: password);
       } else {
         ref
-            .read(authControllerProvider.notifier)
+            .read(authProvider.notifier)
             .loginInstructor(email: email, password: password);
       }
     }
