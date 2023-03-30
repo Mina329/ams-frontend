@@ -3,7 +3,7 @@
 // ignore_for_file: type=lint
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target, unnecessary_question_mark
 
-part of 'subject_model.dart';
+part of 'user_model.dart';
 
 // **************************************************************************
 // FreezedGenerator
@@ -15,38 +15,39 @@ final _privateConstructorUsedError = UnsupportedError(
     'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
 
 /// @nodoc
-mixin _$Subject {
+mixin _$UserModel {
   String get id => throw _privateConstructorUsedError;
+  int get number => throw _privateConstructorUsedError;
   String get name => throw _privateConstructorUsedError;
-  UserModel get instructor => throw _privateConstructorUsedError;
+  String get email => throw _privateConstructorUsedError;
+  UserType get type => throw _privateConstructorUsedError;
   DateTime get createAt => throw _privateConstructorUsedError;
-  String get cronExpr => throw _privateConstructorUsedError;
   DateTime get updatedAt => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
-  $SubjectCopyWith<Subject> get copyWith => throw _privateConstructorUsedError;
+  $UserModelCopyWith<UserModel> get copyWith =>
+      throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class $SubjectCopyWith<$Res> {
-  factory $SubjectCopyWith(Subject value, $Res Function(Subject) then) =
-      _$SubjectCopyWithImpl<$Res, Subject>;
+abstract class $UserModelCopyWith<$Res> {
+  factory $UserModelCopyWith(UserModel value, $Res Function(UserModel) then) =
+      _$UserModelCopyWithImpl<$Res, UserModel>;
   @useResult
   $Res call(
       {String id,
+      int number,
       String name,
-      UserModel instructor,
+      String email,
+      UserType type,
       DateTime createAt,
-      String cronExpr,
       DateTime updatedAt});
-
-  $UserModelCopyWith<$Res> get instructor;
 }
 
 /// @nodoc
-class _$SubjectCopyWithImpl<$Res, $Val extends Subject>
-    implements $SubjectCopyWith<$Res> {
-  _$SubjectCopyWithImpl(this._value, this._then);
+class _$UserModelCopyWithImpl<$Res, $Val extends UserModel>
+    implements $UserModelCopyWith<$Res> {
+  _$UserModelCopyWithImpl(this._value, this._then);
 
   // ignore: unused_field
   final $Val _value;
@@ -57,10 +58,11 @@ class _$SubjectCopyWithImpl<$Res, $Val extends Subject>
   @override
   $Res call({
     Object? id = null,
+    Object? number = null,
     Object? name = null,
-    Object? instructor = null,
+    Object? email = null,
+    Object? type = null,
     Object? createAt = null,
-    Object? cronExpr = null,
     Object? updatedAt = null,
   }) {
     return _then(_value.copyWith(
@@ -68,95 +70,95 @@ class _$SubjectCopyWithImpl<$Res, $Val extends Subject>
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
               as String,
+      number: null == number
+          ? _value.number
+          : number // ignore: cast_nullable_to_non_nullable
+              as int,
       name: null == name
           ? _value.name
           : name // ignore: cast_nullable_to_non_nullable
               as String,
-      instructor: null == instructor
-          ? _value.instructor
-          : instructor // ignore: cast_nullable_to_non_nullable
-              as UserModel,
+      email: null == email
+          ? _value.email
+          : email // ignore: cast_nullable_to_non_nullable
+              as String,
+      type: null == type
+          ? _value.type
+          : type // ignore: cast_nullable_to_non_nullable
+              as UserType,
       createAt: null == createAt
           ? _value.createAt
           : createAt // ignore: cast_nullable_to_non_nullable
               as DateTime,
-      cronExpr: null == cronExpr
-          ? _value.cronExpr
-          : cronExpr // ignore: cast_nullable_to_non_nullable
-              as String,
       updatedAt: null == updatedAt
           ? _value.updatedAt
           : updatedAt // ignore: cast_nullable_to_non_nullable
               as DateTime,
     ) as $Val);
   }
-
-  @override
-  @pragma('vm:prefer-inline')
-  $UserModelCopyWith<$Res> get instructor {
-    return $UserModelCopyWith<$Res>(_value.instructor, (value) {
-      return _then(_value.copyWith(instructor: value) as $Val);
-    });
-  }
 }
 
 /// @nodoc
-abstract class _$$_SubjectCopyWith<$Res> implements $SubjectCopyWith<$Res> {
-  factory _$$_SubjectCopyWith(
-          _$_Subject value, $Res Function(_$_Subject) then) =
-      __$$_SubjectCopyWithImpl<$Res>;
+abstract class _$$_UserModelCopyWith<$Res> implements $UserModelCopyWith<$Res> {
+  factory _$$_UserModelCopyWith(
+          _$_UserModel value, $Res Function(_$_UserModel) then) =
+      __$$_UserModelCopyWithImpl<$Res>;
   @override
   @useResult
   $Res call(
       {String id,
+      int number,
       String name,
-      UserModel instructor,
+      String email,
+      UserType type,
       DateTime createAt,
-      String cronExpr,
       DateTime updatedAt});
-
-  @override
-  $UserModelCopyWith<$Res> get instructor;
 }
 
 /// @nodoc
-class __$$_SubjectCopyWithImpl<$Res>
-    extends _$SubjectCopyWithImpl<$Res, _$_Subject>
-    implements _$$_SubjectCopyWith<$Res> {
-  __$$_SubjectCopyWithImpl(_$_Subject _value, $Res Function(_$_Subject) _then)
+class __$$_UserModelCopyWithImpl<$Res>
+    extends _$UserModelCopyWithImpl<$Res, _$_UserModel>
+    implements _$$_UserModelCopyWith<$Res> {
+  __$$_UserModelCopyWithImpl(
+      _$_UserModel _value, $Res Function(_$_UserModel) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
   @override
   $Res call({
     Object? id = null,
+    Object? number = null,
     Object? name = null,
-    Object? instructor = null,
+    Object? email = null,
+    Object? type = null,
     Object? createAt = null,
-    Object? cronExpr = null,
     Object? updatedAt = null,
   }) {
-    return _then(_$_Subject(
+    return _then(_$_UserModel(
       id: null == id
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
               as String,
+      number: null == number
+          ? _value.number
+          : number // ignore: cast_nullable_to_non_nullable
+              as int,
       name: null == name
           ? _value.name
           : name // ignore: cast_nullable_to_non_nullable
               as String,
-      instructor: null == instructor
-          ? _value.instructor
-          : instructor // ignore: cast_nullable_to_non_nullable
-              as UserModel,
+      email: null == email
+          ? _value.email
+          : email // ignore: cast_nullable_to_non_nullable
+              as String,
+      type: null == type
+          ? _value.type
+          : type // ignore: cast_nullable_to_non_nullable
+              as UserType,
       createAt: null == createAt
           ? _value.createAt
           : createAt // ignore: cast_nullable_to_non_nullable
               as DateTime,
-      cronExpr: null == cronExpr
-          ? _value.cronExpr
-          : cronExpr // ignore: cast_nullable_to_non_nullable
-              as String,
       updatedAt: null == updatedAt
           ? _value.updatedAt
           : updatedAt // ignore: cast_nullable_to_non_nullable
@@ -167,84 +169,89 @@ class __$$_SubjectCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$_Subject implements _Subject {
-  const _$_Subject(
+class _$_UserModel implements _UserModel {
+  const _$_UserModel(
       {required this.id,
+      required this.number,
       required this.name,
-      required this.instructor,
+      required this.email,
+      required this.type,
       required this.createAt,
-      required this.cronExpr,
       required this.updatedAt});
 
   @override
   final String id;
   @override
+  final int number;
+  @override
   final String name;
   @override
-  final UserModel instructor;
+  final String email;
+  @override
+  final UserType type;
   @override
   final DateTime createAt;
-  @override
-  final String cronExpr;
   @override
   final DateTime updatedAt;
 
   @override
   String toString() {
-    return 'Subject(id: $id, name: $name, instructor: $instructor, createAt: $createAt, cronExpr: $cronExpr, updatedAt: $updatedAt)';
+    return 'UserModel(id: $id, number: $number, name: $name, email: $email, type: $type, createAt: $createAt, updatedAt: $updatedAt)';
   }
 
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$_Subject &&
+            other is _$_UserModel &&
             (identical(other.id, id) || other.id == id) &&
+            (identical(other.number, number) || other.number == number) &&
             (identical(other.name, name) || other.name == name) &&
-            (identical(other.instructor, instructor) ||
-                other.instructor == instructor) &&
+            (identical(other.email, email) || other.email == email) &&
+            (identical(other.type, type) || other.type == type) &&
             (identical(other.createAt, createAt) ||
                 other.createAt == createAt) &&
-            (identical(other.cronExpr, cronExpr) ||
-                other.cronExpr == cronExpr) &&
             (identical(other.updatedAt, updatedAt) ||
                 other.updatedAt == updatedAt));
   }
 
   @override
   int get hashCode => Object.hash(
-      runtimeType, id, name, instructor, createAt, cronExpr, updatedAt);
+      runtimeType, id, number, name, email, type, createAt, updatedAt);
 
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$_SubjectCopyWith<_$_Subject> get copyWith =>
-      __$$_SubjectCopyWithImpl<_$_Subject>(this, _$identity);
+  _$$_UserModelCopyWith<_$_UserModel> get copyWith =>
+      __$$_UserModelCopyWithImpl<_$_UserModel>(this, _$identity);
 }
 
-abstract class _Subject implements Subject {
-  const factory _Subject(
+abstract class _UserModel implements UserModel {
+  const factory _UserModel(
       {required final String id,
+      required final int number,
       required final String name,
-      required final UserModel instructor,
+      required final String email,
+      required final UserType type,
       required final DateTime createAt,
-      required final String cronExpr,
-      required final DateTime updatedAt}) = _$_Subject;
+      required final DateTime updatedAt}) = _$_UserModel;
 
   @override
   String get id;
   @override
+  int get number;
+  @override
   String get name;
   @override
-  UserModel get instructor;
+  String get email;
+  @override
+  UserType get type;
   @override
   DateTime get createAt;
-  @override
-  String get cronExpr;
   @override
   DateTime get updatedAt;
   @override
   @JsonKey(ignore: true)
-  _$$_SubjectCopyWith<_$_Subject> get copyWith =>
+  _$$_UserModelCopyWith<_$_UserModel> get copyWith =>
       throw _privateConstructorUsedError;
 }

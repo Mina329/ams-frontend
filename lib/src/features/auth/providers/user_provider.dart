@@ -1,7 +1,10 @@
+import 'package:ams_frontend/src/features/auth/models/user_model.dart';
 import 'package:ams_frontend/src/features/auth/repositories/auth_repository.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-final userProvider = FutureProvider.autoDispose((ref) {
-  ref.keepAlive();
-  return ref.watch(authRepositoryProvider).login();
-});
+part 'user_provider.g.dart';
+
+@riverpod
+Future<UserModel?> currentUser(CurrentUserRef ref) async {
+  return await ref.watch(authRepositoryProvider).login();
+}

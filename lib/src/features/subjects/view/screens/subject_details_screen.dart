@@ -1,6 +1,6 @@
-import 'package:ams_frontend/src/features/subjects/providers/subject_details_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:ams_frontend/src/features/subjects/controllers/subject_details_controller.dart';
 
 class SubjectDetailsScreen extends ConsumerWidget {
   final String id;
@@ -8,7 +8,7 @@ class SubjectDetailsScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final subjectDetails = ref.watch(subjectDetailsProvider(id));
+    final subjectDetails = ref.watch(subjectDetailsControllerProvider(id));
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,

@@ -1,0 +1,19 @@
+import 'package:ams_frontend/src/apis/AMSApi/dtos/subject_dto.dart';
+import 'package:ams_frontend/src/apis/AMSApi/dtos/user_dto.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
+
+part 'attendance_dto.freezed.dart';
+part 'attendance_dto.g.dart';
+
+@freezed
+class AttendanceDto with _$AttendanceDto {
+  const factory AttendanceDto({
+    required String id,
+    required UserDto attendee,
+    required SubjectDto subject,
+    required DateTime createAt,
+  }) = _AttendanceDto;
+
+  factory AttendanceDto.fromJson(Map<String, Object?> json) =>
+      _$AttendanceDtoFromJson(json);
+}

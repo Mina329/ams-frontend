@@ -1,7 +1,7 @@
 import 'package:ams_frontend/src/features/auth/repositories/auth_repository.dart';
-import 'package:ams_frontend/src/features/auth/view/login_page.dart';
+import 'package:ams_frontend/src/features/auth/view/pages/login_page.dart';
 import 'package:ams_frontend/src/features/home/view/pages/home_page.dart';
-import 'package:ams_frontend/src/features/onboarding/repo/onboarding_repository.dart';
+import 'package:ams_frontend/src/features/onboarding/repositories/onboarding_repository.dart';
 import 'package:ams_frontend/src/features/onboarding/view/pages/onboarding_page.dart';
 import 'package:ams_frontend/src/features/settings/view/view.dart';
 import 'package:ams_frontend/src/features/subjects/view/screens/subject_details_screen.dart';
@@ -69,7 +69,7 @@ final goRouterProvider = Provider.autoDispose<GoRouter>((ref) {
             path: AppRoute.onboarding.name,
             name: AppRoute.onboarding.name,
             pageBuilder: (context, state) => const MaterialPage(
-              child: OnboardingView(),
+              child: OnboardingPage(),
             ),
           ),
           GoRoute(

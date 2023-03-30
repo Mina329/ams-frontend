@@ -2,11 +2,11 @@ import 'package:ams_frontend/src/konstants/konstants.dart';
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 
-import '../../model/onboarding.dart';
+import '../../models/onboarding_model.dart';
 
 class OnboardingWidget extends StatelessWidget {
   const OnboardingWidget({super.key, required this.onboarding});
-  final Onboarding onboarding;
+  final OnboardingModel onboarding;
 
   @override
   Widget build(BuildContext context) {

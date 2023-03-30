@@ -40,19 +40,22 @@ class DrawerSubjectsList extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final subjects = ref.watch(subjectListProvider);
 
-    return subjects.when(
-      data: (subjects) => ExpansionTile(
-        tilePadding: const EdgeInsets.only(right: KSizes.s20),
-        title: ListTile(
-          leading: const Icon(Icons.school),
-          title: Text(context.l10n.subjects),
-        ),
-        children: [for (var subject in subjects) SubjectDrawerItem(subject)],
+    return ExpansionTile(
+      tilePadding: const EdgeInsets.only(right: KSizes.s20),
+      title: ListTile(
+        leading: const Icon(Icons.school),
+        title: Text(context.l10n.subjects),
       ),
-      error: (error, stackTrace) {
-        throw UnimplementedError(); // TODO
-      },
-      loading: () => const CircularProgressIndicator(),
+      children: [
+        ...subjects.when(
+          data: (subjects) =>
+              [for (var subject in subjects) SubjectDrawerItem(subject)],
+          error: (error, stackTrace) {
+            throw UnimplementedError(); // TODO
+          },
+          loading: () => const [LinearProgressIndicator()],
+        ),
+      ], // [for (var subject in subjects) SubjectDrawerItem(subject)],
     );
   }
 }
@@ -62,7 +65,7 @@ class DrawerHeaderWidget extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final user = ref.watch(userProvider);
+    final user = ref.watch(currentUserProvider);
     return user.when(
       data: (user) => Container(
         height: KSizes.s50 * 4,
