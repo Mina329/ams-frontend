@@ -21,6 +21,8 @@
   "attendee": "Attendee",
   "instructor": "Instructor",
   "loginAs": "Login As",
+  
+  "logginSuccess": "Logged in successfully",
 
   "subjects": "Subjects"
 }

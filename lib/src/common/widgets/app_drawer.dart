@@ -1,5 +1,5 @@
-import 'package:ams_frontend/src/features/auth/providers/user_provider.dart';
-import 'package:ams_frontend/src/features/subjects/providers/subject_providers.dart';
+import 'package:ams_frontend/src/features/auth/view/controllers/auth_controller.dart';
+import 'package:ams_frontend/src/features/subjects/providers/providers.dart';
 import 'package:ams_frontend/src/features/subjects/view/widgets/subject_drawer_item.dart';
 import 'package:ams_frontend/src/konstants/konstants.dart';
 import 'package:ams_frontend/src/routing/routing.dart';
@@ -7,7 +7,6 @@ import 'package:ams_frontend/src/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:go_router/go_router.dart';
 
 class AppDrawerWidget extends StatelessWidget {
   const AppDrawerWidget({super.key});
@@ -38,24 +37,23 @@ class DrawerSubjectsList extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final subjects = ref.watch(subjectListProvider);
+    final subjects = ref.watch(userSubjectsProvider);
 
     return ExpansionTile(
       tilePadding: const EdgeInsets.only(right: KSizes.s20),
       title: ListTile(
-        leading: const Icon(Icons.school),
+        leading: const Icon(KIcons.subject),
         title: Text(context.l10n.subjects),
+        subtitle: subjects.whenOrNull(
+          loading: () => const LinearProgressIndicator(),
+        ),
       ),
       children: [
-        ...subjects.when(
+        ...?subjects.whenOrNull(
           data: (subjects) =>
               [for (var subject in subjects) SubjectDrawerItem(subject)],
-          error: (error, stackTrace) {
-            throw UnimplementedError(); // TODO
-          },
-          loading: () => const [LinearProgressIndicator()],
         ),
-      ], // [for (var subject in subjects) SubjectDrawerItem(subject)],
+      ],
     );
   }
 }
@@ -65,9 +63,23 @@ class DrawerHeaderWidget extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final user = ref.watch(currentUserProvider);
-    return user.when(
-      data: (user) => Container(
+    final authStateAsync = ref.watch(authControllerProvider);
+
+    ref.listen(authControllerProvider, (previous, next) {
+      next.maybeDataAndReport(
+        context,
+        (authStateAsync) {
+          authStateAsync.whenOrNull(
+            unsigned: () {
+              context.goNamedSafe(AppRoute.login.name);
+            },
+          );
+        },
+      );
+    });
+
+    return authStateAsync.maybeWhen(
+      data: (authState) => Container(
         height: KSizes.s50 * 4,
         width: double.infinity,
         color: Theme.of(context).primaryColor,
@@ -82,34 +94,55 @@ class DrawerHeaderWidget extends ConsumerWidget {
               ),
             ),
             const SizedBox(height: KSizes.s20),
-            Text(
-              user!.name,
-              style: Theme.of(context).textTheme.titleMedium!.copyWith(
-                    fontWeight: FontWeight.bold,
-                    color: Colors.white,
+            authState.maybeWhen(
+              orElse: () => const SizedBox(),
+              signed: (user) => Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  Column(
+                    children: [
+                      Text(
+                        user.name,
+                        style:
+                            Theme.of(context).textTheme.titleMedium?.copyWith(
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.white,
+                                ),
+                      ),
+                      const SizedBox(height: KSizes.s05),
+                      Text(
+                        user.email,
+                        style: Theme.of(context)
+                            .textTheme
+                            .bodySmall!
+                            .copyWith(color: Colors.white60),
+                      ),
+                    ],
                   ),
-            ),
-            const SizedBox(height: KSizes.s05),
-            Text(
-              user.email,
-              style: Theme.of(context)
-                  .textTheme
-                  .bodySmall!
-                  .copyWith(color: Colors.white60),
-            ),
+                  IconButton(
+                    onPressed: () {
+                      ref.read(authControllerProvider.notifier).logout();
+                    },
+                    icon: Icon(
+                      KIcons.logout,
+                      color: Theme.of(context).scaffoldBackgroundColor,
+                    ),
+                  )
+                ],
+              ),
+            )
           ],
         ),
       ),
-      error: (error, stackTrace) => Container(),
-      loading: () => const CircularProgressIndicator(),
+      orElse: () => const CircularProgressIndicator(),
     );
   }
 }
 
 enum DrawerItem {
-  home.route(FontAwesomeIcons.house, AppRoute.home),
-  settings.route(Icons.settings, AppRoute.settings),
-  about(FontAwesomeIcons.info);
+  home.route(KIcons.home, AppRoute.home),
+  settings.route(KIcons.settings, AppRoute.settings),
+  about(KIcons.about);
 
   const DrawerItem.route(this.icon, this.route);
   const DrawerItem(this.icon) : route = null;
@@ -143,7 +176,7 @@ class DrawerItemsList extends StatelessWidget {
             leading: Icon(item.icon),
             title: Text(item.l10n(context)),
             onTap: item.route != null
-                ? () => context.goNamed(item.route!.name)
+                ? () => context.goNamedSafe(item.route!.name)
                 : null,
           )
       ],

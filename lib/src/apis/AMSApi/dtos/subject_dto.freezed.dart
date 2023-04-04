@@ -24,7 +24,8 @@ mixin _$SubjectDto {
   String get name => throw _privateConstructorUsedError;
   UserDto get instructor => throw _privateConstructorUsedError;
   DateTime get createAt => throw _privateConstructorUsedError;
-  String get cronExpr => throw _privateConstructorUsedError;
+  @ScheduleJsonConverter()
+  Schedule get cronExpr => throw _privateConstructorUsedError;
   DateTime get updatedAt => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -44,7 +45,7 @@ abstract class $SubjectDtoCopyWith<$Res> {
       String name,
       UserDto instructor,
       DateTime createAt,
-      String cronExpr,
+      @ScheduleJsonConverter() Schedule cronExpr,
       DateTime updatedAt});
 
   $UserDtoCopyWith<$Res> get instructor;
@@ -90,7 +91,7 @@ class _$SubjectDtoCopyWithImpl<$Res, $Val extends SubjectDto>
       cronExpr: null == cronExpr
           ? _value.cronExpr
           : cronExpr // ignore: cast_nullable_to_non_nullable
-              as String,
+              as Schedule,
       updatedAt: null == updatedAt
           ? _value.updatedAt
           : updatedAt // ignore: cast_nullable_to_non_nullable
@@ -120,7 +121,7 @@ abstract class _$$_SubjectDtoCopyWith<$Res>
       String name,
       UserDto instructor,
       DateTime createAt,
-      String cronExpr,
+      @ScheduleJsonConverter() Schedule cronExpr,
       DateTime updatedAt});
 
   @override
@@ -165,7 +166,7 @@ class __$$_SubjectDtoCopyWithImpl<$Res>
       cronExpr: null == cronExpr
           ? _value.cronExpr
           : cronExpr // ignore: cast_nullable_to_non_nullable
-              as String,
+              as Schedule,
       updatedAt: null == updatedAt
           ? _value.updatedAt
           : updatedAt // ignore: cast_nullable_to_non_nullable
@@ -182,7 +183,7 @@ class _$_SubjectDto implements _SubjectDto {
       required this.name,
       required this.instructor,
       required this.createAt,
-      required this.cronExpr,
+      @ScheduleJsonConverter() required this.cronExpr,
       required this.updatedAt});
 
   factory _$_SubjectDto.fromJson(Map<String, dynamic> json) =>
@@ -197,7 +198,8 @@ class _$_SubjectDto implements _SubjectDto {
   @override
   final DateTime createAt;
   @override
-  final String cronExpr;
+  @ScheduleJsonConverter()
+  final Schedule cronExpr;
   @override
   final DateTime updatedAt;
 
@@ -248,7 +250,7 @@ abstract class _SubjectDto implements SubjectDto {
       required final String name,
       required final UserDto instructor,
       required final DateTime createAt,
-      required final String cronExpr,
+      @ScheduleJsonConverter() required final Schedule cronExpr,
       required final DateTime updatedAt}) = _$_SubjectDto;
 
   factory _SubjectDto.fromJson(Map<String, dynamic> json) =
@@ -263,7 +265,8 @@ abstract class _SubjectDto implements SubjectDto {
   @override
   DateTime get createAt;
   @override
-  String get cronExpr;
+  @ScheduleJsonConverter()
+  Schedule get cronExpr;
   @override
   DateTime get updatedAt;
   @override

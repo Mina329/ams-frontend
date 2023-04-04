@@ -17,7 +17,7 @@ class AppBarWidget extends AppBar {
             ],
           ),
           centerTitle: true,
-          elevation: KElevation.e20,
+          elevation: KElevations.e20,
           actions: actions,
         );
 }

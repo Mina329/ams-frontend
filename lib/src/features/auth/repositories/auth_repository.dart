@@ -13,7 +13,11 @@ class AuthRepository {
 
   AuthRepository(this._amsApi);
 
-  Future<UserModel?> login({
+  void logout() {
+    _amsApi.logout();
+  }
+
+  Future<User?> login({
     String? email,
     String? password,
     UserType? userType,

@@ -1,29 +1,37 @@
 import 'package:ams_frontend/src/apis/AMSApi/ams_api.dart';
+import 'package:ams_frontend/src/apis/apis.dart';
 import 'package:ams_frontend/src/features/auth/models/user_model.dart';
-import 'package:ams_frontend/src/features/auth/providers/user_provider.dart';
+import 'package:ams_frontend/src/features/auth/repositories/auth_repository.dart';
 import 'package:ams_frontend/src/features/subjects/models/attendance_model.dart';
 import 'package:ams_frontend/src/features/subjects/models/subject_model.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:ams_frontend/src/features/subjects/subjects_error.dart';
+import 'package:riverpod_annotation/riverpod_annotation.dart';
+
+part 'subjects_repositories.g.dart';
 
 class SubjectsRepository {
   final AMSApi _amsApi;
-  final UserModel _user;
+  final User _user;
 
   SubjectsRepository(this._amsApi, this._user);
 
-  Future<Subject> subject(String id) async {
-    var response = await _amsApi.subject(id);
-    if (!response.status) {
-      throw UnimplementedError(); // TODO
+  Future<Subject> getOne(String subjectId) async {
+    try {
+      var response = await _amsApi.subject(subjectId);
+      if (!response.status) {
+        throw SubjectsError.notFound(response.message);
+      }
+
+      final apiSubject = response.data!;
+
+      return apiSubject.intoSubject();
+    } on ApiError catch (error) {
+      throw error.intoSubjectsError();
     }
-
-    final apiSubject = response.data!;
-
-    return apiSubject.intoSubject();
   }
 
-  Future<List<Attendance>> subjectAttendances(String id) async {
-    var response = await _amsApi.subjectAttendances(id);
+  Future<List<Attendance>> getAttendances(String subjectId) async {
+    var response = await _amsApi.attendances(subjectId);
 
     if (!response.status) {
       throw UnimplementedError(); // TODO
@@ -36,11 +44,11 @@ class SubjectsRepository {
         .toList();
   }
 
-  Future<List<UserModel>> subjectUsers({
-    required String id,
+  Future<List<User>> getAttendees(
+    String subjectId, {
     UserType userType = UserType.attendee,
   }) async {
-    var response = await _amsApi.subjectUsers(id: id, userType: userType);
+    var response = await _amsApi.attendees(subjectId: subjectId);
 
     if (!response.status) {
       throw UnimplementedError(); // TODO
@@ -51,7 +59,7 @@ class SubjectsRepository {
     return apiUsers.map((user) => user.intoUser(userType)).toList();
   }
 
-  Future<List<Subject>> userSubjects() async {
+  Future<List<Subject>> getForUser() async {
     var response = await _amsApi.subjects(
       userId: _user.id,
       userType: _user.type,
@@ -67,8 +75,9 @@ class SubjectsRepository {
   }
 }
 
-final subjectsRepositoryProvider = FutureProvider.autoDispose((ref) async {
+@riverpod
+Future<SubjectsRepository> subjectsRepository(SubjectsRepositoryRef ref) async {
   final amsApi = ref.watch(amsApiProvider);
-  final user = await ref.watch(currentUserProvider.future);
+  final user = await ref.watch(authRepositoryProvider).login();
   return SubjectsRepository(amsApi, user!);
-});
+}

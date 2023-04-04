@@ -1,23 +1,50 @@
+import 'package:ams_frontend/src/konstants/kdoubles.dart';
+import 'package:ams_frontend/src/konstants/kints.dart';
+import 'package:another_flushbar/flushbar.dart';
+import 'package:cron/cron.dart';
 import 'package:flutter/material.dart';
 
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+extension ScheduleToString on Schedule {
+  String toHumanString() {
+    // todo
+    throw UnimplementedError();
+  }
+
+  String toExprString() {
+    final minutes = this.minutes?.map((e) => '$e').join(',') ?? '';
+    final hours = this.hours?.map((e) => '$e').join(',');
+    final days = this.days?.map((e) => '$e').join(',');
+    final months = this.months?.map((e) => '$e').join(',');
+    final weekdays = this.weekdays?.map((e) => '$e').join(',');
+
+    return '$minutes $hours $days $months $weekdays';
+  }
+}
+
 extension AppLocaleExt on BuildContext {
   AppLocalizations get l10n => AppLocalizations.of(this)!;
 }
 
+extension StringHardCodedExt on String {
+  String get hardcoded => this;
+}
+
 extension AsyncValueExt<T> on AsyncValue<T> {
-  void whenDataOrReport(BuildContext context, String? Function(T) onData) {
+  void maybeDataAndReport(
+    BuildContext context,
+    void Function(T)? onData,
+  ) {
     whenOrNull(
-      data: (data) {
-        String? message = onData(data);
-        if (message != null) {
-          _toast(context, message: message, level: ToastLevel.success);
-        }
-      },
+      data: onData != null
+          ? (data) {
+              onData(data);
+            }
+          : null,
       error: (error, stackTrace) {
-        _toast(context, message: error.toString(), level: ToastLevel.error);
+        context.toast(error.toString(), level: ToastLevel.error);
       },
     );
   }
@@ -29,51 +56,44 @@ enum ToastLevel {
   error,
 }
 
-void _toast(
-  BuildContext context, {
-  required String message,
-  ToastLevel level = ToastLevel.success,
-}) {
-  const List<Color> colors = [
-    Colors.green,
-    Colors.orange,
-    Colors.red,
-  ];
+extension ToastExt on BuildContext {
+  void toast(
+    String message, {
+    ToastLevel level = ToastLevel.success,
+  }) {
+    const List<Color> colors = [
+      Colors.green,
+      Colors.orange,
+      Colors.red,
+    ];
 
-  const List<IconData> icons = [
-    Icons.message_outlined,
-    Icons.warning_amber_outlined,
-    Icons.error_outline,
-  ];
+    const List<IconData> icons = [
+      Icons.message_outlined,
+      Icons.warning_amber_outlined,
+      Icons.error_outline,
+    ];
 
-  ScaffoldMessenger.of(context).showSnackBar(
-    SnackBar(
-      padding: const EdgeInsets.all(20.0),
-      elevation: 20.0,
-      margin: const EdgeInsets.all(20),
-      behavior: SnackBarBehavior.floating,
-      backgroundColor: colors[level.index],
-      shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.all(
-          Radius.circular(20.0),
-        ),
+    final color = colors[level.index];
+    final icon = icons[level.index];
+
+    Flushbar(
+      title: level.name,
+      titleColor: color,
+      message: message,
+      messageColor: color,
+      flushbarPosition: FlushbarPosition.BOTTOM,
+      flushbarStyle: FlushbarStyle.FLOATING,
+      reverseAnimationCurve: Curves.decelerate,
+      forwardAnimationCurve: Curves.elasticOut,
+      duration: const Duration(seconds: KDurations.milli500 * 8),
+      icon: Icon(
+        icon,
+        color: color,
       ),
-      content: Center(
-        heightFactor: double.minPositive,
-        child: Row(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Icon(icons[level.index], color: Colors.white),
-            const SizedBox(width: 5),
-            Text(
-              message,
-              style: Theme.of(context).textTheme.bodyMedium!.copyWith(
-                    color: Colors.white,
-                  ),
-            ),
-          ],
-        ),
-      ),
-    ),
-  );
+      leftBarIndicatorColor: color,
+      backgroundColor: color.withAlpha(30),
+      margin: const EdgeInsets.all(KSizes.s10),
+      borderRadius: BorderRadius.circular(KSizes.s10),
+    ).show(this);
+  }
 }

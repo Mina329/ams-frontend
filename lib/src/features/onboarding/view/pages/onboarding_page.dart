@@ -2,8 +2,7 @@ import 'package:ams_frontend/src/konstants/konstants.dart';
 import 'package:ams_frontend/src/routing/routing.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:go_router/go_router.dart';
-import 'package:ams_frontend/src/features/onboarding/controllers/onboarding_controller.dart';
+import 'package:ams_frontend/src/features/onboarding/view/controllers/onboarding_controller.dart';
 
 import '../widgets/onboarding_widget.dart';
 
@@ -17,31 +16,31 @@ class OnboardingPage extends ConsumerWidget {
 
     ref.listen(onboardingConrollerProvider, (previous, next) {
       next.whenOrNull(completed: () {
-        context.goNamed(AppRoute.login.name);
+        context.goNamedSafe(AppRoute.login.name);
       });
     });
 
-    return onboardingState.when(
-      completed: () => Container(),
-      notCompleted: (list) => Padding(
+    return onboardingState.maybeWhen(
+      orElse: () => Container(),
+      notCompleted: (onboardingList) => Padding(
         padding: const EdgeInsets.only(bottom: KSizes.s20),
         child: PageView.builder(
           controller: pageController,
-          itemCount: list.length,
+          itemCount: onboardingList.length,
           itemBuilder: (context, index) => Column(
             children: [
               OnboardingWidget(
-                onboarding: list[index],
+                onboarding: onboardingList[index],
               ),
               SizedBox(
                 width: KSizes.s60,
                 height: KSizes.s60,
                 child: ElevatedButton(
                   onPressed: () {
-                    if (index < list.length - 1) {
+                    if (index < onboardingList.length - 1) {
                       pageController.nextPage(
                         duration: const Duration(
-                          milliseconds: KDuration.milli500,
+                          milliseconds: KDurations.milli500,
                         ),
                         curve: Curves.ease,
                       );
@@ -52,7 +51,7 @@ class OnboardingPage extends ConsumerWidget {
                     }
                   },
                   child: Icon(
-                    index < list.length - 1
+                    index < onboardingList.length - 1
                         ? Icons.next_plan_outlined
                         : Icons.done_all_rounded,
                   ),

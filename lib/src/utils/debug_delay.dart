@@ -1,7 +1,8 @@
-import 'package:flutter/foundation.dart';
+part of './utils.dart';
 
-Future<void> debugDelay([int delay = 3]) async {
+Future<void> _debugDelay([int delay = 2]) async {
   if (kDebugMode) {
+    Utils.logger.d('debugDelay($delay)');
     await Future.delayed(Duration(seconds: delay));
   }
 }

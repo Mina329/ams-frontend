@@ -9,7 +9,7 @@ part 'attendance_model.freezed.dart';
 class Attendance with _$Attendance {
   const factory Attendance({
     required String id,
-    required UserModel attendee,
+    required User attendee,
     required Subject subject,
     required DateTime createAt,
   }) = _Attendance;

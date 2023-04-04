@@ -21,6 +21,7 @@ mixin _$ApiError {
     required TResult Function() network,
     required TResult Function(String msg) internal,
     required TResult Function(String msg) authorization,
+    required TResult Function(String msg) invalidOperation,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -28,6 +29,7 @@ mixin _$ApiError {
     TResult? Function()? network,
     TResult? Function(String msg)? internal,
     TResult? Function(String msg)? authorization,
+    TResult? Function(String msg)? invalidOperation,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -35,6 +37,7 @@ mixin _$ApiError {
     TResult Function()? network,
     TResult Function(String msg)? internal,
     TResult Function(String msg)? authorization,
+    TResult Function(String msg)? invalidOperation,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
@@ -43,6 +46,7 @@ mixin _$ApiError {
     required TResult Function(Network value) network,
     required TResult Function(Internal value) internal,
     required TResult Function(Authorization value) authorization,
+    required TResult Function(InvalidOperation value) invalidOperation,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -50,6 +54,7 @@ mixin _$ApiError {
     TResult? Function(Network value)? network,
     TResult? Function(Internal value)? internal,
     TResult? Function(Authorization value)? authorization,
+    TResult? Function(InvalidOperation value)? invalidOperation,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -57,6 +62,7 @@ mixin _$ApiError {
     TResult Function(Network value)? network,
     TResult Function(Internal value)? internal,
     TResult Function(Authorization value)? authorization,
+    TResult Function(InvalidOperation value)? invalidOperation,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
@@ -118,6 +124,7 @@ class _$Network implements Network {
     required TResult Function() network,
     required TResult Function(String msg) internal,
     required TResult Function(String msg) authorization,
+    required TResult Function(String msg) invalidOperation,
   }) {
     return network();
   }
@@ -128,6 +135,7 @@ class _$Network implements Network {
     TResult? Function()? network,
     TResult? Function(String msg)? internal,
     TResult? Function(String msg)? authorization,
+    TResult? Function(String msg)? invalidOperation,
   }) {
     return network?.call();
   }
@@ -138,6 +146,7 @@ class _$Network implements Network {
     TResult Function()? network,
     TResult Function(String msg)? internal,
     TResult Function(String msg)? authorization,
+    TResult Function(String msg)? invalidOperation,
     required TResult orElse(),
   }) {
     if (network != null) {
@@ -152,6 +161,7 @@ class _$Network implements Network {
     required TResult Function(Network value) network,
     required TResult Function(Internal value) internal,
     required TResult Function(Authorization value) authorization,
+    required TResult Function(InvalidOperation value) invalidOperation,
   }) {
     return network(this);
   }
@@ -162,6 +172,7 @@ class _$Network implements Network {
     TResult? Function(Network value)? network,
     TResult? Function(Internal value)? internal,
     TResult? Function(Authorization value)? authorization,
+    TResult? Function(InvalidOperation value)? invalidOperation,
   }) {
     return network?.call(this);
   }
@@ -172,6 +183,7 @@ class _$Network implements Network {
     TResult Function(Network value)? network,
     TResult Function(Internal value)? internal,
     TResult Function(Authorization value)? authorization,
+    TResult Function(InvalidOperation value)? invalidOperation,
     required TResult orElse(),
   }) {
     if (network != null) {
@@ -251,6 +263,7 @@ class _$Internal implements Internal {
     required TResult Function() network,
     required TResult Function(String msg) internal,
     required TResult Function(String msg) authorization,
+    required TResult Function(String msg) invalidOperation,
   }) {
     return internal(msg);
   }
@@ -261,6 +274,7 @@ class _$Internal implements Internal {
     TResult? Function()? network,
     TResult? Function(String msg)? internal,
     TResult? Function(String msg)? authorization,
+    TResult? Function(String msg)? invalidOperation,
   }) {
     return internal?.call(msg);
   }
@@ -271,6 +285,7 @@ class _$Internal implements Internal {
     TResult Function()? network,
     TResult Function(String msg)? internal,
     TResult Function(String msg)? authorization,
+    TResult Function(String msg)? invalidOperation,
     required TResult orElse(),
   }) {
     if (internal != null) {
@@ -285,6 +300,7 @@ class _$Internal implements Internal {
     required TResult Function(Network value) network,
     required TResult Function(Internal value) internal,
     required TResult Function(Authorization value) authorization,
+    required TResult Function(InvalidOperation value) invalidOperation,
   }) {
     return internal(this);
   }
@@ -295,6 +311,7 @@ class _$Internal implements Internal {
     TResult? Function(Network value)? network,
     TResult? Function(Internal value)? internal,
     TResult? Function(Authorization value)? authorization,
+    TResult? Function(InvalidOperation value)? invalidOperation,
   }) {
     return internal?.call(this);
   }
@@ -305,6 +322,7 @@ class _$Internal implements Internal {
     TResult Function(Network value)? network,
     TResult Function(Internal value)? internal,
     TResult Function(Authorization value)? authorization,
+    TResult Function(InvalidOperation value)? invalidOperation,
     required TResult orElse(),
   }) {
     if (internal != null) {
@@ -390,6 +408,7 @@ class _$Authorization implements Authorization {
     required TResult Function() network,
     required TResult Function(String msg) internal,
     required TResult Function(String msg) authorization,
+    required TResult Function(String msg) invalidOperation,
   }) {
     return authorization(msg);
   }
@@ -400,6 +419,7 @@ class _$Authorization implements Authorization {
     TResult? Function()? network,
     TResult? Function(String msg)? internal,
     TResult? Function(String msg)? authorization,
+    TResult? Function(String msg)? invalidOperation,
   }) {
     return authorization?.call(msg);
   }
@@ -410,6 +430,7 @@ class _$Authorization implements Authorization {
     TResult Function()? network,
     TResult Function(String msg)? internal,
     TResult Function(String msg)? authorization,
+    TResult Function(String msg)? invalidOperation,
     required TResult orElse(),
   }) {
     if (authorization != null) {
@@ -424,6 +445,7 @@ class _$Authorization implements Authorization {
     required TResult Function(Network value) network,
     required TResult Function(Internal value) internal,
     required TResult Function(Authorization value) authorization,
+    required TResult Function(InvalidOperation value) invalidOperation,
   }) {
     return authorization(this);
   }
@@ -434,6 +456,7 @@ class _$Authorization implements Authorization {
     TResult? Function(Network value)? network,
     TResult? Function(Internal value)? internal,
     TResult? Function(Authorization value)? authorization,
+    TResult? Function(InvalidOperation value)? invalidOperation,
   }) {
     return authorization?.call(this);
   }
@@ -444,6 +467,7 @@ class _$Authorization implements Authorization {
     TResult Function(Network value)? network,
     TResult Function(Internal value)? internal,
     TResult Function(Authorization value)? authorization,
+    TResult Function(InvalidOperation value)? invalidOperation,
     required TResult orElse(),
   }) {
     if (authorization != null) {
@@ -459,5 +483,150 @@ abstract class Authorization implements ApiError {
   String get msg;
   @JsonKey(ignore: true)
   _$$AuthorizationCopyWith<_$Authorization> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class _$$InvalidOperationCopyWith<$Res> {
+  factory _$$InvalidOperationCopyWith(
+          _$InvalidOperation value, $Res Function(_$InvalidOperation) then) =
+      __$$InvalidOperationCopyWithImpl<$Res>;
+  @useResult
+  $Res call({String msg});
+}
+
+/// @nodoc
+class __$$InvalidOperationCopyWithImpl<$Res>
+    extends _$ApiErrorCopyWithImpl<$Res, _$InvalidOperation>
+    implements _$$InvalidOperationCopyWith<$Res> {
+  __$$InvalidOperationCopyWithImpl(
+      _$InvalidOperation _value, $Res Function(_$InvalidOperation) _then)
+      : super(_value, _then);
+
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? msg = null,
+  }) {
+    return _then(_$InvalidOperation(
+      null == msg
+          ? _value.msg
+          : msg // ignore: cast_nullable_to_non_nullable
+              as String,
+    ));
+  }
+}
+
+/// @nodoc
+
+class _$InvalidOperation implements InvalidOperation {
+  const _$InvalidOperation(this.msg);
+
+  @override
+  final String msg;
+
+  @override
+  String toString() {
+    return 'ApiError.invalidOperation(msg: $msg)';
+  }
+
+  @override
+  bool operator ==(dynamic other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$InvalidOperation &&
+            (identical(other.msg, msg) || other.msg == msg));
+  }
+
+  @override
+  int get hashCode => Object.hash(runtimeType, msg);
+
+  @JsonKey(ignore: true)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$InvalidOperationCopyWith<_$InvalidOperation> get copyWith =>
+      __$$InvalidOperationCopyWithImpl<_$InvalidOperation>(this, _$identity);
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function() network,
+    required TResult Function(String msg) internal,
+    required TResult Function(String msg) authorization,
+    required TResult Function(String msg) invalidOperation,
+  }) {
+    return invalidOperation(msg);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function()? network,
+    TResult? Function(String msg)? internal,
+    TResult? Function(String msg)? authorization,
+    TResult? Function(String msg)? invalidOperation,
+  }) {
+    return invalidOperation?.call(msg);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function()? network,
+    TResult Function(String msg)? internal,
+    TResult Function(String msg)? authorization,
+    TResult Function(String msg)? invalidOperation,
+    required TResult orElse(),
+  }) {
+    if (invalidOperation != null) {
+      return invalidOperation(msg);
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(Network value) network,
+    required TResult Function(Internal value) internal,
+    required TResult Function(Authorization value) authorization,
+    required TResult Function(InvalidOperation value) invalidOperation,
+  }) {
+    return invalidOperation(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(Network value)? network,
+    TResult? Function(Internal value)? internal,
+    TResult? Function(Authorization value)? authorization,
+    TResult? Function(InvalidOperation value)? invalidOperation,
+  }) {
+    return invalidOperation?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(Network value)? network,
+    TResult Function(Internal value)? internal,
+    TResult Function(Authorization value)? authorization,
+    TResult Function(InvalidOperation value)? invalidOperation,
+    required TResult orElse(),
+  }) {
+    if (invalidOperation != null) {
+      return invalidOperation(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class InvalidOperation implements ApiError {
+  const factory InvalidOperation(final String msg) = _$InvalidOperation;
+
+  String get msg;
+  @JsonKey(ignore: true)
+  _$$InvalidOperationCopyWith<_$InvalidOperation> get copyWith =>
       throw _privateConstructorUsedError;
 }

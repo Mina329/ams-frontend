@@ -1,12 +1,11 @@
 import 'package:ams_frontend/src/apis/AMSApi/ams_api.dart';
-import 'package:ams_frontend/src/features/auth/controllers/auth_controller.dart';
+import 'package:ams_frontend/src/features/auth/view/controllers/auth_controller.dart';
 import 'package:ams_frontend/src/konstants/konstants.dart';
 import 'package:ams_frontend/src/routing/routing.dart';
 import 'package:ams_frontend/src/utils/extensions.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:go_router/go_router.dart';
 
 class SignPage extends ConsumerWidget {
   const SignPage({super.key});
@@ -15,14 +14,19 @@ class SignPage extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final formKey = GlobalKey<FormBuilderState>();
 
+    ref.watch(authControllerProvider);
+
     ref.listen(authControllerProvider, (previous, next) {
-      next.whenDataOrReport(context, (user) {
-        if (user != null) {
-          context.goNamed(AppRoute.home.name);
-          return 'Logged In Successfully';
-        }
-        return null;
-      });
+      next.maybeDataAndReport(
+        context,
+        (authStateAsync) {
+          authStateAsync.whenOrNull(signed: (user) {
+            WidgetsBinding.instance.addPostFrameCallback((_) {
+              context.goNamedSafe(AppRoute.home.name);
+            });
+          });
+        },
+      );
     });
 
     return Scaffold(
@@ -130,8 +134,8 @@ class LoginButtonWidget extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final user = ref.watch(authControllerProvider);
-    return user.maybeMap(
+    final authStateAsync = ref.watch(authControllerProvider);
+    return authStateAsync.maybeMap(
       loading: (loading) => const CircularProgressIndicator(),
       orElse: () => ElevatedButton(
         onPressed: () => _onPress(context, ref),
@@ -144,18 +148,11 @@ class LoginButtonWidget extends ConsumerWidget {
     final formState = formKey.currentState;
     formState?.save();
     if (formState != null && formState.validate()) {
-      final email = formState.value[context.l10n.userEmail];
-      final password = formState.value[context.l10n.password];
-      UserType userType = formState.value[context.l10n.loginAs];
-      if (userType == UserType.attendee) {
-        ref
-            .read(authControllerProvider.notifier)
-            .loginAttendee(email: email, password: password);
-      } else {
-        ref
-            .read(authControllerProvider.notifier)
-            .loginInstructor(email: email, password: password);
-      }
+      ref.read(authControllerProvider.notifier).login(
+            email: formState.value[context.l10n.userEmail],
+            password: formState.value[context.l10n.password],
+            userType: formState.value[context.l10n.loginAs],
+          );
     }
   }
 }

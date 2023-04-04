@@ -1,21 +1,27 @@
 export 'dtos/dtos.dart';
 
+import 'dart:io';
+
 import 'package:ams_frontend/src/apis/apis.dart';
 import 'package:ams_frontend/src/common/common.dart';
-import 'package:ams_frontend/src/utils/logger.dart';
+import 'package:ams_frontend/src/utils/utils.dart';
 import 'package:dio/dio.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:pretty_dio_logger/pretty_dio_logger.dart';
+import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'dtos/dtos.dart';
 
+part 'ams_api.g.dart';
+
 enum UserType { attendee, instructor }
 
+// Attendance Management System Api
 class AMSApi {
   final Dio _dio;
   final SharedPreferences _sharedPreferences;
 
+  // constructor
   AMSApi(this._dio, this._sharedPreferences) {
     _dio.options.baseUrl = 'http://localhost:3000/api';
     _dio.options.validateStatus = (_) => true;
@@ -32,6 +38,7 @@ class AMSApi {
     ));
   }
 
+  // set the jwt token
   set _cachedJWTToken(String? token) {
     if (token != null) {
       _dio.options.headers.addAll({'Authorization': 'Bearer $token'});
@@ -42,6 +49,7 @@ class AMSApi {
     }
   }
 
+  // set the cached user type
   set cachedUserType(UserType? userType) {
     if (userType != null) {
       _sharedPreferences.setInt('userType', userType.index);
@@ -50,12 +58,14 @@ class AMSApi {
     }
   }
 
+  // get the cached jwt token
   String? get _cachedJWTToken {
     final value = _sharedPreferences.getString('token');
     _dio.options.headers.addAll({'Authorization': 'Bearer $value'});
     return value;
   }
 
+  // get the cached user type
   UserType? get cachedUserType {
     final userType = _sharedPreferences.getInt('userType');
     if (userType == null) {
@@ -65,16 +75,24 @@ class AMSApi {
     return value;
   }
 
+  // check if the credentials are cached
   bool get credsCached {
     return _cachedJWTToken != null && cachedUserType != null;
   }
 
+  // logout
+  void logout() {
+    _cachedJWTToken = null;
+    cachedUserType = null;
+  }
+
+  // login with jwt if is cached
   Future<ResponseDto<UserDto>?> loginCached() async {
     if (_cachedJWTToken == null || cachedUserType == null) {
       return null;
     }
 
-    logger.d('found cached credentials');
+    Utils.logger.d('found cached credentials');
 
     var user = await _dio.get('/${cachedUserType?.name}s/login');
 
@@ -84,6 +102,7 @@ class AMSApi {
     );
   }
 
+  // login with credential and then cache the jwt
   Future<ResponseDto<UserDto>> login({
     required UserType userType,
     required AuthPayloadDto authPayload,
@@ -115,15 +134,21 @@ class AMSApi {
     }
   }
 
-  Future<ResponseDto<SubjectDto>> subject(String id) async {
-    final response = await _dio.get('/subjects/$id');
+  // get a subject by [subjectId]
+  Future<ResponseDto<SubjectDto>> subject(String subjectId) async {
+    try {
+      final response = await _dio.get('/subjects/$subjectId');
 
-    return ResponseDto.fromJson(
-      response.data,
-      (p0) => SubjectDto.fromJson(p0 as dynamic),
-    );
+      return ResponseDto.fromJson(
+        response.data,
+        (p0) => SubjectDto.fromJson(p0 as dynamic),
+      );
+    } on DioError catch (error) {
+      throw ApiError.internal(error.toString());
+    }
   }
 
+  // get subjects list filtered by user [id] and [userType]
   Future<ResponseDto<List<SubjectDto>>> subjects({
     String? userId,
     UserType? userType,
@@ -147,11 +172,27 @@ class AMSApi {
     );
   }
 
-  Future<ResponseDto<List<UserDto>>> subjectUsers({
-    required String id,
-    UserType userType = UserType.attendee,
+  // get users list filtered by [subject] or [face]
+  Future<ResponseDto<List<UserDto>>> attendees({
+    String? subjectId,
+    File? image,
   }) async {
-    final response = await _dio.get('/subjects/$id/${userType.name}s');
+    if (subjectId != null && image != null) {
+      throw const ApiError.invalidOperation(
+        "can't filter attendees with subject id and face at the same time",
+      );
+    }
+    Response response;
+    if (subjectId != null) {
+      response = await _dio.get('/subjects/$subjectId/attendees');
+    } else if (image != null) {
+      final formData = FormData.fromMap({
+        'image': MultipartFile.fromBytes(await image.readAsBytes()),
+      });
+      response = await _dio.post('/attendees/image', data: formData);
+    } else {
+      response = await _dio.get('/attendees');
+    }
     return ResponseDto.fromJson(response.data, (p0) {
       List<UserDto> users = [];
       for (var user in p0 as List<dynamic>) {
@@ -161,8 +202,11 @@ class AMSApi {
     });
   }
 
-  Future<ResponseDto<List<AttendanceDto>>> subjectAttendances(String id) async {
-    final response = await _dio.get('/subjects/$id/${UserType.attendee.name}s');
+  // get attendances list filtered by [subjectId]
+  Future<ResponseDto<List<AttendanceDto>>> attendances(
+    String subjectId,
+  ) async {
+    final response = await _dio.get('/attendances/subjects/$subjectId');
     return ResponseDto.fromJson(response.data, (p0) {
       List<AttendanceDto> attendances = [];
       for (var user in p0 as List<dynamic>) {
@@ -171,8 +215,21 @@ class AMSApi {
       return attendances;
     });
   }
+
+  // take attendance by [subjectId] and [attendeeId]
+  Future<ResponseDto<void>> takeAttendance({
+    required subjectId,
+    required attendeeId,
+  }) async {
+    final response = await _dio.put(
+      '/attendances/subjects/$subjectId/attendees/$attendeeId',
+    );
+
+    return ResponseDto.fromJson(response.data, (p0) {});
+  }
 }
 
-final amsApiProvider = Provider<AMSApi>((ref) {
+@riverpod
+AMSApi amsApi(AmsApiRef ref) {
   return AMSApi(Dio(), ref.watch(sharedPreferencesProvider));
-});
+}

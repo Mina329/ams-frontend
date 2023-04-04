@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 
 @immutable
-class OnboardingModel {
+class Onboarding {
   final String title;
   final String text;
   final String asset;
 
-  const OnboardingModel(this.title, this.text, this.asset);
+  const Onboarding(this.title, this.text, this.asset);
 }

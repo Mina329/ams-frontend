@@ -22,12 +22,12 @@ class OnBoardingRepository {
   }
 
   static const _list = [
-    OnboardingModel('title 1', 'onboarding 1', JsonAsset.onboarding1),
-    OnboardingModel('title 2', 'onboarding 2', JsonAsset.onboarding2),
-    OnboardingModel('title 3', 'onboarding 3', JsonAsset.onboarding3),
+    Onboarding('title 1', 'onboarding 1', JsonAsset.onboarding1),
+    Onboarding('title 2', 'onboarding 2', JsonAsset.onboarding2),
+    Onboarding('title 3', 'onboarding 3', JsonAsset.onboarding3),
   ];
 
-  List<OnboardingModel> get list => _list;
+  List<Onboarding> get list => _list;
 }
 
 @riverpod

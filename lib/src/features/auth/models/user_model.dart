@@ -4,8 +4,8 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 part 'user_model.freezed.dart';
 
 @freezed
-class UserModel with _$UserModel {
-  const factory UserModel({
+class User with _$User {
+  const factory User({
     required String id,
     required int number,
     required String name,
@@ -13,11 +13,11 @@ class UserModel with _$UserModel {
     required UserType type,
     required DateTime createAt,
     required DateTime updatedAt,
-  }) = _UserModel;
+  }) = _User;
 }
 
 extension IntoUser on UserDto {
-  UserModel intoUser(UserType userType) => UserModel(
+  User intoUser(UserType userType) => User(
         id: id,
         number: number,
         name: name,
