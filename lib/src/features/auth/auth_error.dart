@@ -10,5 +10,8 @@ class AuthError with _$AuthError {
 }
 
 extension IntoAuthError on ApiError {
-  AuthError intoAuthError() => AuthError.api(this);
+  AuthError intoAuthError() => maybeWhen(
+        authorization: (msg) => AuthError.unauthorized(msg),
+        orElse: () => AuthError.api(this),
+      );
 }

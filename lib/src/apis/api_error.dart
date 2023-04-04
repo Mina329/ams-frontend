@@ -7,4 +7,5 @@ class ApiError with _$ApiError {
   const factory ApiError.network() = Network;
   const factory ApiError.internal(String msg) = Internal;
   const factory ApiError.authorization(String msg) = Authorization;
+  const factory ApiError.invalidOperation(String msg) = InvalidOperation;
 }
