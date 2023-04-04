@@ -20,7 +20,7 @@ jobs:
         with:
           flutter-version: '3.7.7'
       - run: flutter pub get
-      - run: flutter pub run build_runner run -d
+      - run: flutter pub run build_runner build -d
       - run: flutter build apk
       - run: flutter build appbundle
       - uses: actions/upload-artifact@v3
