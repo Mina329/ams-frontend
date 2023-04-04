@@ -1,4 +1,6 @@
+import 'package:ams_frontend/src/apis/AMSApi/ams_api.dart';
 import 'package:ams_frontend/src/features/auth/models/user_model.dart';
+import 'package:ams_frontend/src/features/auth/view/controllers/auth_controller.dart';
 import 'package:ams_frontend/src/features/subjects/models/attendance_model.dart';
 import 'package:ams_frontend/src/features/subjects/models/subject_model.dart';
 import 'package:ams_frontend/src/features/subjects/view/view.dart';
@@ -10,99 +12,108 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../providers/providers.dart';
 
-class SubjectDetailsPage extends ConsumerStatefulWidget {
+class SubjectDetailsPage extends ConsumerWidget {
   final String subjectId;
   const SubjectDetailsPage(this.subjectId, {super.key});
 
   @override
-  ConsumerState<ConsumerStatefulWidget> createState() =>
-      _SubjectDetailsPageState();
-}
-
-class _SubjectDetailsPageState extends ConsumerState<SubjectDetailsPage> {
-  late final subjectId = widget.subjectId;
-
-  @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final pageController = PageController();
     final navBarKey = GlobalKey<ConvexAppBarState>();
 
-    return Scaffold(
-      appBar: AppBar(
-        actions: [
-          IconButton(
-            onPressed: () {
-              if (pageController.page == 1) {
-              } else if (pageController.page == 2) {
-                ref.invalidate(subjectAttendeesProvider(subjectId));
-              }
-            },
-            icon: const Icon(Icons.refresh),
-          )
-        ],
-      ),
-      bottomNavigationBar: ConvexAppBar(
-        key: navBarKey,
-        items: [
-          TabItem(icon: KIcons.about, title: 'info'.hardcoded),
-          TabItem(icon: KIcons.attendances, title: 'attendances'.hardcoded),
-          TabItem(icon: KIcons.attendees, title: 'attendees'.hardcoded),
-        ],
-        onTap: (index) {
-          pageController.animateToPage(
-            index,
-            duration: const Duration(microseconds: KDurations.milli500 * 2),
-            curve: Curves.bounceInOut,
-          );
-        },
-      ),
-      body: Consumer(
-        builder: (context, ref, child) {
-          final subject = ref.watch(subjectProvider(subjectId));
-          final attendees = ref.watch(subjectAttendeesProvider(subjectId));
-          final attendances = ref.watch(subjectAttendancesProvider(subjectId));
+    final authStateAsync = ref.watch(authControllerProvider);
 
-          return Padding(
-            padding: const EdgeInsets.all(KPaddings.p30),
-            child: PageView(
-              onPageChanged: (index) {
-                navBarKey.currentState?.animateTo(index);
-              },
-              controller: pageController,
-              children: [
-                RefreshIndicator(
-                  onRefresh: () async {},
-                  child: subject.maybeWhen(
-                    data: (data) => SubjectInfoView(data),
-                    orElse: () =>
-                        const Center(child: CircularProgressIndicator()),
-                  ),
+    return authStateAsync.maybeWhen(
+      data: (data) => data.maybeWhen(
+        signed: (user) => Scaffold(
+          appBar: AppBar(
+            actions: [
+              IconButton(
+                onPressed: () {
+                  if (pageController.page == 1) {
+                  } else if (pageController.page == 2) {
+                    ref.invalidate(subjectAttendeesProvider(subjectId));
+                  }
+                },
+                icon: const Icon(Icons.refresh),
+              )
+            ],
+          ),
+          bottomNavigationBar: ConvexAppBar(
+            key: navBarKey,
+            items: [
+              TabItem(icon: KIcons.about, title: 'info'.hardcoded),
+              TabItem(
+                icon: KIcons.attendances,
+                title: 'attendances'.hardcoded,
+              ),
+              if (user.type == UserType.instructor)
+                TabItem(
+                  icon: KIcons.attendees,
+                  title: 'attendees'.hardcoded,
                 ),
-                RefreshIndicator(
-                  onRefresh: () async {},
-                  child: attendances.maybeWhen(
-                    skipLoadingOnRefresh: false,
-                    data: (data) => AttendancesView(data),
-                    orElse: () => const Center(
-                      child: CircularProgressIndicator(),
+            ],
+            onTap: (index) {
+              pageController.animateToPage(
+                index,
+                duration: const Duration(microseconds: KDurations.milli500 * 2),
+                curve: Curves.bounceInOut,
+              );
+            },
+          ),
+          body: Consumer(
+            builder: (context, ref, child) {
+              final subject = ref.watch(subjectProvider(subjectId));
+              final attendees = ref.watch(subjectAttendeesProvider(subjectId));
+              final attendances =
+                  ref.watch(subjectAttendancesProvider(subjectId));
+
+              return Padding(
+                padding: const EdgeInsets.all(KPaddings.p30),
+                child: PageView(
+                  onPageChanged: (index) {
+                    navBarKey.currentState?.animateTo(index);
+                  },
+                  controller: pageController,
+                  children: [
+                    RefreshIndicator(
+                      onRefresh: () async {},
+                      child: subject.maybeWhen(
+                        data: (data) => SubjectInfoView(data),
+                        orElse: () =>
+                            const Center(child: CircularProgressIndicator()),
+                      ),
                     ),
-                  ),
-                ),
-                RefreshIndicator(
-                  onRefresh: () async {},
-                  child: attendees.maybeWhen(
-                    skipLoadingOnRefresh: false,
-                    data: (data) => AttendeesView(data),
-                    orElse: () => const Center(
-                      child: CircularProgressIndicator(),
+                    RefreshIndicator(
+                      onRefresh: () async {},
+                      child: attendances.maybeWhen(
+                        skipLoadingOnRefresh: false,
+                        data: (data) => AttendancesView(data),
+                        orElse: () => const Center(
+                          child: CircularProgressIndicator(),
+                        ),
+                      ),
                     ),
-                  ),
+                    if (user.type == UserType.instructor)
+                      RefreshIndicator(
+                        onRefresh: () async {},
+                        child: attendees.maybeWhen(
+                          skipLoadingOnRefresh: false,
+                          data: (data) => AttendeesView(data),
+                          orElse: () => const Center(
+                            child: CircularProgressIndicator(),
+                          ),
+                        ),
+                      ),
+                  ],
                 ),
-              ],
-            ),
-          );
-        },
+              );
+            },
+          ),
+        ),
+        orElse: () => const SizedBox(),
       ),
+      orElse: () => const SizedBox(),
     );
   }
 }

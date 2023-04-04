@@ -17,7 +17,7 @@ class SubjectDto with _$SubjectDto {
     @ScheduleJsonConverter() required Schedule cronExpr,
     required DateTime updatedAt,
   }) = _SubjectDto;
-
+  
   factory SubjectDto.fromJson(Map<String, Object?> json) =>
       _$SubjectDtoFromJson(json);
 }

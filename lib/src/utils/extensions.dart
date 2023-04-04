@@ -7,6 +7,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+extension ThemeModeExt on ThemeMode {
+  IconData get icon => this == ThemeMode.dark
+      ? Icons.dark_mode_outlined
+      : Icons.light_mode_outlined;
+
+  ThemeMode get inverse =>
+      this == ThemeMode.dark ? ThemeMode.light : ThemeMode.dark;
+}
+
 extension ScheduleToString on Schedule {
   String toHumanString() {
     // todo
