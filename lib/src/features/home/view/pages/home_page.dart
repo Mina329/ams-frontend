@@ -1,5 +1,6 @@
 import 'package:ams_frontend/src/common/widgets/widgets.dart';
 import 'package:ams_frontend/src/features/auth/view/controllers/auth_controller.dart';
+import 'package:ams_frontend/src/konstants/konstants.dart';
 import 'package:ams_frontend/src/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -22,8 +23,26 @@ class HomePage extends ConsumerWidget {
         title: context.l10n.homeTitle,
       ),
       drawer: const AppDrawerWidget(),
-      body: const Center(
-        child: Text('home'),
+      body: Column(
+        children: [
+          Container(
+            color: Colors.amber,
+            width: double.infinity,
+            height: KSizes.s60,
+            child: const Text('subjects'),
+          ),
+          Expanded(
+            child: ListView.builder(
+              itemBuilder: (context, index) => Container(
+                color: Colors.lime,
+                width: double.infinity,
+                height: KSizes.s60,
+                margin: const EdgeInsets.all(KMargins.m20),
+              ),
+              itemCount: 10,
+            ),
+          ),
+        ],
       ),
     );
   }
