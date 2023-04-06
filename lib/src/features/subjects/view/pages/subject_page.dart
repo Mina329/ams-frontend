@@ -19,6 +19,17 @@ class SubjectDetailsPage extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final pageController = PageController();
+
+    void actionsOnPress() {
+      if (pageController.page == 0) {
+        ref.invalidate(subjectProvider(subjectId));
+      } else if (pageController.page == 1) {
+        ref.invalidate(subjectAttendancesProvider(subjectId));
+      } else if (pageController.page == 2) {
+        ref.invalidate(subjectAttendeesProvider(subjectId));
+      }
+    }
+
     final navBarKey = GlobalKey<ConvexAppBarState>();
 
     final authStateAsync = ref.watch(authControllerProvider);
@@ -29,12 +40,7 @@ class SubjectDetailsPage extends ConsumerWidget {
           appBar: AppBar(
             actions: [
               IconButton(
-                onPressed: () {
-                  if (pageController.page == 1) {
-                  } else if (pageController.page == 2) {
-                    ref.invalidate(subjectAttendeesProvider(subjectId));
-                  }
-                },
+                onPressed: actionsOnPress,
                 icon: const Icon(Icons.refresh),
               )
             ],
