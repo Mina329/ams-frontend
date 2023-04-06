@@ -3,6 +3,7 @@
   "@appTitle": {
     "description": "The title of the application"
   },
+  "welcome":"Welcome",
   "login": "Log In",
   "loginTitle": "Login",
   "userEmail": "User Email",
