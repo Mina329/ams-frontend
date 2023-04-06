@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:form_builder_validators/form_builder_validators.dart';
 
 class SignPage extends ConsumerWidget {
   const SignPage({super.key});
@@ -74,6 +75,7 @@ class SignPage extends ConsumerWidget {
                         SizedBox(
                           width: double.infinity,
                           child: FormBuilderDropdown(
+                            validator: FormBuilderValidators.required(),
                             name: context.l10n.loginAs,
                             items: [
                               DropdownMenuItem(
@@ -113,6 +115,10 @@ class SignPage extends ConsumerWidget {
                             height: MediaQuery.of(context).size.height *
                                 KRatios.r004),
                         FormBuilderTextField(
+                          validator: FormBuilderValidators.compose([
+                            FormBuilderValidators.email(),
+                            FormBuilderValidators.required(),
+                          ]),
                           name: context.l10n.userEmail,
                           keyboardType: TextInputType.emailAddress,
                           decoration: InputDecoration(
@@ -124,9 +130,14 @@ class SignPage extends ConsumerWidget {
                           ),
                         ),
                         SizedBox(
-                            height: MediaQuery.of(context).size.height *
-                                KRatios.r001),
+                          height:
+                              MediaQuery.of(context).size.height * KRatios.r001,
+                        ),
                         FormBuilderTextField(
+                          validator: FormBuilderValidators.compose([
+                            FormBuilderValidators.required(
+                                errorText: 'please provide a password'),
+                          ]),
                           name: context.l10n.password,
                           keyboardType: TextInputType.visiblePassword,
                           decoration: InputDecoration(
