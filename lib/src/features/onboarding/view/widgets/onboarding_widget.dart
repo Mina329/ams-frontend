@@ -26,8 +26,17 @@ class OnboardingWidget extends StatelessWidget {
                 ?.copyWith(fontWeight: FontWeight.bold),
           ),
           const SizedBox(height: KSizes.s20),
-          Text(onboarding.text),
+          SizedBox(
+            width: MediaQuery.of(context).size.width*KRatios.r060,
+            child: Text(onboarding.text,textAlign: TextAlign.center,
+              style: Theme.of(context)
+                  .textTheme
+                  .headlineLarge
+                  ?.copyWith(fontSize: 30,),),
+          ),
           const Spacer(),
+          const SizedBox(height: KSizes.s40),
+          const Spacer()
         ],
       ),
     );

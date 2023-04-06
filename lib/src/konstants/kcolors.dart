@@ -10,4 +10,5 @@ class KColors {
   static Color gradiant2 = const Color(0xff0087bf);
   static Color splashTitle = const Color(0xff0C16A1);
   static Color purple = const Color(0xff5450CD);
+  static Color dark50Opacity = const Color(0x80004369);
 }

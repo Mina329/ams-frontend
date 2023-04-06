@@ -22,9 +22,9 @@ class OnBoardingRepository {
   }
 
   static const _list = [
-    Onboarding('title 1', 'onboarding 1', JsonAsset.onboarding1),
-    Onboarding('title 2', 'onboarding 2', JsonAsset.onboarding2),
-    Onboarding('title 3', 'onboarding 3', JsonAsset.onboarding3),
+    Onboarding('Attendance app', 'Track Your Attendance', JsonAsset.onboarding1),
+    Onboarding('Face recognition', 'Take Attendance With Face ID', JsonAsset.onboarding2),
+    Onboarding('Reports', 'Generate Reports For Your Attendance', JsonAsset.onboarding3),
   ];
 
   List<Onboarding> get list => _list;
