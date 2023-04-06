@@ -40,6 +40,7 @@ class SubjectDetailsPage extends ConsumerWidget {
             ],
           ),
           bottomNavigationBar: ConvexAppBar(
+            backgroundColor: Theme.of(context).colorScheme.primary,
             key: navBarKey,
             items: [
               TabItem(icon: KIcons.about, title: 'info'.hardcoded),
