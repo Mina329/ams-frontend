@@ -22,7 +22,6 @@ class _SignPageState extends ConsumerState<SignPage> {
 
   @override
   Widget build(BuildContext context) {
-
     ref.watch(authControllerProvider);
 
     ref.listen(authControllerProvider, (previous, next) {
@@ -30,9 +29,7 @@ class _SignPageState extends ConsumerState<SignPage> {
         context,
         (authStateAsync) {
           authStateAsync.whenOrNull(signed: (user) {
-            WidgetsBinding.instance.addPostFrameCallback((_) {
-              context.goNamedSafe(AppRoute.home.name);
-            });
+            context.goNamedSafe(AppRoute.home.name);
           });
         },
       );

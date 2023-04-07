@@ -3,6 +3,7 @@ import 'package:ams_frontend/src/routing/routing.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:ams_frontend/src/features/onboarding/view/controllers/onboarding_controller.dart';
+import 'package:go_router/go_router.dart';
 
 import '../../../../konstants/kcolors.dart';
 import '../widgets/onboarding_widget.dart';
@@ -17,7 +18,7 @@ class OnboardingPage extends ConsumerWidget {
 
     ref.listen(onboardingConrollerProvider, (previous, next) {
       next.whenOrNull(completed: () {
-        context.goNamedSafe(AppRoute.login.name);
+        context.goNamed(AppRoute.login.name);
       });
     });
 
