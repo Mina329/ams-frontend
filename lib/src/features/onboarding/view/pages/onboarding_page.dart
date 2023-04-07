@@ -18,7 +18,7 @@ class OnboardingPage extends ConsumerWidget {
 
     ref.listen(onboardingConrollerProvider, (previous, next) {
       next.whenOrNull(completed: () {
-        context.goNamed(AppRoute.login.name);
+        context.goNamed(AppRoute.home.name);
       });
     });
 
