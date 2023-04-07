@@ -8,18 +8,20 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
+import '../../konstants/kcolors.dart';
+
 class AppDrawerWidget extends StatelessWidget {
   const AppDrawerWidget({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return Drawer(
+    return const Drawer(
       child: Column(
         children: [
-          const DrawerHeaderWidget(),
+          DrawerHeaderWidget(),
           SingleChildScrollView(
             child: Column(
-              children: const [
+              children: [
                 DrawerSubjectsList(),
                 SizedBox(height: KSizes.s30),
                 DrawerItemsList(),
@@ -86,9 +88,10 @@ class DrawerHeaderWidget extends ConsumerWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            const CircleAvatar(
+            CircleAvatar(
+              backgroundColor: KColors.purple,
               radius: KSizes.s30,
-              child: Icon(
+              child: const Icon(
                 FontAwesomeIcons.houseFloodWater,
                 size: KSizes.s20,
               ),

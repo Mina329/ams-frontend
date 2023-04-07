@@ -104,6 +104,7 @@ class _SignPageState extends ConsumerState<SignPage> {
                               hintStyle: TextStyle(
                                 color: KColors.white,
                               ),
+                              focusColor: KColors.lightCyan,
                               fillColor: KColors.lightCyan,
                               enabledBorder: OutlineInputBorder(
                                 borderSide: BorderSide(
@@ -131,6 +132,7 @@ class _SignPageState extends ConsumerState<SignPage> {
                               color: KColors.white,
                             ),
                             fillColor: KColors.lightCyan ,
+                            focusColor: KColors.lightCyan,
                           ),
                         ),
                         SizedBox(
@@ -151,6 +153,7 @@ class _SignPageState extends ConsumerState<SignPage> {
                               color: KColors.white,
                             ),
                             fillColor: KColors.lightCyan,
+                            focusColor: KColors.lightCyan,
                           ),
                         ),
                         SizedBox(
@@ -171,13 +174,7 @@ class _SignPageState extends ConsumerState<SignPage> {
                         SizedBox(
                             height: MediaQuery.of(context).size.height *
                                 KRatios.r004),
-                        SizedBox(
-                          width:
-                              MediaQuery.of(context).size.width * KRatios.r040,
-                          height:
-                              MediaQuery.of(context).size.height * KRatios.r006,
-                          child: LoginButtonWidget(formKey: formKey),
-                        )
+                        LoginButtonWidget(formKey: formKey)
                       ],
                     ),
                   ),
@@ -203,13 +200,19 @@ class LoginButtonWidget extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final authStateAsync = ref.watch(authControllerProvider);
     return authStateAsync.maybeMap(
-      loading: (loading) => const CircularProgressIndicator(),
-      orElse: () => ElevatedButton(
-        style: ElevatedButton.styleFrom(
-          backgroundColor: KColors.darkCyan,
+      loading: (loading) => CircularProgressIndicator(color: KColors.lightBlue ),
+      orElse: () => SizedBox(
+        width:
+        MediaQuery.of(context).size.width * KRatios.r040,
+        height:
+        MediaQuery.of(context).size.height * KRatios.r006,
+        child: ElevatedButton(
+          style: ElevatedButton.styleFrom(
+            backgroundColor: KColors.darkCyan,
+          ),
+          onPressed: () => _onPress(context, ref),
+          child: Text(context.l10n.login),
         ),
-        onPressed: () => _onPress(context, ref),
-        child: Text(context.l10n.login),
       ),
     );
   }

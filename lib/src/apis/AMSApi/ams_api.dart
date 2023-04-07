@@ -24,7 +24,7 @@ class AMSApi {
 
   // constructor
   AMSApi(this._dio, this._sharedPreferences) {
-    _dio.options.baseUrl = 'http://${KApis.baseUrl}:3000/api';
+    _dio.options.baseUrl = 'http://${KApis.baseUrlME}:3000/api';
     _dio.options.validateStatus = (_) => true;
     _dio.interceptors.add(PrettyDioLogger(
       request: true,

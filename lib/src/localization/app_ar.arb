@@ -11,8 +11,9 @@
   "password": "Password",
   "forgotPassword": "Forgot Password ?",
   
-  "homeTitle": "Attendance Management System",
+  "homeTitle": "Attendance App",
   "homeDrawerItem": "Home",
+  "todayAttendence": "Today's Attendance",
 
   "settingsTitle": "الاعدادات",
   "settingsDrawerItem": "Settings",

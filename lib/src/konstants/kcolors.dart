@@ -1,5 +1,7 @@
 import 'dart:ui';
 
+import 'package:flutter/material.dart';
+
 class KColors {
   static Color darkBlue = const Color(0xff004369);
   static Color lightBlue = const Color(0xff02A1BB);
@@ -11,4 +13,6 @@ class KColors {
   static Color splashTitle = const Color(0xff0C16A1);
   static Color purple = const Color(0xff5450CD);
   static Color dark50Opacity = const Color(0x80004369);
+  static Color green =  Colors.green;
+  static Color red =  Colors.red;
 }
