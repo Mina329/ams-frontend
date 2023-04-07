@@ -63,3 +63,7 @@ flutter:
     # Add assets from the images directory to the application.
     - assets/images/
     - assets/json/
+  fonts:
+    - family: HP Simplified Hans
+      fonts:
+        - asset: assets/fonts/HP Simplified Hans Regular.ttf

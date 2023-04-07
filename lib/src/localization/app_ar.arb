@@ -3,6 +3,7 @@
   "@appTitle": {
     "description": "The title of the application"
   },
+  "splashTitle": "Attendance App",
   "welcome":"Welcome",
   "login": "Log In",
   "loginTitle": "Login",
