@@ -10,12 +10,18 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:form_builder_validators/form_builder_validators.dart';
 
-class SignPage extends ConsumerWidget {
+class SignPage extends ConsumerStatefulWidget {
   const SignPage({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final formKey = GlobalKey<FormBuilderState>();
+  ConsumerState<SignPage> createState() => _SignPageState();
+}
+
+class _SignPageState extends ConsumerState<SignPage> {
+  static final formKey = GlobalKey<FormBuilderState>();
+
+  @override
+  Widget build(BuildContext context) {
 
     ref.watch(authControllerProvider);
 
@@ -101,7 +107,7 @@ class SignPage extends ConsumerWidget {
                               hintStyle: TextStyle(
                                 color: KColors.white,
                               ),
-                              fillColor: KColors.darkCyan,
+                              fillColor: KColors.lightCyan,
                               enabledBorder: OutlineInputBorder(
                                 borderSide: BorderSide(
                                   color: KColors.darkCyan,
@@ -115,6 +121,7 @@ class SignPage extends ConsumerWidget {
                             height: MediaQuery.of(context).size.height *
                                 KRatios.r004),
                         FormBuilderTextField(
+                          style: TextStyle(color: KColors.darkBlue),
                           validator: FormBuilderValidators.compose([
                             FormBuilderValidators.email(),
                             FormBuilderValidators.required(),
@@ -126,7 +133,7 @@ class SignPage extends ConsumerWidget {
                             hintStyle: TextStyle(
                               color: KColors.white,
                             ),
-                            fillColor: KColors.darkCyan,
+                            fillColor: KColors.lightCyan ,
                           ),
                         ),
                         SizedBox(
@@ -134,6 +141,7 @@ class SignPage extends ConsumerWidget {
                               MediaQuery.of(context).size.height * KRatios.r001,
                         ),
                         FormBuilderTextField(
+                          style: TextStyle(color: KColors.darkBlue),
                           validator: FormBuilderValidators.compose([
                             FormBuilderValidators.required(
                                 errorText: 'please provide a password'),
@@ -145,7 +153,7 @@ class SignPage extends ConsumerWidget {
                             hintStyle: TextStyle(
                               color: KColors.white,
                             ),
-                            fillColor: KColors.darkCyan,
+                            fillColor: KColors.lightCyan,
                           ),
                         ),
                         SizedBox(
@@ -201,7 +209,7 @@ class LoginButtonWidget extends ConsumerWidget {
       loading: (loading) => const CircularProgressIndicator(),
       orElse: () => ElevatedButton(
         style: ElevatedButton.styleFrom(
-          backgroundColor: KColors.logInButton,
+          backgroundColor: KColors.darkCyan,
         ),
         onPressed: () => _onPress(context, ref),
         child: Text(context.l10n.login),
