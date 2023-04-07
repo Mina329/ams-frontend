@@ -20,7 +20,7 @@ class MyApp extends ConsumerWidget {
     final goRouter = ref.watch(goRouterProvider);
     final settingsState = ref.watch(settingsControllerProvider);
     return DevicePreview(
-      enabled: kDebugMode,
+      enabled: kDebugMode && false,
       builder: (context) => MaterialApp.router(
         useInheritedMediaQuery: true,
         localizationsDelegates: const [
