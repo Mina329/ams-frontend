@@ -2,6 +2,7 @@ class KDurations {
   const KDurations._();
 
   static const milli500 = 500;
+  static const milli2000 = 2000;
 }
 
 class KAlphas {

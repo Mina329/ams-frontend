@@ -4,6 +4,7 @@ import 'package:ams_frontend/src/features/home/view/pages/home_page.dart';
 import 'package:ams_frontend/src/features/onboarding/repositories/onboarding_repository.dart';
 import 'package:ams_frontend/src/features/onboarding/view/pages/onboarding_page.dart';
 import 'package:ams_frontend/src/features/settings/view/view.dart';
+import 'package:ams_frontend/src/features/splash/view/pages/splash_page.dart';
 import 'package:ams_frontend/src/features/subjects/view/pages/subject_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -15,15 +16,16 @@ enum AppRoute {
   login,
   subjects,
   settings,
+  splash;
 }
 
 final goRouterProvider = Provider.autoDispose<GoRouter>((ref) {
   final onboardingRepository = ref.watch(onboardingRepositoryProvider);
   final authRepository = ref.watch(authRepositoryProvider);
   return GoRouter(
-    initialLocation: '/',
+    initialLocation: '/${AppRoute.splash.name}',
     debugLogDiagnostics: true,
-    redirect: (context, state) async {
+    redirect: (context, state) {
       if (state.subloc == '/') {
         if (!onboardingRepository.isOnBoardingComplete()) {
           return '/${AppRoute.onboarding.name}';
@@ -80,6 +82,13 @@ final goRouterProvider = Provider.autoDispose<GoRouter>((ref) {
             ),
           ),
         ],
+      ),
+      GoRoute(
+        path: '/${AppRoute.splash.name}',
+        name: AppRoute.splash.name,
+        pageBuilder: (context, state) => const MaterialPage(
+          child: SplashView(),
+        ),
       ),
     ],
   );
