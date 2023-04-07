@@ -4,6 +4,7 @@ import 'dart:io';
 
 import 'package:ams_frontend/src/apis/apis.dart';
 import 'package:ams_frontend/src/common/common.dart';
+import 'package:ams_frontend/src/konstants/kstrings.dart';
 import 'package:ams_frontend/src/utils/utils.dart';
 import 'package:dio/dio.dart';
 import 'package:pretty_dio_logger/pretty_dio_logger.dart';
@@ -23,7 +24,7 @@ class AMSApi {
 
   // constructor
   AMSApi(this._dio, this._sharedPreferences) {
-    _dio.options.baseUrl = 'http://192.168.1.4:3000/api';
+    _dio.options.baseUrl = 'http://${KApis.baseUrl}:3000/api';
     _dio.options.validateStatus = (_) => true;
     _dio.interceptors.add(PrettyDioLogger(
       request: true,
