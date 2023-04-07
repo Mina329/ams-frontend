@@ -1,13 +1,12 @@
-import 'dart:math';
-
 import 'package:ams_frontend/src/common/widgets/widgets.dart';
 import 'package:ams_frontend/src/features/auth/view/controllers/auth_controller.dart';
-import 'package:ams_frontend/src/konstants/konstants.dart';
+import 'package:ams_frontend/src/features/home/view/pages/attendee_home_page.dart';
+import 'package:ams_frontend/src/features/home/view/pages/instructor_home_page.dart';
 import 'package:ams_frontend/src/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:syncfusion_flutter_charts/charts.dart';
+import '../../../../apis/AMSApi/ams_api.dart';
 import '../../../../konstants/kcolors.dart';
 import '../widgets/home_widget.dart';
 
@@ -21,8 +20,14 @@ class HomePage extends ConsumerWidget {
             context.toast(context.l10n.logginSuccess);
           }));
     });
+    Map<DateTime, String> eventDescriptions = {
+      DateTime.utc(2023, 4, 10): 'Subject 1',
+      DateTime.utc(2023, 4, 15): 'Subject 2',
+      DateTime.utc(2023, 4, 22): 'Subject 3',
+      DateTime.utc(2023, 4, 25): 'Subject 4',
+    };
 
-
+    final authStateAsync = ref.watch(authControllerProvider);
     return Scaffold(
       appBar: AppBarWidget(
         icon: FontAwesomeIcons.house,
@@ -42,30 +47,13 @@ class HomePage extends ConsumerWidget {
         ),
         child: Container(
           color: KColors.dark50Opacity,
-          child: Padding(
-            padding: const EdgeInsets.all(KPaddings.p20),
-            child: Column(
-              children: [
-                SizedBox(
-                  width: double.infinity,
-                  height: KSizes.s60,
-                  child: Text(
-                    context.l10n.todayAttendence,
-                    style: TextStyle(
-                      fontSize: KSizes.s25,
-                      color: KColors.white,
-                    ),
-                  ),
-                ),
-                Expanded(
-                  child: ListView.builder(
-                    itemBuilder: (context, index) => const TodayAttendanceCard(),
-                    itemCount: 10,
-                  ),
-                ),
-              ],
-            ),
-          ),
+          child: authStateAsync.maybeWhen(
+              orElse: () => Container(),
+              data: (authStateAsync) => authStateAsync.when(
+                  signed: (user) => user.type == UserType.instructor
+                      ? const InstructorHomePage()
+                      : AttendeeHomePage(eventDescriptions: eventDescriptions),
+                  unsigned: () => Container())),
         ),
       ),
     );

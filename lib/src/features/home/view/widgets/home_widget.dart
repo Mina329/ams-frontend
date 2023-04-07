@@ -1,4 +1,6 @@
+import 'package:ams_frontend/src/utils/extensions.dart';
 import 'package:flutter/material.dart';
+import 'package:table_calendar/table_calendar.dart';
 
 import '../../../../konstants/kcolors.dart';
 import '../../../../konstants/kdoubles.dart';
@@ -119,3 +121,68 @@ class AttendanceRatioChart extends StatelessWidget {
     );
   }
 }
+
+class Calender extends StatefulWidget {
+  final Map<DateTime, String> eventDescriptions;
+
+  Calender({required this.eventDescriptions});
+
+  @override
+  _CalenderState createState() => _CalenderState();
+}
+
+class _CalenderState extends State<Calender> {
+  CalendarFormat _calendarFormat = CalendarFormat.month;
+  DateTime _focusedDay = DateTime.now();
+  DateTime? _selectedDay;
+
+  @override
+  Widget build(BuildContext context) {
+    return TableCalendar(
+      firstDay: DateTime.utc(2010, 10, 16),
+      lastDay: DateTime.utc(2030, 3, 14),
+      focusedDay: _focusedDay,
+      calendarFormat: _calendarFormat,
+      selectedDayPredicate: (day) {
+        return isSameDay(_selectedDay, day);
+      },
+      eventLoader: (day) {
+        if (widget.eventDescriptions.containsKey(day)) {
+          return [widget.eventDescriptions[day]];
+        } else {
+          return [];
+        }
+      },
+      onDaySelected: (selectedDay, focusedDay) {
+        if (!isSameDay(_selectedDay, selectedDay)) {
+          setState(() {
+            _selectedDay = selectedDay;
+            _focusedDay = focusedDay;
+          });
+        }
+        if (widget.eventDescriptions.containsKey(selectedDay)) {
+          showDialog(
+            context: context,
+            builder: (context) {
+              return AlertDialog(
+                title: Text(context.l10n.details),
+                content: Text(widget.eventDescriptions[selectedDay] ?? ''),
+              );
+            },
+          );
+        }
+      },
+      onFormatChanged: (format) {
+        if (_calendarFormat != format) {
+          setState(() {
+            _calendarFormat = format;
+          });
+        }
+      },
+      onPageChanged: (focusedDay) {
+        _focusedDay = focusedDay;
+      },
+    );
+  }
+}
+

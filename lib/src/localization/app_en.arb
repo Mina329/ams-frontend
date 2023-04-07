@@ -14,6 +14,8 @@
   "homeTitle": "Attendance App",
   "homeDrawerItem": "Home",
   "todayAttendence": "Today's Attendance",
+  "details" : "Details",
+  "subjectCalendar": "Subject's Calendar",
 
   "settingsTitle": "Settings",
   "settingsDrawerItem": "Settings",
