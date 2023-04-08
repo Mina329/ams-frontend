@@ -61,6 +61,11 @@ class OnboardingPage extends ConsumerWidget {
                             .compeleteOnboading();
                       }
                     },
+                    style: ElevatedButton.styleFrom(
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(KSizes.s25),
+                      ),backgroundColor: KColors.purple
+                    ),
                     child: Icon(
                       index < onboardingList.length - 1
                           ? Icons.next_plan_outlined
