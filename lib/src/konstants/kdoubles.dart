@@ -73,6 +73,7 @@ class KRatios {
   static const double r050 = 0.50;
   static const double r060 = 0.60;
   static const double r070 = 0.70;
+  static const double r075 = 0.75;
   static const double r080 = 0.80;
   static const double r090 = 0.90;
   static const double r100 = 1.00;
@@ -81,5 +82,6 @@ class KRatios {
 class KElevations {
   const KElevations._();
 
+  static const e10 = 10.0;
   static const e20 = 20.0;
 }

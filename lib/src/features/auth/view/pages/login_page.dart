@@ -84,14 +84,14 @@ class _SignPageState extends ConsumerState<SignPage> {
                                 value: UserType.attendee,
                                 child: Text(
                                   context.l10n.attendee,
-                                  style: TextStyle(color: KColors.darkBlue),
+                                  style: TextStyle(color: KColors.white),
                                 ),
                               ),
                               DropdownMenuItem(
                                 value: UserType.instructor,
                                 child: Text(
                                   context.l10n.instructor,
-                                  style: TextStyle(color: KColors.darkBlue),
+                                  style: TextStyle(color: KColors.white),
                                 ),
                               )
                             ],
@@ -111,14 +111,14 @@ class _SignPageState extends ConsumerState<SignPage> {
                                 ),
                               ),
                             ),
-                            dropdownColor: KColors.white,
+                            dropdownColor: KColors.darkCyan,
                           ),
                         ),
                         SizedBox(
                             height: MediaQuery.of(context).size.height *
                                 KRatios.r004),
                         FormBuilderTextField(
-                          style: TextStyle(color: KColors.darkBlue),
+                          style: TextStyle(color: KColors.white),
                           validator: FormBuilderValidators.compose([
                             FormBuilderValidators.email(),
                             FormBuilderValidators.required(),
@@ -139,7 +139,7 @@ class _SignPageState extends ConsumerState<SignPage> {
                               MediaQuery.of(context).size.height * KRatios.r001,
                         ),
                         FormBuilderTextField(
-                          style: TextStyle(color: KColors.darkBlue),
+                          style: TextStyle(color: KColors.white),
                           validator: FormBuilderValidators.compose([
                             FormBuilderValidators.required(
                                 errorText: 'please provide a password'),
