@@ -8,4 +8,5 @@ class KFontsName {
 
 class KApis {
   static String baseUrl = '127.0.0.1';
+  static String baseUrlME = '192.168.1.4';
 }

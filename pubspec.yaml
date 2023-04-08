@@ -36,6 +36,8 @@ dependencies:
   riverpod_annotation: ^2.0.2
   settings_ui: ^2.0.2
   shared_preferences: ^2.0.18
+  syncfusion_flutter_charts: ^21.1.38
+  table_calendar: ^3.0.1
   
 dependency_overrides:
   intl: ^0.17.0
