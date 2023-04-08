@@ -8,4 +8,5 @@ class KIcons {
   static const IconData attendances = Icons.check_box_rounded;
   static const IconData attendees = Icons.people_rounded;
   static const IconData logout = Icons.logout_rounded;
+  static const IconData enableMaterial3 = Icons.interests_rounded;
 }

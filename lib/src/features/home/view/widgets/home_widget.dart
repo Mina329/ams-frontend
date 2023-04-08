@@ -22,12 +22,17 @@ class TodayAttendanceCard extends StatelessWidget {
               children: [
                 Text(
                   "Subject Name",
-                  style: TextStyle(color: KColors.darkBlue,fontSize: KSizes.s20,fontWeight: FontWeight.w600),
+                  style: TextStyle(
+                      color: KColors.darkBlue,
+                      fontSize: KSizes.s20,
+                      fontWeight: FontWeight.w600),
                 ),
-                const SizedBox(height: KSizes.s10,),
+                const SizedBox(
+                  height: KSizes.s10,
+                ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
+                  children: const [
                     AttendanceRatioChart(
                       presentCount: 24,
                       absentCount: 6,
@@ -47,7 +52,8 @@ class AttendanceRatioChart extends StatelessWidget {
   final int absentCount;
   final int totalCount;
 
-  AttendanceRatioChart({
+  const AttendanceRatioChart({
+    super.key,
     required this.presentCount,
     required this.absentCount,
     required this.totalCount,
@@ -55,8 +61,8 @@ class AttendanceRatioChart extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final double width = MediaQuery.of(context).size.width *0.7;
-    final double chartHeight = 16;
+    final double width = MediaQuery.of(context).size.width * 0.7;
+    const double chartHeight = 16;
 
     return SizedBox(
       width: width,
@@ -94,7 +100,7 @@ class AttendanceRatioChart extends StatelessWidget {
               ],
             ),
           ),
-          SizedBox(height: 4),
+          const SizedBox(height: 4),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
@@ -125,10 +131,10 @@ class AttendanceRatioChart extends StatelessWidget {
 class Calender extends StatefulWidget {
   final Map<DateTime, String> eventDescriptions;
 
-  Calender({required this.eventDescriptions});
+  const Calender({super.key, required this.eventDescriptions});
 
   @override
-  _CalenderState createState() => _CalenderState();
+  State<Calender> createState() => _CalenderState();
 }
 
 class _CalenderState extends State<Calender> {
@@ -185,4 +191,3 @@ class _CalenderState extends State<Calender> {
     );
   }
 }
-

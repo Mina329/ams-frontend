@@ -29,6 +29,15 @@
   
   "logginSuccess": "Logged in successfully",
 
-  "subjects": "Subjects"
+  "subjects": "Subjects",
+
+  "appearance": "Appearance",
+  "themeMode": "Theme",
+  
+  "darkMode": "Dark",
+  "lightMode": "Light",
+
+  "language": "Language",
+  "langValue": "English"
   
 }

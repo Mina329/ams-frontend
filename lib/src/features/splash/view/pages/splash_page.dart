@@ -23,7 +23,7 @@ class _SplashViewState extends State<SplashView> {
 
   void _start() {
     _timer = Timer(
-      const Duration(milliseconds: KDurations.milli2000),
+      KDurations.splash,
       () {
         context.goNamed(AppRoute.home.name);
       },

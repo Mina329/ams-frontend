@@ -14,6 +14,9 @@ extension ThemeModeExt on ThemeMode {
 
   ThemeMode get inverse =>
       this == ThemeMode.dark ? ThemeMode.light : ThemeMode.dark;
+
+  String l10n(BuildContext context) =>
+      this == ThemeMode.dark ? context.l10n.darkMode : context.l10n.lightMode;
 }
 
 extension ScheduleToString on Schedule {
@@ -94,7 +97,7 @@ extension ToastExt on BuildContext {
       flushbarStyle: FlushbarStyle.FLOATING,
       reverseAnimationCurve: Curves.decelerate,
       forwardAnimationCurve: Curves.elasticOut,
-      duration: const Duration(seconds: KDurations.milli500 * 8),
+      duration: KDurations.toast,
       icon: Icon(
         icon,
         color: color,

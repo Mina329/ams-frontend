@@ -27,8 +27,11 @@ class InstructorHomePage extends StatelessWidget {
           ),
           Expanded(
             child: ListView.builder(
-              itemBuilder: (context,
-                  index) => const TodayAttendanceCard(),
+              itemBuilder: (
+                context,
+                index,
+              ) =>
+                  const TodayAttendanceCard(),
               itemCount: 10,
             ),
           ),

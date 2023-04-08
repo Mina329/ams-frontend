@@ -29,6 +29,14 @@
   
   "logginSuccess": "Logged in successfully",
 
-  "subjects": "Subjects"
+  "subjects": "Subjects",
   
+  "appearance": "المظهر",
+  "themeMode": "السمة",
+
+  "darkMode": "فاتح",
+  "lightMode": "داكن",
+  
+  "language": "اللغة",
+  "langValue": "العربية"
 }

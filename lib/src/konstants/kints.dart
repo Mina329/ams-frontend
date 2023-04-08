@@ -1,8 +1,9 @@
 class KDurations {
   const KDurations._();
 
-  static const milli500 = 500;
-  static const milli2000 = 2000;
+  static const pageViewNavigation = Duration(milliseconds: 500);
+  static const splash = Duration(milliseconds: 2000);
+  static const toast = Duration(seconds: 3);
 }
 
 class KAlphas {
@@ -12,4 +13,5 @@ class KAlphas {
   static const a30 = 30;
   static const a40 = 40;
   static const a50 = 50;
+  static const a100 = 50;
 }

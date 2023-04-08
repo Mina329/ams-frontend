@@ -63,7 +63,7 @@ class SubjectDetailsPage extends ConsumerWidget {
             onTap: (index) {
               pageController.animateToPage(
                 index,
-                duration: const Duration(microseconds: KDurations.milli500 * 2),
+                duration: KDurations.pageViewNavigation,
                 curve: Curves.bounceInOut,
               );
             },

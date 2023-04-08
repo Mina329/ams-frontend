@@ -8,20 +8,18 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
-import '../../konstants/kcolors.dart';
-
 class AppDrawerWidget extends StatelessWidget {
   const AppDrawerWidget({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return const Drawer(
+    return Drawer(
       child: Column(
         children: [
-          DrawerHeaderWidget(),
+          const DrawerHeaderWidget(),
           SingleChildScrollView(
             child: Column(
-              children: [
+              children: const [
                 DrawerSubjectsList(),
                 SizedBox(height: KSizes.s30),
                 DrawerItemsList(),

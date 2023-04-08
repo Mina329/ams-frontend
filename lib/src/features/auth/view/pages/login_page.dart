@@ -1,6 +1,5 @@
 import 'package:ams_frontend/src/apis/AMSApi/ams_api.dart';
 import 'package:ams_frontend/src/features/auth/view/controllers/auth_controller.dart';
-import 'package:ams_frontend/src/konstants/kcolors.dart';
 import 'package:ams_frontend/src/konstants/konstants.dart';
 import 'package:ams_frontend/src/routing/routing.dart';
 import 'package:ams_frontend/src/utils/extensions.dart';

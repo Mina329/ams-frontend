@@ -1,14 +1,14 @@
 import 'package:ams_frontend/src/utils/utils.dart';
 import 'package:flutter/material.dart';
-import 'package:table_calendar/table_calendar.dart';
 
 import '../../../../konstants/kcolors.dart';
 import '../../../../konstants/kdoubles.dart';
 import '../widgets/home_widget.dart';
 
 class AttendeeHomePage extends StatelessWidget {
-  AttendeeHomePage({Key? key, required this.eventDescriptions}) : super(key: key);
-  Map<DateTime, String> eventDescriptions;
+  final Map<DateTime, String> eventDescriptions;
+  const AttendeeHomePage({Key? key, required this.eventDescriptions})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -22,12 +22,15 @@ class AttendeeHomePage extends StatelessWidget {
               fontSize: KSizes.s25,
               color: KColors.white,
             ),
-          ),SizedBox(height: MediaQuery.of(context).size.height * KRatios.r004,),
+          ),
+          SizedBox(
+            height: MediaQuery.of(context).size.height * KRatios.r004,
+          ),
           Calender(
             eventDescriptions: eventDescriptions,
           ),
         ],
       ),
-    );;
+    );
   }
 }

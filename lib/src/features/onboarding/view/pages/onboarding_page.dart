@@ -5,7 +5,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:ams_frontend/src/features/onboarding/view/controllers/onboarding_controller.dart';
 import 'package:go_router/go_router.dart';
 
-import '../../../../konstants/kcolors.dart';
 import '../widgets/onboarding_widget.dart';
 
 class OnboardingPage extends ConsumerWidget {
@@ -53,9 +52,7 @@ class OnboardingPage extends ConsumerWidget {
                     onPressed: () {
                       if (index < onboardingList.length - 1) {
                         pageController.nextPage(
-                          duration: const Duration(
-                            milliseconds: KDurations.milli500,
-                          ),
+                          duration: KDurations.pageViewNavigation,
                           curve: Curves.ease,
                         );
                       } else {

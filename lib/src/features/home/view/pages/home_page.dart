@@ -1,14 +1,13 @@
+import 'package:ams_frontend/src/apis/AMSApi/ams_api.dart';
 import 'package:ams_frontend/src/common/widgets/widgets.dart';
 import 'package:ams_frontend/src/features/auth/view/controllers/auth_controller.dart';
 import 'package:ams_frontend/src/features/home/view/pages/attendee_home_page.dart';
 import 'package:ams_frontend/src/features/home/view/pages/instructor_home_page.dart';
+import 'package:ams_frontend/src/konstants/konstants.dart';
 import 'package:ams_frontend/src/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import '../../../../apis/AMSApi/ams_api.dart';
-import '../../../../konstants/kcolors.dart';
-import '../widgets/home_widget.dart';
 
 class HomePage extends ConsumerWidget {
   const HomePage({super.key});
@@ -48,12 +47,14 @@ class HomePage extends ConsumerWidget {
         child: Container(
           color: KColors.dark50Opacity,
           child: authStateAsync.maybeWhen(
-              orElse: () => Container(),
-              data: (authStateAsync) => authStateAsync.when(
-                  signed: (user) => user.type == UserType.instructor
-                      ? const InstructorHomePage()
-                      : AttendeeHomePage(eventDescriptions: eventDescriptions),
-                  unsigned: () => Container())),
+            orElse: () => Container(),
+            data: (authStateAsync) => authStateAsync.when(
+              signed: (user) => user.type == UserType.instructor
+                  ? const InstructorHomePage()
+                  : AttendeeHomePage(eventDescriptions: eventDescriptions),
+              unsigned: () => Container(),
+            ),
+          ),
         ),
       ),
     );

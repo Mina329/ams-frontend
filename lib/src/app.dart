@@ -1,5 +1,4 @@
 import 'package:ams_frontend/src/features/settings/view/controllers/settings_controller.dart';
-import 'package:ams_frontend/src/konstants/kcolors.dart';
 import 'package:ams_frontend/src/konstants/klocales.dart';
 import 'package:ams_frontend/src/routing/routing.dart';
 import 'package:device_preview/device_preview.dart';
@@ -32,14 +31,8 @@ class MyApp extends ConsumerWidget {
         ],
         supportedLocales: KLocales.supported,
         locale: settingsState.locale,
-        theme: AppTheme.light(
-          scheme: settingsState.scheme,
-          useMaterial3: settingsState.useMaterial3,
-        ).copyWith(primaryColor: KColors.lightBlue,appBarTheme: AppBarTheme(color: KColors.lightCyan)),
-        darkTheme: AppTheme.dark(
-          scheme: settingsState.scheme,
-          useMaterial3: settingsState.useMaterial3,
-        ).copyWith(primaryColor: KColors.lightBlue,appBarTheme: AppBarTheme(color: KColors.lightCyan)),
+        theme: AppTheme.light,
+        darkTheme: AppTheme.dark,
         themeMode: settingsState.mode,
         routerConfig: goRouter,
         debugShowCheckedModeBanner: false,
