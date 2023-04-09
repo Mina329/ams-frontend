@@ -12,6 +12,9 @@ class KColors {
   static Color splashTitle = const Color(0xff0C16A1);
   static Color purple = const Color(0xff5450CD);
   static Color dark50Opacity = const Color(0x80004369);
+  static Color yellow = const Color(0xffFDD835);
+  static Color pink = const Color(0xffE91E63);
+  static Color darkPurple = const Color(0xff4A148C);
   static Color green =  Colors.green;
   static Color red =  Colors.red;
 }

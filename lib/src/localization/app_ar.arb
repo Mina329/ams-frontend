@@ -31,6 +31,10 @@
 
   "subjects": "Subjects",
   "noRecordFound": "No Record Found",
+  "face": "Face",
+  "id": "ID",
+  "qr": "QR",
+  "code": "Code",
 
   "appearance": "المظهر",
   "themeMode": "السمة",

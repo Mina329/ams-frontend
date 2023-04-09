@@ -27,14 +27,16 @@ class SubjectDetailsPage extends ConsumerWidget {
 
     final authStateAsync = ref.watch(authControllerProvider);
 
-    return authStateAsync.maybeWhen(
-      orElse: () => Center(child: CircularProgressIndicator(color: KColors.lightBlue)),
-      data: (data) =>
-          data.when(
-            signed: (user) =>
-            user.type == UserType.attendee ? AttendeeSubjectPage(subjectId: subjectId,) : InstructorSubjectPAge(subjectId: subjectId,),
-            unsigned: () => Center(child: CircularProgressIndicator(color: KColors.lightBlue)),
-          ),
+    return Scaffold(
+      body: authStateAsync.maybeWhen(
+        orElse: () => Center(child: CircularProgressIndicator(color: KColors.lightBlue)),
+        data: (data) =>
+            data.when(
+              signed: (user) =>
+              user.type == UserType.attendee ? AttendeeSubjectPage(subjectId: subjectId,) : InstructorSubjectPAge(subjectId: subjectId,),
+              unsigned: () => Center(child: CircularProgressIndicator(color: KColors.lightBlue)),
+            ),
+      ),
     );
   }
 }

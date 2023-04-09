@@ -1,3 +1,4 @@
+import 'package:ams_frontend/src/features/subjects/view/pages/take_attendance_page.dart';
 import 'package:ams_frontend/src/konstants/kdoubles.dart';
 import 'package:ams_frontend/src/utils/extensions.dart';
 import 'package:convex_bottom_bar/convex_bottom_bar.dart';
@@ -33,14 +34,18 @@ class InstructorSubjectPAge extends ConsumerWidget {
         backgroundColor: Theme.of(context).primaryColor,
         key: navBarKey,
         items: [
-          TabItem(icon: KIcons.about, title: 'info'.hardcoded),
+          TabItem(icon: KIcons.about, title: 'Info'.hardcoded),
           TabItem(
             icon: KIcons.attendances,
-            title: 'attendances'.hardcoded,
+            title: 'Attendances'.hardcoded,
           ),
           TabItem(
             icon: KIcons.attendees,
-            title: 'attendees'.hardcoded,
+            title: 'Attendees'.hardcoded,
+          ),
+          TabItem(
+            icon: KIcons.takeAttendance,
+            title: 'Take Att.'.hardcoded,
           ),
         ],
         onTap: (index) {
@@ -57,7 +62,7 @@ class InstructorSubjectPAge extends ConsumerWidget {
           final attendances = ref.watch(subjectAttendancesProvider(subjectId));
           final attendees = ref.watch(subjectAttendeesProvider(subjectId));
           return Padding(
-            padding: const EdgeInsets.all(KPaddings.p20),
+            padding: const EdgeInsets.all(KPaddings.p10),
             child: PageView(
               onPageChanged: (index) {
                 navBarKey.currentState?.animateTo(index);
@@ -113,7 +118,16 @@ class InstructorSubjectPAge extends ConsumerWidget {
                       ),
                     ),
                   ),
-                )
+                ),
+                Container(
+                  child: attendees.maybeWhen(
+                    skipLoadingOnRefresh: false,
+                    data: (data) => TakeAttendanceView(),
+                    orElse: () => Center(
+                        child: CircularProgressIndicator(
+                            color: KColors.lightBlue)),
+                  ),
+                ),
               ],
             ),
           );

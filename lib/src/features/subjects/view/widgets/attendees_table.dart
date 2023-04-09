@@ -15,7 +15,7 @@ class AttendeesView extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return attendees.length == 0
+    return attendees.isEmpty
         ? Align(
             alignment: Alignment.center,
             child: Text(context.l10n.noRecordFound,
