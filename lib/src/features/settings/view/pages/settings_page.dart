@@ -45,7 +45,7 @@ class SettingsPage extends ConsumerWidget {
       ),
       drawer: const AppDrawerWidget(),
       body: Container(
-        padding: const EdgeInsets.all(KPaddings.p60),
+        padding: const EdgeInsets.all(KPaddings.p20),
         decoration: BoxDecoration(
           gradient: LinearGradient(
             colors: [
