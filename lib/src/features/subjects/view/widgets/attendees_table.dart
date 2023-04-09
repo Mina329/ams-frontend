@@ -15,7 +15,7 @@ class AttendeesView extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return attendees.length <= 1
+    return attendees.length == 0
         ? Align(
             alignment: Alignment.center,
             child: Text(context.l10n.noRecordFound,
@@ -41,10 +41,10 @@ class AttendeesView extends ConsumerWidget {
                   ),
                 ],
                 rows: [
-                  for (int i = 1; i < attendees.length; i++)
+                  for (int i = 0; i < attendees.length; i++)
                     DataRow(
                       cells: [
-                        DataCell(Text('$i'), placeholder: true),
+                        DataCell(Text('${i+1}'), placeholder: true),
                         DataCell(Text(attendees[i].name)),
                       ],
                     )

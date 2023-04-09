@@ -15,7 +15,7 @@ class AttendancesView extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return attendances.length <= 1
+    return attendances.length ==0
         ? Align(
             alignment: Alignment.center,
             child: Text(context.l10n.noRecordFound,
@@ -44,13 +44,13 @@ class AttendancesView extends ConsumerWidget {
                   ),
                 ],
                 rows: [
-                  for (int i = 1; i < attendances.length; i++)
+                  for (int i = 0; i < attendances.length; i++)
                     DataRow(
                       cells: [
-                        DataCell(Text('$i'), placeholder: true),
+                        DataCell(Text('${i+1}'), placeholder: true),
                         DataCell(Text(attendances[i].attendee.name)),
                         DataCell(Text(
-                            "${attendances[i].createAt.day} ${attendances[i].createAt.hour} ${attendances[i].createAt.minute}")),
+                            "${attendances[i].createAt.year}-${attendances[i].createAt.month}-${attendances[i].createAt.day} ${attendances[i].createAt.hour}:${attendances[i].createAt.minute}")),
                       ],
                     )
                 ],
@@ -64,7 +64,7 @@ class AttendancesView extends ConsumerWidget {
                 clipBehavior: Clip.antiAlias,
                 headingRowHeight: KSizes.s50,
                 dataRowMinHeight: KSizes.s20,
-                dataRowMaxHeight: KSizes.s30,
+                dataRowMaxHeight: KSizes.s40,
                 dataRowColor: MaterialStateColor.resolveWith(
                     (states) => Colors.transparent.withAlpha(KAlphas.a50)),
                 dataTextStyle:
