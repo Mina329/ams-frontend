@@ -13,22 +13,19 @@ import '../view.dart';
 import '../widgets/attendances_table.dart';
 
 class AttendeeSubjectPage extends ConsumerWidget {
-  AttendeeSubjectPage(
-      {Key? key, required this.subjectId})
-      : super(key: key);
+  AttendeeSubjectPage({Key? key, required this.subjectId}) : super(key: key);
 
   final String subjectId;
   final navBarKey = GlobalKey<ConvexAppBarState>();
   final pageController = PageController();
-
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final subject = ref.watch(subjectProvider(subjectId));
     return Scaffold(
       appBar: AppBar(
-        title: Text(
-            subject.maybeWhen(orElse: () => "Subject", data: (data) => data.name)),
+        title: Text(subject.maybeWhen(
+            orElse: () => "Subject", data: (data) => data.name)),
       ),
       drawer: const AppDrawerWidget(),
       bottomNavigationBar: ConvexAppBar(
@@ -63,19 +60,33 @@ class AttendeeSubjectPage extends ConsumerWidget {
               controller: pageController,
               children: [
                 RefreshIndicator(
-                  onRefresh: () async {},
-                  child: subject.maybeWhen(
-                    data: (data) => SubjectInfoView(data),
-                    orElse: () =>
-                        Center(child: CircularProgressIndicator(color: KColors.lightBlue)),
+                  onRefresh: () async {
+                    ref.invalidate(subjectProvider(subjectId));
+                  },
+                  child: ListView.builder(
+                    itemCount: KRatios.r100.toInt(),
+                    itemBuilder: (BuildContext context, int index) =>
+                        subject.maybeWhen(
+                      data: (data) => SubjectInfoView(data),
+                      orElse: () => Center(
+                          child: CircularProgressIndicator(
+                              color: KColors.lightBlue)),
+                    ),
                   ),
                 ),
                 RefreshIndicator(
-                  onRefresh: () async {},
-                  child: attendances.maybeWhen(
-                    data: (data) => AttendancesView(data),
-                    orElse: () =>  Center(
-                      child: CircularProgressIndicator(color: KColors.lightBlue),
+                  onRefresh: () async {
+                    ref.invalidate(subjectAttendancesProvider(subjectId));
+                  },
+                  child: ListView.builder(
+                    itemCount: KRatios.r100.toInt(),
+                    itemBuilder: (BuildContext context, int index) =>
+                        attendances.maybeWhen(
+                      data: (data) => AttendancesView(data),
+                      orElse: () => Center(
+                        child:
+                            CircularProgressIndicator(color: KColors.lightBlue),
+                      ),
                     ),
                   ),
                 ),

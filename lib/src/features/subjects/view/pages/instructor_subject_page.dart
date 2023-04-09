@@ -65,34 +65,52 @@ class InstructorSubjectPAge extends ConsumerWidget {
               controller: pageController,
               children: [
                 RefreshIndicator(
-                  onRefresh: () async {},
-                  child: subject.maybeWhen(
-                    data: (data) => SubjectInfoView(data),
-                    orElse: () => Center(
-                        child: CircularProgressIndicator(
-                            color: KColors.lightBlue)),
-                  ),
-                ),
-                RefreshIndicator(
-                  onRefresh: () async {},
-                  child: attendances.maybeWhen(
-                    data: (data) => AttendancesView(data),
-                    orElse: () => Center(
-                      child: Center(
+                  onRefresh: () async {
+                    ref.invalidate(subjectProvider(subjectId));
+                  },
+                  child: ListView.builder(
+                    itemCount: KRatios.r100.toInt(),
+                    itemBuilder: (BuildContext context, int index) =>
+                        subject.maybeWhen(
+                      data: (data) => SubjectInfoView(data),
+                      orElse: () => Center(
                           child: CircularProgressIndicator(
                               color: KColors.lightBlue)),
                     ),
                   ),
                 ),
                 RefreshIndicator(
-                  onRefresh: () async {},
-                  child: attendees.maybeWhen(
-                    skipLoadingOnRefresh: false,
-                    data: (data) => AttendeesView(data),
-                    orElse: () => Center(
-                      child: Center(
-                          child: CircularProgressIndicator(
-                              color: KColors.lightBlue)),
+                  onRefresh: () async {
+                    ref.invalidate(subjectAttendancesProvider(subjectId));
+                  },
+                  child: ListView.builder(
+                    itemCount: KRatios.r100.toInt(),
+                    itemBuilder: (BuildContext context, int index) =>
+                        attendances.maybeWhen(
+                      data: (data) => AttendancesView(data),
+                      orElse: () => Center(
+                        child: Center(
+                            child: CircularProgressIndicator(
+                                color: KColors.lightBlue)),
+                      ),
+                    ),
+                  ),
+                ),
+                RefreshIndicator(
+                  onRefresh: () async {
+                    ref.invalidate(subjectAttendeesProvider(subjectId));
+                  },
+                  child: ListView.builder(
+                    itemCount: KRatios.r100.toInt(),
+                    itemBuilder: (BuildContext context, int index) =>
+                        attendees.maybeWhen(
+                      skipLoadingOnRefresh: false,
+                      data: (data) => AttendeesView(data),
+                      orElse: () => Center(
+                        child: Center(
+                            child: CircularProgressIndicator(
+                                color: KColors.lightBlue)),
+                      ),
                     ),
                   ),
                 )
