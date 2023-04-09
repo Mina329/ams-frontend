@@ -15,7 +15,7 @@ class SubjectsRepository {
 
   SubjectsRepository(this._amsApi, this._user);
 
-  Future<Subject> getOne(String subjectId) async {
+  Future<Subject> getOneSubject(String subjectId) async {
     try {
       var response = await _amsApi.subject(subjectId);
       if (!response.status) {
@@ -30,8 +30,11 @@ class SubjectsRepository {
     }
   }
 
-  Future<List<Attendance>> getAttendances(String subjectId) async {
-    var response = await _amsApi.attendances(subjectId);
+  Future<List<Attendance>> getAttendances(
+    String subjectId, {
+    String? attendeeId,
+  }) async {
+    var response = await _amsApi.attendances(subjectId, attendeeId: attendeeId);
 
     if (!response.status) {
       throw UnimplementedError(); // TODO
@@ -59,7 +62,7 @@ class SubjectsRepository {
     return apiUsers.map((user) => user.intoUser(userType)).toList();
   }
 
-  Future<List<Subject>> getForUser() async {
+  Future<List<Subject>> getAllSubjectsForUser() async {
     var response = await _amsApi.subjects(
       userId: _user.id,
       userType: _user.type,

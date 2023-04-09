@@ -1,18 +1,12 @@
 import 'package:ams_frontend/src/apis/AMSApi/ams_api.dart';
 import 'package:ams_frontend/src/features/auth/models/user_model.dart';
 import 'package:ams_frontend/src/features/auth/view/controllers/auth_controller.dart';
-import 'package:ams_frontend/src/features/subjects/models/attendance_model.dart';
-import 'package:ams_frontend/src/features/subjects/models/subject_model.dart';
 import 'package:ams_frontend/src/features/subjects/view/pages/attendee_subject_page.dart';
 import 'package:ams_frontend/src/features/subjects/view/pages/instructor_subject_page.dart';
-import 'package:ams_frontend/src/features/subjects/view/view.dart';
 import 'package:ams_frontend/src/konstants/konstants.dart';
 import 'package:ams_frontend/src/utils/utils.dart';
-import 'package:convex_bottom_bar/convex_bottom_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-
-import '../../providers/providers.dart';
 
 class SubjectDetailsPage extends ConsumerWidget {
   final String subjectId;
@@ -21,26 +15,24 @@ class SubjectDetailsPage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-
-
-
-
     final authStateAsync = ref.watch(authControllerProvider);
 
     return authStateAsync.maybeWhen(
       orElse: () => const SizedBox(),
-      data: (data) =>
-          data.when(
-            signed: (user) =>
-            user.type == UserType.attendee ? AttendeeSubjectPage(subjectId: subjectId,) : InstructorSubjectPAge(subjectId: subjectId,),
-            unsigned: () => const SizedBox(),
-          ),
+      data: (data) => data.when(
+        signed: (user) => user.type == UserType.attendee
+            ? AttendeeSubjectPage(
+                user.id,
+                subjectId: subjectId,
+              )
+            : InstructorSubjectPAge(
+                subjectId: subjectId,
+              ),
+        unsigned: () => const SizedBox(),
+      ),
     );
   }
 }
-
-
-
 
 class AttendeesView extends ConsumerWidget {
   final List<User> attendees;
@@ -54,9 +46,7 @@ class AttendeesView extends ConsumerWidget {
         DataColumn(
           label: Icon(
             KIcons.attendees,
-            color: Theme
-                .of(context)
-                .scaffoldBackgroundColor,
+            color: Theme.of(context).scaffoldBackgroundColor,
           ),
           numeric: true,
         ),
@@ -77,16 +67,10 @@ class AttendeesView extends ConsumerWidget {
         borderRadius: BorderRadius.circular(KRadiuses.r50),
       ),
       headingRowColor: MaterialStateProperty.resolveWith(
-            (Set<MaterialState> states) =>
-        Theme
-            .of(context)
-            .colorScheme
-            .primary,
+        (Set<MaterialState> states) => Theme.of(context).colorScheme.primary,
       ),
       headingTextStyle: TextStyle(
-        color: Theme
-            .of(context)
-            .scaffoldBackgroundColor,
+        color: Theme.of(context).scaffoldBackgroundColor,
       ),
       clipBehavior: Clip.antiAlias,
     );

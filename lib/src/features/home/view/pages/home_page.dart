@@ -19,13 +19,6 @@ class HomePage extends ConsumerWidget {
             context.toast(context.l10n.logginSuccess);
           }));
     });
-    Map<DateTime, String> eventDescriptions = {
-      DateTime.utc(2023, 4, 10): 'Subject 1',
-      DateTime.utc(2023, 4, 15): 'Subject 2',
-      DateTime.utc(2023, 4, 22): 'Subject 3',
-      DateTime.utc(2023, 4, 25): 'Subject 4',
-    };
-
     final authStateAsync = ref.watch(authControllerProvider);
     return Scaffold(
       appBar: AppBarWidget(
@@ -46,13 +39,18 @@ class HomePage extends ConsumerWidget {
         ),
         child: Container(
           color: KColors.dark50Opacity,
+          width: double.infinity,
           child: authStateAsync.maybeWhen(
-            orElse: () => Container(),
-            data: (authStateAsync) => authStateAsync.when(
+            orElse: () => const Center(
+              child: CircularProgressIndicator(),
+            ),
+            data: (authState) => authState.when(
+              unsigned: () => Center(
+                child: Text('unsiged'.hardcoded),
+              ),
               signed: (user) => user.type == UserType.instructor
-                  ? const InstructorHomePage()
-                  : AttendeeHomePage(eventDescriptions: eventDescriptions),
-              unsigned: () => Container(),
+                  ? InstructorHomePage(user.id)
+                  : AttendeeHomePage(user.id),
             ),
           ),
         ),

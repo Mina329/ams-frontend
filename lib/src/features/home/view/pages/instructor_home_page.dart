@@ -6,7 +6,9 @@ import '../../../../konstants/kdoubles.dart';
 import '../widgets/home_widget.dart';
 
 class InstructorHomePage extends StatelessWidget {
-  const InstructorHomePage({Key? key}) : super(key: key);
+  const InstructorHomePage(this.instructorId, {Key? key}) : super(key: key);
+
+  final String instructorId;
 
   @override
   Widget build(BuildContext context) {

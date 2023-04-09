@@ -205,9 +205,17 @@ class AMSApi {
 
   // get attendances list filtered by [subjectId]
   Future<ResponseDto<List<AttendanceDto>>> attendances(
-    String subjectId,
-  ) async {
-    final response = await _dio.get('/attendances/subjects/$subjectId');
+    String subjectId, {
+    String? attendeeId,
+  }) async {
+    Response response;
+    if (attendeeId == null) {
+      response = await _dio.get('/attendances/subjects/$subjectId');
+    } else {
+      response = await _dio.get(
+        '/${UserType.attendee}s/$attendeeId/subjects/$subjectId/attendances',
+      );
+    }
     return ResponseDto.fromJson(response.data, (p0) {
       List<AttendanceDto> attendances = [];
       for (var user in p0 as List<dynamic>) {

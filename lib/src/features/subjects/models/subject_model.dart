@@ -1,6 +1,6 @@
 import 'package:ams_frontend/src/apis/AMSApi/ams_api.dart';
 import 'package:ams_frontend/src/features/auth/models/user_model.dart';
-import 'package:cron/cron.dart';
+import 'package:easy_cron/easy_cron.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'subject_model.freezed.dart';
@@ -12,7 +12,7 @@ class Subject with _$Subject {
     required String name,
     required User instructor,
     required DateTime createAt,
-    required Schedule cronExpr,
+    required CronSchedule cronExpr,
     required DateTime updatedAt,
   }) = _Subject;
 }

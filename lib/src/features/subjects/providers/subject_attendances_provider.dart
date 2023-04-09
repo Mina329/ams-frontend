@@ -8,8 +8,9 @@ part 'subject_attendances_provider.g.dart';
 @riverpod
 Future<List<Attendance>> subjectAttendances(
   SubjectAttendancesRef ref,
-  String subjectId,
-) async {
+  String subjectId, {
+  String? attendeeId,
+}) async {
   final repo = await ref.watch(subjectsRepositoryProvider.future);
-  return repo.getAttendances(subjectId);
+  return repo.getAttendances(subjectId, attendeeId: attendeeId);
 }

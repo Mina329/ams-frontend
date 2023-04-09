@@ -11,7 +11,7 @@ Future<List<Subject>> userSubjects(UserSubjectsRef ref) async {
   await Utils.debugDelay();
   ref.keepAlive();
   final repo = await ref.watch(subjectsRepositoryProvider.future);
-  return await repo.getForUser();
+  return await repo.getAllSubjectsForUser();
 }
 
 @riverpod
@@ -19,5 +19,5 @@ Future<Subject> subject(SubjectRef ref, String subjectId) async {
   await Utils.debugDelay();
 
   final repo = await ref.watch(subjectsRepositoryProvider.future);
-  return await repo.getOne(subjectId);
+  return await repo.getOneSubject(subjectId);
 }

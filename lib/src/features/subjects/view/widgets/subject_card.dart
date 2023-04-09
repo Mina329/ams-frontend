@@ -59,7 +59,7 @@ class SubjectCard extends ConsumerWidget {
                         ?.copyWith(color: KColors.purple),
                   ),
                   // TODO : ADD TIME
-                  subtitle: Text("Tuesday , 5:00 PM"),
+                  subtitle: const Text("Tuesday , 5:00 PM"),
                 ),
               ],
             ),

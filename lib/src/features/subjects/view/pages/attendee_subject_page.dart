@@ -11,22 +11,20 @@ import '../../providers/providers.dart';
 import '../view.dart';
 
 class AttendeeSubjectPage extends ConsumerWidget {
-  AttendeeSubjectPage(
-      {Key? key, required this.subjectId})
+  AttendeeSubjectPage(this.attendeeId, {Key? key, required this.subjectId})
       : super(key: key);
 
-  final String subjectId;
+  final String attendeeId, subjectId;
   final navBarKey = GlobalKey<ConvexAppBarState>();
   final pageController = PageController();
-
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final subject = ref.watch(subjectProvider(subjectId));
     return Scaffold(
       appBar: AppBar(
-        title: Text(
-            subject.maybeWhen(orElse: () => "Subject", data: (data) => data.name)),
+        title: Text(subject.maybeWhen(
+            orElse: () => "Subject", data: (data) => data.name)),
       ),
       drawer: const AppDrawerWidget(),
       bottomNavigationBar: ConvexAppBar(
@@ -50,7 +48,10 @@ class AttendeeSubjectPage extends ConsumerWidget {
       body: Consumer(
         builder: (context, ref, child) {
           final subject = ref.watch(subjectProvider(subjectId));
-          final attendances = ref.watch(subjectAttendancesProvider(subjectId));
+          final attendances = ref.watch(subjectAttendancesProvider(
+            subjectId,
+            attendeeId: attendeeId,
+          ));
 
           return Padding(
             padding: const EdgeInsets.all(KPaddings.p30),
@@ -111,9 +112,7 @@ class AttendancesView extends ConsumerWidget {
         DataColumn(
           label: Icon(
             KIcons.attendances,
-            color: Theme
-                .of(context)
-                .scaffoldBackgroundColor,
+            color: Theme.of(context).scaffoldBackgroundColor,
           ),
           numeric: true,
         ),
@@ -138,16 +137,10 @@ class AttendancesView extends ConsumerWidget {
         borderRadius: BorderRadius.circular(KRadiuses.r50),
       ),
       headingRowColor: MaterialStateProperty.resolveWith(
-            (Set<MaterialState> states) =>
-        Theme
-            .of(context)
-            .colorScheme
-            .primary,
+        (Set<MaterialState> states) => Theme.of(context).colorScheme.primary,
       ),
       headingTextStyle: TextStyle(
-        color: Theme
-            .of(context)
-            .scaffoldBackgroundColor,
+        color: Theme.of(context).scaffoldBackgroundColor,
       ),
       clipBehavior: Clip.antiAlias,
     );
