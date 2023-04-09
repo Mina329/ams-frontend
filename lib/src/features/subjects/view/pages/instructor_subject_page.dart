@@ -5,11 +5,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../common/common.dart';
+import '../../../../konstants/kcolors.dart';
 import '../../../../konstants/kicons.dart';
 import '../../../../konstants/kints.dart';
 import '../../providers/providers.dart';
 import '../view.dart';
-import 'attendee_subject_page.dart';
+import '../widgets/attendances_table.dart';
+import '../widgets/attendees_table.dart';
 
 class InstructorSubjectPAge extends ConsumerWidget {
   InstructorSubjectPAge({Key? key, required this.subjectId}) : super(key: key);
@@ -66,16 +68,19 @@ class InstructorSubjectPAge extends ConsumerWidget {
                   onRefresh: () async {},
                   child: subject.maybeWhen(
                     data: (data) => SubjectInfoView(data),
-                    orElse: () =>
-                        const Center(child: CircularProgressIndicator()),
+                    orElse: () => Center(
+                        child: CircularProgressIndicator(
+                            color: KColors.lightBlue)),
                   ),
                 ),
                 RefreshIndicator(
                   onRefresh: () async {},
                   child: attendances.maybeWhen(
                     data: (data) => AttendancesView(data),
-                    orElse: () => const Center(
-                      child: CircularProgressIndicator(),
+                    orElse: () => Center(
+                      child: Center(
+                          child: CircularProgressIndicator(
+                              color: KColors.lightBlue)),
                     ),
                   ),
                 ),
@@ -84,8 +89,10 @@ class InstructorSubjectPAge extends ConsumerWidget {
                   child: attendees.maybeWhen(
                     skipLoadingOnRefresh: false,
                     data: (data) => AttendeesView(data),
-                    orElse: () => const Center(
-                      child: CircularProgressIndicator(),
+                    orElse: () => Center(
+                      child: Center(
+                          child: CircularProgressIndicator(
+                              color: KColors.lightBlue)),
                     ),
                   ),
                 )

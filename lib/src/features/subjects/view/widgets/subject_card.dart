@@ -67,3 +67,15 @@ class SubjectCard extends ConsumerWidget {
         ));
   }
 }
+class SubjectInfoView extends ConsumerWidget {
+  final Subject subject;
+
+  const SubjectInfoView(this.subject, {super.key});
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    return Column(
+      children: [SubjectCard(subject)],
+    );
+  }
+}

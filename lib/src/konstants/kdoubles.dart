@@ -40,6 +40,7 @@ class KFontSizes {
 
   static const double f05 = 05.0;
   static const double f10 = 10.0;
+  static const double f15 = 15.0;
   static const double f20 = 20.0;
   static const double f30 = 30.0;
   static const double f40 = 40.0;

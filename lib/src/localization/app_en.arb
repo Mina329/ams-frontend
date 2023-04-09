@@ -30,6 +30,7 @@
   "logginSuccess": "Logged in successfully",
 
   "subjects": "Subjects",
+  "noRecordFound": "No Record Found",
 
   "appearance": "Appearance",
   "themeMode": "Theme",

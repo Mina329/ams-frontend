@@ -22,7 +22,7 @@ class OnboardingPage extends ConsumerWidget {
     });
 
     return onboardingState.maybeWhen(
-      orElse: () => Container(),
+      orElse: () => CircularProgressIndicator(color: KColors.lightBlue),
       notCompleted: (onboardingList) => Padding(
         padding: const EdgeInsets.only(bottom: KSizes.s20),
         child: Container(

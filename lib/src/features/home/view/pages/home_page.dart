@@ -47,12 +47,12 @@ class HomePage extends ConsumerWidget {
         child: Container(
           color: KColors.dark50Opacity,
           child: authStateAsync.maybeWhen(
-            orElse: () => Container(),
+            orElse: () => CircularProgressIndicator(color: KColors.lightBlue),
             data: (authStateAsync) => authStateAsync.when(
               signed: (user) => user.type == UserType.instructor
                   ? const InstructorHomePage()
                   : AttendeeHomePage(eventDescriptions: eventDescriptions),
-              unsigned: () => Container(),
+              unsigned: () => CircularProgressIndicator(color: KColors.lightBlue),
             ),
           ),
         ),
