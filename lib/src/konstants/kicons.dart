@@ -13,4 +13,5 @@ class KIcons {
   static const IconData camera = Icons.camera_alt_outlined;
   static const IconData qrCode = Icons.qr_code_2_outlined;
   static const IconData id = Icons.perm_identity_outlined;
+  static const IconData image = Icons.image;
 }

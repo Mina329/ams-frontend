@@ -28,6 +28,8 @@ class AttendeesView extends ConsumerWidget {
             alignment: Alignment.topCenter,
             child: SingleChildScrollView(
               child: DataTable(
+                dataRowHeight: 60,
+                columnSpacing: KSizes.s60,
                 columns: [
                   DataColumn(
                     label: Icon(
@@ -36,6 +38,7 @@ class AttendeesView extends ConsumerWidget {
                     ),
                     numeric: true,
                   ),
+                  DataColumn(label: Text(context.l10n.user), numeric: true),
                   DataColumn(
                     label: Text(context.l10n.attendee),
                   ),
@@ -45,6 +48,17 @@ class AttendeesView extends ConsumerWidget {
                     DataRow(
                       cells: [
                         DataCell(Text('${i + 1}'), placeholder: true),
+                        DataCell(
+                          CircleAvatar(
+                            radius: KSizes.s25,
+                            backgroundColor: KColors.lightCyan,
+                            child: null ?? const Icon(
+                                  Icons.person,
+                                  size: 40,
+                                  color: Colors.white,
+                                ),
+                          ),
+                        ),
                         DataCell(Text(attendees[i].name)),
                       ],
                     )
