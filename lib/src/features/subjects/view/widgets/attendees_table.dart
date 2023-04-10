@@ -44,7 +44,7 @@ class AttendeesView extends ConsumerWidget {
                   for (int i = 0; i < attendees.length; i++)
                     DataRow(
                       cells: [
-                        DataCell(Text('${i+1}'), placeholder: true),
+                        DataCell(Text('${i + 1}'), placeholder: true),
                         DataCell(Text(attendees[i].name)),
                       ],
                     )
@@ -58,8 +58,6 @@ class AttendeesView extends ConsumerWidget {
                     TextStyle(color: KColors.purple, fontSize: KFontSizes.f20),
                 clipBehavior: Clip.antiAlias,
                 headingRowHeight: KSizes.s50,
-                dataRowMinHeight: KSizes.s20,
-                dataRowMaxHeight: KSizes.s30,
                 dataRowColor: MaterialStateColor.resolveWith(
                     (states) => Colors.transparent.withAlpha(KAlphas.a50)),
                 dataTextStyle:
