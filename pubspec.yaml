@@ -23,6 +23,7 @@ dependencies:
   flutter_localizations:
     sdk: flutter
   flutter_riverpod: ^2.3.0
+  flutter_speed_dial: ^6.2.0
   flutter_svg: ^2.0.4
   font_awesome_flutter: ^10.4.0
   form_builder_validators: ^8.5.0

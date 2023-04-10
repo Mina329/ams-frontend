@@ -1,4 +1,4 @@
-import 'package:ams_frontend/src/features/subjects/view/pages/take_attendance_page.dart';
+import 'package:ams_frontend/src/features/subjects/view/widgets/floating_action_bubble.dart';
 import 'package:ams_frontend/src/konstants/kdoubles.dart';
 import 'package:ams_frontend/src/utils/extensions.dart';
 import 'package:convex_bottom_bar/convex_bottom_bar.dart';
@@ -30,6 +30,8 @@ class InstructorSubjectPAge extends ConsumerWidget {
             orElse: () => "Subject", data: (data) => data.name)),
       ),
       drawer: const AppDrawerWidget(),
+      floatingActionButton: FloatingActionBubble(
+          onTapFaceID: () {}, onTapQrCode: () {}, onTapId: () {}),
       bottomNavigationBar: ConvexAppBar(
         backgroundColor: Theme.of(context).primaryColor,
         key: navBarKey,
@@ -42,10 +44,6 @@ class InstructorSubjectPAge extends ConsumerWidget {
           TabItem(
             icon: KIcons.attendees,
             title: 'Attendees'.hardcoded,
-          ),
-          TabItem(
-            icon: KIcons.takeAttendance,
-            title: 'Take Att.'.hardcoded,
           ),
         ],
         onTap: (index) {
@@ -117,15 +115,6 @@ class InstructorSubjectPAge extends ConsumerWidget {
                                 color: KColors.lightBlue)),
                       ),
                     ),
-                  ),
-                ),
-                Container(
-                  child: attendees.maybeWhen(
-                    skipLoadingOnRefresh: false,
-                    data: (data) => TakeAttendanceView(),
-                    orElse: () => Center(
-                        child: CircularProgressIndicator(
-                            color: KColors.lightBlue)),
                   ),
                 ),
               ],

@@ -4,7 +4,7 @@
     "description": "The title of the application"
   },
   "splashTitle": "Attendance App",
-  "welcome":"Welcome",
+  "welcome":"مرحبا",
   "login": "Log In",
   "loginTitle": "Login",
   "userEmail": "User Email",
@@ -12,7 +12,7 @@
   "forgotPassword": "Forgot Password ?",
   
   "homeTitle": "Attendance App",
-  "homeDrawerItem": "Home",
+  "homeDrawerItem": "الرئيسية",
   "todayAttendence": "Today's Attendance",
   "details" : "Details",
   "subjectCalendar": "Subject's Calendar",
@@ -31,10 +31,9 @@
 
   "subjects": "Subjects",
   "noRecordFound": "No Record Found",
-  "face": "Face",
+  "faceId": "Face ID",
   "id": "ID",
-  "qr": "QR",
-  "code": "Code",
+  "qrCode": "QR Code",
 
   "appearance": "المظهر",
   "themeMode": "السمة",

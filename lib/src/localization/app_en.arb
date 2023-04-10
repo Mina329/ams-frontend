@@ -31,10 +31,9 @@
 
   "subjects": "Subjects",
   "noRecordFound": "No Record Found",
-  "face": "Face",
+  "faceId": "Face ID",
   "id": "ID",
-  "qr": "QR",
-  "code": "Code",
+  "qrCode": "QR Code",
 
   "appearance": "Appearance",
   "themeMode": "Theme",

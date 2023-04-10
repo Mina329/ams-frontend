@@ -7,5 +7,5 @@ class KFontsName {
 }
 
 class KApis {
-  static String baseUrl = 'localhost';
+  static String baseUrl = '192.168.1.4';
 }
