@@ -153,11 +153,13 @@ class _CalenderState extends State<Calender> {
         return isSameDay(_selectedDay, day);
       },
       eventLoader: (day) {
-        if (widget.eventDescriptions.containsKey(day)) {
-          return [widget.eventDescriptions[day]];
-        } else {
-          return [];
-        }
+        List<String> events = [];
+        widget.eventDescriptions.forEach((key, value) {
+          if (isSameDay(key, day)) {
+            events.add(value);
+          }
+        });
+        return events;
       },
       onDaySelected: (selectedDay, focusedDay) {
         if (!isSameDay(_selectedDay, selectedDay)) {
@@ -166,17 +168,20 @@ class _CalenderState extends State<Calender> {
             _focusedDay = focusedDay;
           });
         }
-        if (widget.eventDescriptions.containsKey(selectedDay)) {
-          showDialog(
-            context: context,
-            builder: (context) {
-              return AlertDialog(
-                title: Text(context.l10n.details),
-                content: Text(widget.eventDescriptions[selectedDay] ?? ''),
-              );
-            },
-          );
-        }
+
+        widget.eventDescriptions.forEach((key, value) {
+          if (isSameDay(key, focusedDay)) {
+            showDialog(
+              context: context,
+              builder: (context) {
+                return AlertDialog(
+                  title: Text(context.l10n.details),
+                  content: Text('day: $key, event: $value'),
+                );
+              },
+            );
+          }
+        });
       },
       onFormatChanged: (format) {
         if (_calendarFormat != format) {

@@ -30,6 +30,11 @@
   "logginSuccess": "Logged in successfully",
 
   "subjects": "Subjects",
+  "noRecordFound": "No Record Found",
+  "face": "Face",
+  "id": "ID",
+  "qr": "QR",
+  "code": "Code",
 
   "appearance": "Appearance",
   "themeMode": "Theme",

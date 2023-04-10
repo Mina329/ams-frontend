@@ -45,12 +45,11 @@ class HomePage extends ConsumerWidget {
               child: CircularProgressIndicator(),
             ),
             data: (authState) => authState.when(
-              unsigned: () => Center(
-                child: Text('unsiged'.hardcoded),
-              ),
               signed: (user) => user.type == UserType.instructor
                   ? InstructorHomePage(user.id)
                   : AttendeeHomePage(user.id),
+              unsigned: () =>
+                  CircularProgressIndicator(color: KColors.lightBlue),
             ),
           ),
         ),

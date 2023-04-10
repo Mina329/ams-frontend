@@ -40,6 +40,7 @@ class KFontSizes {
 
   static const double f05 = 05.0;
   static const double f10 = 10.0;
+  static const double f15 = 15.0;
   static const double f20 = 20.0;
   static const double f30 = 30.0;
   static const double f40 = 40.0;
@@ -66,11 +67,20 @@ class KRatios {
   static const double r004 = 0.04;
   static const double r006 = 0.06;
   static const double r010 = 0.10;
+  static const double r016 = 0.16;
   static const double r020 = 0.20;
+  static const double r022 = 0.22;
   static const double r025 = 0.25;
   static const double r030 = 0.30;
+  static const double r037 = 0.37;
   static const double r040 = 0.40;
+  static const double r041 = 0.41;
+  static const double r042 = 0.42;
+  static const double r045 = 0.45;
+  static const double r046 = 0.46;
+  static const double r049 = 0.49;
   static const double r050 = 0.50;
+  static const double r057 = 0.57;
   static const double r060 = 0.60;
   static const double r070 = 0.70;
   static const double r075 = 0.75;

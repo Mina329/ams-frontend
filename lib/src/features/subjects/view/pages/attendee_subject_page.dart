@@ -3,12 +3,13 @@ import 'package:convex_bottom_bar/convex_bottom_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../../common/common.dart';
+import '../../../../konstants/kcolors.dart';
 import '../../../../konstants/kdoubles.dart';
 import '../../../../konstants/kicons.dart';
 import '../../../../konstants/kints.dart';
-import '../../models/models.dart';
 import '../../providers/providers.dart';
 import '../view.dart';
+import '../widgets/attendances_table.dart';
 
 class AttendeeSubjectPage extends ConsumerWidget {
   AttendeeSubjectPage(this.attendeeId, {Key? key, required this.subjectId})
@@ -62,19 +63,33 @@ class AttendeeSubjectPage extends ConsumerWidget {
               controller: pageController,
               children: [
                 RefreshIndicator(
-                  onRefresh: () async {},
-                  child: subject.maybeWhen(
-                    data: (data) => SubjectInfoView(data),
-                    orElse: () =>
-                        const Center(child: CircularProgressIndicator()),
+                  onRefresh: () async {
+                    ref.invalidate(subjectProvider(subjectId));
+                  },
+                  child: ListView.builder(
+                    itemCount: KRatios.r100.toInt(),
+                    itemBuilder: (BuildContext context, int index) =>
+                        subject.maybeWhen(
+                      data: (data) => SubjectInfoView(data),
+                      orElse: () => Center(
+                          child: CircularProgressIndicator(
+                              color: KColors.lightBlue)),
+                    ),
                   ),
                 ),
                 RefreshIndicator(
-                  onRefresh: () async {},
-                  child: attendances.maybeWhen(
-                    data: (data) => AttendancesView(data),
-                    orElse: () => const Center(
-                      child: CircularProgressIndicator(),
+                  onRefresh: () async {
+                    ref.invalidate(subjectAttendancesProvider(subjectId));
+                  },
+                  child: ListView.builder(
+                    itemCount: KRatios.r100.toInt(),
+                    itemBuilder: (BuildContext context, int index) =>
+                        attendances.maybeWhen(
+                      data: (data) => AttendancesView(data),
+                      orElse: () => Center(
+                        child:
+                            CircularProgressIndicator(color: KColors.lightBlue),
+                      ),
                     ),
                   ),
                 ),
@@ -83,66 +98,6 @@ class AttendeeSubjectPage extends ConsumerWidget {
           );
         },
       ),
-    );
-  }
-}
-
-class SubjectInfoView extends ConsumerWidget {
-  final Subject subject;
-
-  const SubjectInfoView(this.subject, {super.key});
-
-  @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    return Column(
-      children: [SubjectCard(subject)],
-    );
-  }
-}
-
-class AttendancesView extends ConsumerWidget {
-  final List<Attendance> attendances;
-
-  const AttendancesView(this.attendances, {super.key});
-
-  @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    return DataTable(
-      columns: [
-        DataColumn(
-          label: Icon(
-            KIcons.attendances,
-            color: Theme.of(context).scaffoldBackgroundColor,
-          ),
-          numeric: true,
-        ),
-        DataColumn(
-          label: Text(context.l10n.attendee),
-        ),
-        DataColumn(
-          label: Text('time'.hardcoded),
-        ),
-      ],
-      rows: [
-        for (int i = 1; i < attendances.length; i++)
-          DataRow(
-            cells: [
-              DataCell(Text('$i'), placeholder: true),
-              DataCell(Text(attendances[i].attendee.name)),
-              DataCell(Text(attendances[i].createAt.toString())),
-            ],
-          )
-      ],
-      border: TableBorder.all(
-        borderRadius: BorderRadius.circular(KRadiuses.r50),
-      ),
-      headingRowColor: MaterialStateProperty.resolveWith(
-        (Set<MaterialState> states) => Theme.of(context).colorScheme.primary,
-      ),
-      headingTextStyle: TextStyle(
-        color: Theme.of(context).scaffoldBackgroundColor,
-      ),
-      clipBehavior: Clip.antiAlias,
     );
   }
 }
