@@ -18,28 +18,37 @@ class AttendeeHomePage extends ConsumerWidget {
       eventDescriptionsProvider(limit: 10),
     );
 
-    return Padding(
-      padding: const EdgeInsets.all(KPaddings.p20),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          Text(
-            context.l10n.subjectCalendar,
-            style: TextStyle(
-              fontSize: KSizes.s25,
-              color: KColors.white,
-            ),
+    return RefreshIndicator(
+      color:KColors.lightCyan,
+      onRefresh: () async {
+        ref.invalidate(eventDescriptionsProvider(limit: 10));
+      },
+      child: ListView.builder(
+        itemCount: 1,
+        itemBuilder: (BuildContext context, int index) =>Padding(
+          padding: const EdgeInsets.all(KPaddings.p20),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Text(
+                context.l10n.subjectCalendar,
+                style: TextStyle(
+                  fontSize: KSizes.s25,
+                  color: KColors.white,
+                ),
+              ),
+              SizedBox(
+                height: MediaQuery.of(context).size.height * KRatios.r004,
+              ),
+              eventDescriptionsAsync.maybeWhen(
+                orElse: () => const CircularProgressIndicator(),
+                data: (eventDescriptions) => Calender(
+                  eventDescriptions: eventDescriptions,
+                ),
+              ),
+            ],
           ),
-          SizedBox(
-            height: MediaQuery.of(context).size.height * KRatios.r004,
-          ),
-          eventDescriptionsAsync.maybeWhen(
-            orElse: () => const CircularProgressIndicator(),
-            data: (eventDescriptions) => Calender(
-              eventDescriptions: eventDescriptions,
-            ),
-          ),
-        ],
+        ),
       ),
     );
   }

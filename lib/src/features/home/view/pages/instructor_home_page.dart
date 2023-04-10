@@ -12,32 +12,38 @@ class InstructorHomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(KPaddings.p20),
-      child: Column(
-        children: [
-          SizedBox(
-            width: double.infinity,
-            height: KSizes.s60,
-            child: Text(
-              context.l10n.todayAttendence,
-              style: TextStyle(
-                fontSize: KSizes.s25,
-                color: KColors.white,
+    return RefreshIndicator(
+      color: KColors.lightCyan,
+      onRefresh: () async {
+        //TODO: invalidate
+      },
+      child: Padding(
+        padding: const EdgeInsets.all(KPaddings.p20),
+        child: Column(
+          children: [
+            SizedBox(
+              width: double.infinity,
+              height: KSizes.s60,
+              child: Text(
+                context.l10n.todayAttendence,
+                style: TextStyle(
+                  fontSize: KSizes.s25,
+                  color: KColors.white,
+                ),
               ),
             ),
-          ),
-          Expanded(
-            child: ListView.builder(
-              itemBuilder: (
-                context,
-                index,
-              ) =>
-                  const TodayAttendanceCard(),
-              itemCount: 10,
+            Expanded(
+              child: ListView.builder(
+                itemBuilder: (
+                  context,
+                  index,
+                ) =>
+                    const TodayAttendanceCard(),
+                itemCount: 10,
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

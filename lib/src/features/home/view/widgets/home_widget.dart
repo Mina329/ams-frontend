@@ -1,3 +1,4 @@
+import 'package:ams_frontend/src/konstants/kints.dart';
 import 'package:ams_frontend/src/utils/extensions.dart';
 import 'package:flutter/material.dart';
 import 'package:table_calendar/table_calendar.dart';
@@ -145,6 +146,60 @@ class _CalenderState extends State<Calender> {
   @override
   Widget build(BuildContext context) {
     return TableCalendar(
+      calendarStyle: CalendarStyle(
+        selectedDecoration: const BoxDecoration().copyWith(
+          color: KColors.purple,
+          shape: BoxShape.circle,
+        ),
+        todayDecoration: const BoxDecoration().copyWith(
+          color: KColors.purple.withAlpha(KAlphas.a80),
+          shape: BoxShape.circle,
+        ),
+        holidayTextStyle: const TextStyle(
+          color: Colors.white,
+        ),
+        outsideTextStyle: const TextStyle(
+          color: Colors.black45,
+        ),
+        weekendTextStyle: const TextStyle(
+          color: Colors.white,
+        ),
+        defaultTextStyle: const TextStyle(
+          color: Colors.white,
+        ),
+      ),
+      daysOfWeekStyle: DaysOfWeekStyle(
+        weekdayStyle: TextStyle(
+          color: KColors.white,
+        ),
+        weekendStyle: TextStyle(
+          color: KColors.white,
+        ),
+      ),
+      headerStyle: HeaderStyle(
+        titleTextStyle: TextStyle(
+          color: KColors.white,
+        ),
+        formatButtonTextStyle: TextStyle(
+          color: KColors.white,
+        ),
+        formatButtonDecoration: BoxDecoration(
+          border: Border.all(
+            color: KColors.white,
+          ),
+          borderRadius: const BorderRadius.all(
+            Radius.circular(KSizes.s10),
+          ),
+        ),
+        leftChevronIcon: Icon(
+          Icons.chevron_left,
+          color: KColors.white,
+        ),
+        rightChevronIcon: Icon(
+          Icons.chevron_right,
+          color: KColors.white,
+        ),
+      ),
       firstDay: DateTime.utc(2010, 10, 16),
       lastDay: DateTime.utc(2030, 3, 14),
       focusedDay: _focusedDay,
@@ -159,7 +214,18 @@ class _CalenderState extends State<Calender> {
             events.add(value);
           }
         });
-        return events;
+        return events.isNotEmpty
+            ? [
+                Container(
+                  width: 5,
+                  height: 5,
+                  decoration: const BoxDecoration(
+                    color: Colors.redAccent, // Change the color here
+                    shape: BoxShape.circle,
+                  ),
+                )
+              ]
+            : [];
       },
       onDaySelected: (selectedDay, focusedDay) {
         if (!isSameDay(_selectedDay, selectedDay)) {

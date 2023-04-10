@@ -13,5 +13,6 @@ class KAlphas {
   static const a30 = 30;
   static const a40 = 40;
   static const a50 = 50;
+  static const a80 = 80;
   static const a100 = 50;
 }
