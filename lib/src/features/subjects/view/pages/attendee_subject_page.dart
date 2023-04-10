@@ -63,6 +63,7 @@ class AttendeeSubjectPage extends ConsumerWidget {
               controller: pageController,
               children: [
                 RefreshIndicator(
+                  color: KColors.lightCyan,
                   onRefresh: () async {
                     ref.invalidate(subjectProvider(subjectId));
                   },
@@ -78,6 +79,7 @@ class AttendeeSubjectPage extends ConsumerWidget {
                   ),
                 ),
                 RefreshIndicator(
+                  color: KColors.lightCyan,
                   onRefresh: () async {
                     ref.invalidate(subjectAttendancesProvider(subjectId));
                   },
