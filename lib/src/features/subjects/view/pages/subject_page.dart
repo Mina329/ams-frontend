@@ -29,7 +29,8 @@ class SubjectDetailsPage extends ConsumerWidget {
                   subjectId: subjectId,
                 ),
           unsigned: () => Center(
-              child: CircularProgressIndicator(color: KColors.lightBlue)),
+            child: CircularProgressIndicator(color: KColors.lightBlue),
+          ),
         ),
       ),
     );

@@ -43,6 +43,11 @@
   "lightMode": "Light",
 
   "language": "Language",
-  "langValue": "English"
+  "langValue": "English",
+  
+  "attendances": "Attendances",
+  "attendees": "Attendees",
+
+  "info": "info"
   
 }

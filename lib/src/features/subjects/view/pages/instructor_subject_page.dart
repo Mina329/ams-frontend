@@ -1,14 +1,13 @@
+import 'package:ams_frontend/src/common/common.dart';
+import 'package:ams_frontend/src/features/auth/models/models.dart';
+import 'package:ams_frontend/src/features/subjects/models/models.dart';
 import 'package:ams_frontend/src/features/subjects/view/widgets/floating_action_bubble.dart';
-import 'package:ams_frontend/src/konstants/kdoubles.dart';
+import 'package:ams_frontend/src/konstants/konstants.dart';
 import 'package:ams_frontend/src/utils/extensions.dart';
 import 'package:convex_bottom_bar/convex_bottom_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../../common/common.dart';
-import '../../../../konstants/kcolors.dart';
-import '../../../../konstants/kicons.dart';
-import '../../../../konstants/kints.dart';
 import '../../providers/providers.dart';
 import '../view.dart';
 import '../widgets/attendances_table.dart';
@@ -23,27 +22,49 @@ class InstructorSubjectPAge extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final subject = ref.watch(subjectProvider(subjectId));
+    final subjectAsync = ref.watch(subjectProvider(subjectId));
     return Scaffold(
       appBar: AppBar(
-        title: Text(subject.maybeWhen(
-            orElse: () => "Subject", data: (data) => data.name)),
+        title: Text(
+          subjectAsync.maybeWhen(
+            orElse: () => context.l10n.subjects,
+            data: (data) => data.name,
+          ),
+        ),
       ),
       drawer: const AppDrawerWidget(),
       floatingActionButton: FloatingActionBubble(
-          onTapFaceID: () {}, onTapQrCode: () {}, onTapId: () {}),
+        onTapFaceID: () {},
+        onTapQrCode: () {},
+        onTapId: () {},
+      ),
       bottomNavigationBar: ConvexAppBar(
         backgroundColor: Theme.of(context).primaryColor,
         key: navBarKey,
+        style: TabStyle.react,
+        elevation: KElevations.e10,
+        gradient: LinearGradient(colors: [
+          KColors.darkCyan,
+          KColors.lightCyan,
+          KColors.darkCyan,
+          KColors.lightCyan,
+          KColors.darkCyan,
+        ]),
         items: [
-          TabItem(icon: KIcons.about, title: 'Info'.hardcoded),
           TabItem(
-            icon: KIcons.attendances,
-            title: 'Attendances'.hardcoded,
+            activeIcon: KIcons.about,
+            icon: KIcons.about_outline,
+            title: context.l10n.info,
           ),
           TabItem(
-            icon: KIcons.attendees,
-            title: 'Attendees'.hardcoded,
+            activeIcon: KIcons.attendances,
+            icon: KIcons.attendances_outline,
+            title: context.l10n.attendances,
+          ),
+          TabItem(
+            activeIcon: KIcons.attendees,
+            icon: KIcons.attendees_outline,
+            title: context.l10n.attendees,
           ),
         ],
         onTap: (index) {
@@ -54,76 +75,42 @@ class InstructorSubjectPAge extends ConsumerWidget {
           );
         },
       ),
-      body: Consumer(
-        builder: (context, ref, child) {
-          final subject = ref.watch(subjectProvider(subjectId));
-          final attendances = ref.watch(subjectAttendancesProvider(subjectId));
-          final attendees = ref.watch(subjectAttendeesProvider(subjectId));
-          return Padding(
-            padding: const EdgeInsets.all(KPaddings.p10),
-            child: PageView(
-              onPageChanged: (index) {
-                navBarKey.currentState?.animateTo(index);
-              },
-              controller: pageController,
-              children: [
-                RefreshIndicator(
-                  color:KColors.lightCyan,
-                  onRefresh: () async {
-                    ref.invalidate(subjectProvider(subjectId));
-                  },
-                  child: ListView.builder(
-                    itemCount: KRatios.r100.toInt(),
-                    itemBuilder: (BuildContext context, int index) =>
-                        subject.maybeWhen(
-                      data: (data) => SubjectInfoView(data),
-                      orElse: () => Center(
-                          child: CircularProgressIndicator(
-                              color: KColors.lightBlue)),
-                    ),
-                  ),
-                ),
-                RefreshIndicator(
-                  color:KColors.lightCyan,
-                  onRefresh: () async {
-                    ref.invalidate(subjectAttendancesProvider(subjectId));
-                  },
-                  child: ListView.builder(
-                    itemCount: KRatios.r100.toInt(),
-                    itemBuilder: (BuildContext context, int index) =>
-                        attendances.maybeWhen(
-                      data: (data) => AttendancesView(data),
-                      orElse: () => Center(
-                        child: Center(
-                            child: CircularProgressIndicator(
-                                color: KColors.lightBlue)),
-                      ),
-                    ),
-                  ),
-                ),
-                RefreshIndicator(
-                  color:KColors.lightCyan,
-                  onRefresh: () async {
-                    ref.invalidate(subjectAttendeesProvider(subjectId));
-                  },
-                  child: ListView.builder(
-                    itemCount: KRatios.r100.toInt(),
-                    itemBuilder: (BuildContext context, int index) =>
-                        attendees.maybeWhen(
-                      skipLoadingOnRefresh: false,
-                      data: (data) => AttendeesView(data),
-                      orElse: () => Center(
-                        child: Center(
-                            child: CircularProgressIndicator(
-                                color: KColors.lightBlue)),
-                      ),
-                    ),
-                  ),
-                ),
-              ],
+      body: Padding(
+        padding: const EdgeInsets.all(KPaddings.p10),
+        child: PageView(
+          onPageChanged: (index) {
+            navBarKey.currentState?.animateTo(index);
+          },
+          controller: pageController,
+          children: [
+            AsyncDataBuilder(
+              provider: subjectProvider(subjectId),
+              builder: (Subject subject) => ListView.builder(
+                itemCount: KRatios.r100.toInt(),
+                itemBuilder: (BuildContext context, int index) =>
+                    SubjectInfoView(subject),
+              ),
             ),
-          );
-        },
+            AsyncDataBuilder(
+              withRefreshIndicator: true,
+              provider: SubjectAttendancesProvider(subjectId),
+              builder: (List<Attendance> attendances) => ListView.builder(
+                itemCount: KRatios.r100.toInt(),
+                itemBuilder: (BuildContext context, int index) =>
+                    AttendancesView(attendances),
+              ),
+            ),
+            AsyncDataBuilder(
+              withRefreshIndicator: true,
+              provider: subjectAttendeesProvider(subjectId),
+              builder: (List<User> attendees) => ListView.builder(
+                itemCount: KRatios.r100.toInt(),
+                itemBuilder: (BuildContext context, int index) =>
+                    AttendeesView(attendees),
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

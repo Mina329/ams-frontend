@@ -1,11 +1,188 @@
+import 'package:ams_frontend/src/apis/api_error.dart';
+import 'package:ams_frontend/src/konstants/kcolors.dart';
 import 'package:ams_frontend/src/konstants/kdoubles.dart';
 import 'package:ams_frontend/src/konstants/kints.dart';
 import 'package:another_flushbar/flushbar.dart';
 import 'package:cron/cron.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+
+class AsyncDataBuilder<State, P extends ProviderBase<AsyncValue<State>>>
+    extends ConsumerWidget {
+  const AsyncDataBuilder({
+    super.key,
+    required this.provider,
+    required this.builder,
+    this.withRefreshIndicator = false,
+  });
+
+  final P provider;
+  final Widget Function(State data) builder;
+  final bool withRefreshIndicator;
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final asyncValue = ref.watch(provider);
+
+    Future<void> onRefresh() async {
+      ref.invalidate(provider);
+    }
+
+    return withRefreshIndicator
+        ? RefreshIndicator(
+            color: KColors.lightCyan,
+            onRefresh: onRefresh,
+            child: _dataWidget(asyncValue, ref, context),
+          )
+        : _dataWidget(asyncValue, ref, context);
+  }
+
+  Widget _dataWidget(
+    AsyncValue<State> asyncValue,
+    WidgetRef ref,
+    BuildContext context,
+  ) {
+    return asyncValue.when(
+      skipLoadingOnRefresh: false,
+      data: builder,
+      error: (error, __) {
+        late String message;
+
+        if (error is ApiError) {
+          message = error.maybeWhen(
+            unauthorized: (message) => message,
+            invalidOperation: (message) => message,
+            orElse: () => error.toString(),
+          );
+        } else {
+          message = error.toString();
+        }
+
+        return Center(
+          child: InkWell(
+            radius: KRadiuses.r30,
+            borderRadius: BorderRadius.circular(KRadiuses.r30),
+            onTap: () {
+              ref.invalidate(provider);
+            },
+            child: Container(
+              clipBehavior: Clip.antiAliasWithSaveLayer,
+              decoration: BoxDecoration(
+                color: KColors.white,
+                borderRadius: BorderRadius.circular(KRadiuses.r30),
+              ),
+              child: Padding(
+                padding: const EdgeInsets.all(KPaddings.p30),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Text(
+                      message,
+                      style: TextStyle(color: Theme.of(context).primaryColor),
+                    ),
+                    const SizedBox(height: KSizes.s10),
+                    Icon(
+                      Icons.refresh_outlined,
+                      color: Theme.of(context).primaryColor,
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ),
+        );
+      },
+      loading: () => Center(
+        child: SpinKitFadingCube(
+          color: KColors.white,
+        ),
+      ),
+    );
+  }
+}
+
+extension AsyncValueExt<T> on AsyncValue<T> {
+  void maybeDataAndReport(
+    BuildContext context,
+    void Function(T)? onData,
+  ) {
+    whenOrNull(
+      data: onData != null
+          ? (data) {
+              onData(data);
+            }
+          : null,
+      error: (error, stackTrace) {
+        context.toast(error.toString(), level: ToastLevel.error);
+      },
+    );
+  }
+
+  Widget dataBuilder({
+    required Widget Function(BuildContext context, WidgetRef ref, T data)
+        builder,
+    ProviderOrFamily? provider,
+  }) {
+    return Consumer(
+      builder: (context, ref, child) => when(
+        skipLoadingOnRefresh: false,
+        data: (data) {
+          return builder(context, ref, data);
+        },
+        error: (error, stackTrace) {
+          return Center(
+              child: Card(
+                  child: Column(
+            children: [
+              const Text('error'),
+              if (provider != null)
+                IconButton(
+                  onPressed: () {
+                    ref.invalidate(provider);
+                  },
+                  icon: const Icon(Icons.refresh_outlined),
+                )
+            ],
+          )));
+        },
+        loading: () {
+          return Center(
+            child: SpinKitFadingCube(
+              color: KColors.white,
+            ),
+          );
+        },
+      ),
+    );
+  }
+}
+
+class LoadingWidget extends StatelessWidget {
+  const LoadingWidget({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+      child: Material(
+        child: Container(
+          padding: const EdgeInsets.all(KPaddings.p60),
+          clipBehavior: Clip.antiAlias,
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(KRadiuses.r40),
+          ),
+          child: CircularProgressIndicator(
+            color: KColors.lightCyan,
+          ),
+        ),
+      ),
+    );
+  }
+}
 
 extension ThemeModeExt on ThemeMode {
   IconData get icon => this == ThemeMode.dark
@@ -42,24 +219,6 @@ extension AppLocaleExt on BuildContext {
 
 extension StringHardCodedExt on String {
   String get hardcoded => this;
-}
-
-extension AsyncValueExt<T> on AsyncValue<T> {
-  void maybeDataAndReport(
-    BuildContext context,
-    void Function(T)? onData,
-  ) {
-    whenOrNull(
-      data: onData != null
-          ? (data) {
-              onData(data);
-            }
-          : null,
-      error: (error, stackTrace) {
-        context.toast(error.toString(), level: ToastLevel.error);
-      },
-    );
-  }
 }
 
 enum ToastLevel {

@@ -1,3 +1,4 @@
+import 'package:ams_frontend/src/features/subjects/models/models.dart';
 import 'package:ams_frontend/src/utils/extensions.dart';
 import 'package:convex_bottom_bar/convex_bottom_bar.dart';
 import 'package:flutter/material.dart';
@@ -25,17 +26,33 @@ class AttendeeSubjectPage extends ConsumerWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text(subject.maybeWhen(
-            orElse: () => "Subject", data: (data) => data.name)),
+          orElse: () => "Subject".hardcoded,
+          data: (data) => data.name,
+        )),
       ),
       drawer: const AppDrawerWidget(),
       bottomNavigationBar: ConvexAppBar(
         backgroundColor: Theme.of(context).primaryColor,
         key: navBarKey,
+        elevation: KElevations.e10,
+        style: TabStyle.react,
+        gradient: LinearGradient(colors: [
+          KColors.darkCyan,
+          KColors.lightCyan,
+          KColors.darkCyan,
+          KColors.lightCyan,
+          KColors.darkCyan,
+        ]),
         items: [
-          TabItem(icon: KIcons.about, title: 'info'.hardcoded),
           TabItem(
-            icon: KIcons.attendances,
-            title: 'attendances'.hardcoded,
+            activeIcon: KIcons.about,
+            icon: KIcons.about_outline,
+            title: context.l10n.info,
+          ),
+          TabItem(
+            activeIcon: KIcons.attendances,
+            icon: KIcons.attendances_outline,
+            title: context.l10n.attendances,
           ),
         ],
         onTap: (index) {
@@ -46,59 +63,33 @@ class AttendeeSubjectPage extends ConsumerWidget {
           );
         },
       ),
-      body: Consumer(
-        builder: (context, ref, child) {
-          final subject = ref.watch(subjectProvider(subjectId));
-          final attendances = ref.watch(subjectAttendancesProvider(
-            subjectId,
-            attendeeId: attendeeId,
-          ));
-
-          return Padding(
-            padding: const EdgeInsets.all(KPaddings.p30),
-            child: PageView(
-              onPageChanged: (index) {
-                navBarKey.currentState?.animateTo(index);
-              },
-              controller: pageController,
-              children: [
-                RefreshIndicator(
-                  color: KColors.lightCyan,
-                  onRefresh: () async {
-                    ref.invalidate(subjectProvider(subjectId));
-                  },
-                  child: ListView.builder(
-                    itemCount: KRatios.r100.toInt(),
-                    itemBuilder: (BuildContext context, int index) =>
-                        subject.maybeWhen(
-                      data: (data) => SubjectInfoView(data),
-                      orElse: () => Center(
-                          child: CircularProgressIndicator(
-                              color: KColors.lightBlue)),
-                    ),
-                  ),
-                ),
-                RefreshIndicator(
-                  color: KColors.lightCyan,
-                  onRefresh: () async {
-                    ref.invalidate(subjectAttendancesProvider(subjectId));
-                  },
-                  child: ListView.builder(
-                    itemCount: KRatios.r100.toInt(),
-                    itemBuilder: (BuildContext context, int index) =>
-                        attendances.maybeWhen(
-                      data: (data) => AttendancesView(data),
-                      orElse: () => Center(
-                        child:
-                            CircularProgressIndicator(color: KColors.lightBlue),
-                      ),
-                    ),
-                  ),
-                ),
-              ],
+      body: Padding(
+        padding: const EdgeInsets.all(KPaddings.p30),
+        child: PageView(
+          onPageChanged: (index) {
+            navBarKey.currentState?.animateTo(index);
+          },
+          controller: pageController,
+          children: [
+            AsyncDataBuilder(
+              provider: subjectProvider(subjectId),
+              builder: (Subject subject) => ListView.builder(
+                itemCount: KRatios.r100.toInt(),
+                itemBuilder: (BuildContext context, int index) =>
+                    SubjectInfoView(subject),
+              ),
             ),
-          );
-        },
+            AsyncDataBuilder(
+              withRefreshIndicator: true,
+              provider: SubjectAttendancesProvider(subjectId),
+              builder: (List<Attendance> attendances) => ListView.builder(
+                itemCount: KRatios.r100.toInt(),
+                itemBuilder: (BuildContext context, int index) =>
+                    AttendancesView(attendances),
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

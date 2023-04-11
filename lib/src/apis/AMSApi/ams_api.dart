@@ -108,45 +108,45 @@ class AMSApi {
     required UserType userType,
     required AuthPayloadDto authPayload,
   }) async {
-    try {
-      var response = await _dio.post(
-        '/${userType.name}s/login',
-        data: authPayload.toJson(),
-      );
-      final authBody = ResponseDto.fromJson(
-        response.data,
-        (p0) => AuthBodyDto.fromJson(p0 as dynamic),
-      );
-      if (!authBody.status) {
-        throw ApiError.authorization(authBody.message);
-      }
-      _cachedJWTToken = authBody.data?.token;
+    var response = await _dio.post(
+      '/${userType.name}s/login',
+      data: authPayload.toJson(),
+    );
+
+    final authBody = ResponseDto.fromJson(
+      response.data,
+      (p0) => AuthBodyDto.fromJson(p0 as dynamic),
+    );
+
+    final user = await authBody.when(success: (_, authBody) async {
+      _cachedJWTToken = authBody?.token;
+
       response = await _dio.get('/${userType.name}s/login');
       final user = ResponseDto.fromJson(
         response.data,
         (p0) => UserDto.fromJson(p0 as dynamic),
       );
-      if (user.data != null) {
+
+      user.whenOrNull(success: (_, user) {
         cachedUserType = userType;
-      }
+      });
+
       return user;
-    } on DioError catch (e) {
-      throw ApiError.internal(e.toString());
-    }
+    }, failure: (error) {
+      throw error;
+    });
+
+    return user;
   }
 
   // get a subject by [subjectId]
   Future<ResponseDto<SubjectDto>> subject(String subjectId) async {
-    try {
-      final response = await _dio.get('/subjects/$subjectId');
+    final response = await _dio.get('/subjects/$subjectId');
 
-      return ResponseDto.fromJson(
-        response.data,
-        (p0) => SubjectDto.fromJson(p0 as dynamic),
-      );
-    } on DioError catch (error) {
-      throw ApiError.internal(error.toString());
-    }
+    return ResponseDto.fromJson(
+      response.data,
+      (p0) => SubjectDto.fromJson(p0 as dynamic),
+    );
   }
 
   // get subjects list filtered by user [id] and [userType]

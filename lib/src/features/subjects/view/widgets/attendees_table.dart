@@ -1,12 +1,9 @@
-import 'package:ams_frontend/src/konstants/kcolors.dart';
 import 'package:ams_frontend/src/utils/extensions.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../../konstants/kdoubles.dart';
-import '../../../../konstants/kicons.dart';
-import '../../../../konstants/kints.dart';
-import '../../../auth/models/models.dart';
+import 'package:ams_frontend/src/features/auth/models/models.dart';
+import 'package:ams_frontend/src/konstants/konstants.dart';
 
 class AttendeesView extends ConsumerWidget {
   final List<User> attendees;
@@ -52,11 +49,11 @@ class AttendeesView extends ConsumerWidget {
                           CircleAvatar(
                             radius: KSizes.s25,
                             backgroundColor: KColors.lightCyan,
-                            child: null ?? const Icon(
-                                  Icons.person,
-                                  size: 40,
-                                  color: Colors.white,
-                                ),
+                            child: const Icon(
+                              Icons.person,
+                              size: 40,
+                              color: Colors.white,
+                            ),
                           ),
                         ),
                         DataCell(Text(attendees[i].name)),

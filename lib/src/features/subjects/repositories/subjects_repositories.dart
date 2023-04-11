@@ -1,10 +1,8 @@
 import 'package:ams_frontend/src/apis/AMSApi/ams_api.dart';
-import 'package:ams_frontend/src/apis/apis.dart';
 import 'package:ams_frontend/src/features/auth/models/user_model.dart';
 import 'package:ams_frontend/src/features/auth/repositories/auth_repository.dart';
 import 'package:ams_frontend/src/features/subjects/models/attendance_model.dart';
 import 'package:ams_frontend/src/features/subjects/models/subject_model.dart';
-import 'package:ams_frontend/src/features/subjects/subjects_error.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'subjects_repositories.g.dart';
@@ -16,18 +14,11 @@ class SubjectsRepository {
   SubjectsRepository(this._amsApi, this._user);
 
   Future<Subject> getOneSubject(String subjectId) async {
-    try {
-      var response = await _amsApi.subject(subjectId);
-      if (!response.status) {
-        throw SubjectsError.notFound(response.message);
-      }
+    var response = await _amsApi.subject(subjectId);
 
-      final apiSubject = response.data!;
+    final apiSubject = response.requireData!;
 
-      return apiSubject.intoSubject();
-    } on ApiError catch (error) {
-      throw error.intoSubjectsError();
-    }
+    return apiSubject.intoSubject();
   }
 
   Future<List<Attendance>> getAttendances(
@@ -36,11 +27,7 @@ class SubjectsRepository {
   }) async {
     var response = await _amsApi.attendances(subjectId, attendeeId: attendeeId);
 
-    if (!response.status) {
-      throw UnimplementedError(); // TODO
-    }
-
-    final apiAttendances = response.data!;
+    final apiAttendances = response.requireData!;
 
     return apiAttendances
         .map((attendance) => attendance.intoAttendance())
@@ -53,11 +40,7 @@ class SubjectsRepository {
   }) async {
     var response = await _amsApi.attendees(subjectId: subjectId);
 
-    if (!response.status) {
-      throw UnimplementedError(); // TODO
-    }
-
-    final apiUsers = response.data!;
+    final apiUsers = response.requireData!;
 
     return apiUsers.map((user) => user.intoUser(userType)).toList();
   }
@@ -68,11 +51,7 @@ class SubjectsRepository {
       userType: _user.type,
     );
 
-    if (!response.status) {
-      throw UnimplementedError(); // TODO
-    }
-
-    final apiSubjects = response.data!;
+    final apiSubjects = response.requireData!;
 
     return apiSubjects.map((subject) => subject.intoSubject()).toList();
   }

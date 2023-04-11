@@ -43,5 +43,10 @@
   "lightMode": "داكن",
   
   "language": "اللغة",
-  "langValue": "العربية"
+  "langValue": "العربية",
+
+  "attendances": "الحضور",
+  "attendees": "الملتحقين",
+
+  "info": "معلومات"
 }
