@@ -48,6 +48,15 @@
   "attendances": "Attendances",
   "attendees": "Attendees",
 
-  "info": "info"
+  "info": "info",
+  "time": "{time}",
+  "@time": {
+    "placeholders": {
+      "time": {
+      "type": "DateTime",
+      "format": "yMd"
+      }
+    }
+  }
   
 }

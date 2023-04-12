@@ -49,7 +49,7 @@ class AuthRepository {
   }
 }
 
-@riverpod
+@Riverpod(keepAlive: true)
 AuthRepository authRepository(AuthRepositoryRef ref) {
   return AuthRepository(ref.watch(amsApiProvider));
 }

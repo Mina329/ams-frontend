@@ -16,7 +16,7 @@ class ResponseDto<T> with _$ResponseDto<T> {
   }) = Failure;
 
   factory ResponseDto.fromJson(
-          Map<String, dynamic> json, T Function(Object?) fromJsonT) =>
+          Map<String, dynamic> json, T Function(dynamic) fromJsonT) =>
       _$ResponseDtoFromJson(json, fromJsonT);
 }
 

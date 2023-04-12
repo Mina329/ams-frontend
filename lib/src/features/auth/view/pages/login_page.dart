@@ -130,7 +130,7 @@ class _SignPageState extends ConsumerState<SignPage> {
                             hintStyle: TextStyle(
                               color: KColors.white,
                             ),
-                            fillColor: KColors.lightCyan ,
+                            fillColor: KColors.lightCyan,
                             focusColor: KColors.lightCyan,
                           ),
                         ),
@@ -171,9 +171,10 @@ class _SignPageState extends ConsumerState<SignPage> {
                           ),
                         ),
                         SizedBox(
-                            height: MediaQuery.of(context).size.height *
-                                KRatios.r004),
-                        LoginButtonWidget(formKey: formKey)
+                          height:
+                              MediaQuery.of(context).size.height * KRatios.r004,
+                        ),
+                        LoginButton(formKey: formKey)
                       ],
                     ),
                   ),
@@ -187,8 +188,8 @@ class _SignPageState extends ConsumerState<SignPage> {
   }
 }
 
-class LoginButtonWidget extends ConsumerWidget {
-  const LoginButtonWidget({
+class LoginButton extends ConsumerWidget {
+  const LoginButton({
     super.key,
     required this.formKey,
   });
@@ -199,12 +200,10 @@ class LoginButtonWidget extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final authStateAsync = ref.watch(authControllerProvider);
     return authStateAsync.maybeMap(
-      loading: (loading) => CircularProgressIndicator(color: KColors.lightBlue ),
+      loading: (loading) => CircularProgressIndicator(color: KColors.lightBlue),
       orElse: () => SizedBox(
-        width:
-        MediaQuery.of(context).size.width * KRatios.r040,
-        height:
-        MediaQuery.of(context).size.height * KRatios.r006,
+        width: MediaQuery.of(context).size.width * KRatios.r040,
+        height: MediaQuery.of(context).size.height * KRatios.r006,
         child: ElevatedButton(
           style: ElevatedButton.styleFrom(
             backgroundColor: KColors.darkCyan,

@@ -37,7 +37,6 @@ class SubjectCard extends ConsumerWidget {
                 Container(
                   width: 300,
                   height: 300,
-                  // TODO : Add Photo
                   color: Colors.black,
                 ),
                 ListTile(
@@ -58,8 +57,7 @@ class SubjectCard extends ConsumerWidget {
                         .headlineSmall
                         ?.copyWith(color: KColors.purple),
                   ),
-                  // TODO : ADD TIME
-                  subtitle: const Text("Tuesday , 5:00 PM"),
+                  subtitle: Text(context.l10n.time(subject.createAt)),
                 ),
               ],
             ),
@@ -67,6 +65,7 @@ class SubjectCard extends ConsumerWidget {
         ));
   }
 }
+
 class SubjectInfoView extends ConsumerWidget {
   final Subject subject;
 

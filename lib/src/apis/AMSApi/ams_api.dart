@@ -4,7 +4,7 @@ import 'dart:io';
 
 import 'package:ams_frontend/src/apis/apis.dart';
 import 'package:ams_frontend/src/common/common.dart';
-import 'package:ams_frontend/src/konstants/kstrings.dart';
+import 'package:ams_frontend/src/common/env.dart';
 import 'package:ams_frontend/src/utils/utils.dart';
 import 'package:dio/dio.dart';
 import 'package:pretty_dio_logger/pretty_dio_logger.dart';
@@ -24,7 +24,7 @@ class AMSApi {
 
   // constructor
   AMSApi(this._dio, this._sharedPreferences) {
-    _dio.options.baseUrl = 'http://${KApis.baseUrl}:3000/api';
+    _dio.options.baseUrl = EnvVars.apiUrl;
     _dio.options.validateStatus = (_) => true;
     _dio.interceptors.add(PrettyDioLogger(
       request: true,
@@ -99,7 +99,7 @@ class AMSApi {
 
     return ResponseDto.fromJson(
       user.data,
-      (p0) => UserDto.fromJson(p0 as dynamic),
+      (p0) => UserDto.fromJson(p0),
     );
   }
 
@@ -115,7 +115,7 @@ class AMSApi {
 
     final authBody = ResponseDto.fromJson(
       response.data,
-      (p0) => AuthBodyDto.fromJson(p0 as dynamic),
+      (p0) => AuthBodyDto.fromJson(p0),
     );
 
     final user = await authBody.when(success: (_, authBody) async {
@@ -124,7 +124,7 @@ class AMSApi {
       response = await _dio.get('/${userType.name}s/login');
       final user = ResponseDto.fromJson(
         response.data,
-        (p0) => UserDto.fromJson(p0 as dynamic),
+        (p0) => UserDto.fromJson(p0),
       );
 
       user.whenOrNull(success: (_, user) {
@@ -145,7 +145,7 @@ class AMSApi {
 
     return ResponseDto.fromJson(
       response.data,
-      (p0) => SubjectDto.fromJson(p0 as dynamic),
+      (p0) => SubjectDto.fromJson(p0),
     );
   }
 
@@ -226,19 +226,21 @@ class AMSApi {
   }
 
   // take attendance by [subjectId] and [attendeeId]
-  Future<ResponseDto<void>> takeAttendance({
-    required subjectId,
-    required attendeeId,
+  Future<ResponseDto<AttendanceDto>> takeAttendance({
+    required String subjectId,
+    required String attendeeId,
   }) async {
     final response = await _dio.put(
       '/attendances/subjects/$subjectId/attendees/$attendeeId',
     );
-
-    return ResponseDto.fromJson(response.data, (p0) {});
+    return ResponseDto.fromJson(
+      response.data,
+      (p0) => AttendanceDto.fromJson(p0),
+    );
   }
 }
 
-@riverpod
+@Riverpod(keepAlive: true)
 AMSApi amsApi(AmsApiRef ref) {
   return AMSApi(Dio(), ref.watch(sharedPreferencesProvider));
 }

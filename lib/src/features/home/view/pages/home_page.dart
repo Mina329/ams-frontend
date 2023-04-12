@@ -1,6 +1,7 @@
 import 'package:ams_frontend/src/apis/AMSApi/ams_api.dart';
 import 'package:ams_frontend/src/common/widgets/widgets.dart';
 import 'package:ams_frontend/src/features/auth/view/controllers/auth_controller.dart';
+import 'package:ams_frontend/src/features/auth/view/widgets/sigend_builder.dart';
 import 'package:ams_frontend/src/features/home/view/pages/attendee_home_page.dart';
 import 'package:ams_frontend/src/features/home/view/pages/instructor_home_page.dart';
 import 'package:ams_frontend/src/konstants/konstants.dart';
@@ -19,7 +20,6 @@ class HomePage extends ConsumerWidget {
             context.toast(context.l10n.logginSuccess);
           }));
     });
-    final authStateAsync = ref.watch(authControllerProvider);
     return Scaffold(
       appBar: AppBarWidget(
         icon: FontAwesomeIcons.house,
@@ -40,17 +40,10 @@ class HomePage extends ConsumerWidget {
         child: Container(
           color: KColors.dark50Opacity,
           width: double.infinity,
-          child: authStateAsync.maybeWhen(
-            orElse: () => const Center(
-              child: CircularProgressIndicator(),
-            ),
-            data: (authState) => authState.when(
-              signed: (user) => user.type == UserType.instructor
-                  ? InstructorHomePage(user.id)
-                  : AttendeeHomePage(user.id),
-              unsigned: () =>
-                  CircularProgressIndicator(color: KColors.lightBlue),
-            ),
+          child: SignedBuilder(
+            builder: (user) => user.type == UserType.instructor
+                ? InstructorHomePage(user.id)
+                : AttendeeHomePage(user.id),
           ),
         ),
       ),

@@ -1,6 +1,7 @@
 import 'package:ams_frontend/src/common/common.dart';
 import 'package:ams_frontend/src/features/auth/models/models.dart';
 import 'package:ams_frontend/src/features/subjects/models/models.dart';
+import 'package:ams_frontend/src/features/subjects/view/pages/qr_scanner_page.dart';
 import 'package:ams_frontend/src/features/subjects/view/widgets/floating_action_bubble.dart';
 import 'package:ams_frontend/src/konstants/konstants.dart';
 import 'package:ams_frontend/src/utils/extensions.dart';
@@ -10,8 +11,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../providers/providers.dart';
 import '../view.dart';
-import '../widgets/attendances_table.dart';
-import '../widgets/attendees_table.dart';
+import '../widgets/attendances_list_view.dart';
+import '../widgets/attendees_list_view.dart';
 
 class InstructorSubjectPAge extends ConsumerWidget {
   InstructorSubjectPAge({Key? key, required this.subjectId}) : super(key: key);
@@ -35,7 +36,9 @@ class InstructorSubjectPAge extends ConsumerWidget {
       drawer: const AppDrawerWidget(),
       floatingActionButton: FloatingActionBubble(
         onTapFaceID: () {},
-        onTapQrCode: () {},
+        onTapQrCode: () {
+          Navigator.of(context).push(QrScannerPage.route(subjectId));
+        },
         onTapId: () {},
       ),
       bottomNavigationBar: ConvexAppBar(
@@ -84,6 +87,7 @@ class InstructorSubjectPAge extends ConsumerWidget {
           controller: pageController,
           children: [
             AsyncDataBuilder(
+              withRefreshIndicator: true,
               provider: subjectProvider(subjectId),
               builder: (Subject subject) => ListView.builder(
                 itemCount: KRatios.r100.toInt(),
@@ -94,20 +98,13 @@ class InstructorSubjectPAge extends ConsumerWidget {
             AsyncDataBuilder(
               withRefreshIndicator: true,
               provider: SubjectAttendancesProvider(subjectId),
-              builder: (List<Attendance> attendances) => ListView.builder(
-                itemCount: KRatios.r100.toInt(),
-                itemBuilder: (BuildContext context, int index) =>
-                    AttendancesView(attendances),
-              ),
+              builder: (List<Attendance> attendances) =>
+                  AttendancesListView(attendances),
             ),
             AsyncDataBuilder(
               withRefreshIndicator: true,
               provider: subjectAttendeesProvider(subjectId),
-              builder: (List<User> attendees) => ListView.builder(
-                itemCount: KRatios.r100.toInt(),
-                itemBuilder: (BuildContext context, int index) =>
-                    AttendeesView(attendees),
-              ),
+              builder: (List<User> attendees) => AttendeesListView(attendees),
             ),
           ],
         ),

@@ -48,5 +48,6 @@
   "attendances": "الحضور",
   "attendees": "الملتحقين",
 
-  "info": "معلومات"
+  "info": "معلومات",
+  "time": "{time}"
 }

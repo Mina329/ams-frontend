@@ -10,7 +10,7 @@ import '../../../../konstants/kicons.dart';
 import '../../../../konstants/kints.dart';
 import '../../providers/providers.dart';
 import '../view.dart';
-import '../widgets/attendances_table.dart';
+import '../widgets/attendances_list_view.dart';
 
 class AttendeeSubjectPage extends ConsumerWidget {
   AttendeeSubjectPage(this.attendeeId, {Key? key, required this.subjectId})
@@ -82,11 +82,8 @@ class AttendeeSubjectPage extends ConsumerWidget {
             AsyncDataBuilder(
               withRefreshIndicator: true,
               provider: SubjectAttendancesProvider(subjectId),
-              builder: (List<Attendance> attendances) => ListView.builder(
-                itemCount: KRatios.r100.toInt(),
-                itemBuilder: (BuildContext context, int index) =>
-                    AttendancesView(attendances),
-              ),
+              builder: (List<Attendance> attendances) =>
+                  AttendancesListView(attendances),
             ),
           ],
         ),

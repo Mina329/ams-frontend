@@ -1,9 +1,8 @@
+import 'package:ams_frontend/src/konstants/konstants.dart';
 import 'package:ams_frontend/src/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../../konstants/kcolors.dart';
-import '../../../../konstants/kdoubles.dart';
 import '../../providers/providers.dart';
 import '../widgets/home_widget.dart';
 

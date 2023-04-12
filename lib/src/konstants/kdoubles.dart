@@ -9,6 +9,8 @@ class KSizes {
   static const double s40 = 40.0;
   static const double s50 = 50.0;
   static const double s60 = 60.0;
+  static const double s100 = 60.0;
+  static const double s1000 = 1000.0;
 }
 
 class KRadiuses {
@@ -59,6 +61,7 @@ class KMargins {
   static const double m50 = 50.0;
   static const double m60 = 60.0;
 }
+
 class KRatios {
   const KRatios._();
 

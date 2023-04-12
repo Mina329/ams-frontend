@@ -17,11 +17,16 @@ class AsyncDataBuilder<State, P extends ProviderBase<AsyncValue<State>>>
     required this.provider,
     required this.builder,
     this.withRefreshIndicator = false,
+    this.withErrorScaffold = false,
+    this.withLoadingScaffold = false,
   });
 
   final P provider;
   final Widget Function(State data) builder;
   final bool withRefreshIndicator;
+
+  final bool withErrorScaffold;
+  final bool withLoadingScaffold;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -61,43 +66,57 @@ class AsyncDataBuilder<State, P extends ProviderBase<AsyncValue<State>>>
           message = error.toString();
         }
 
-        return Center(
-          child: InkWell(
-            radius: KRadiuses.r30,
+        return withErrorScaffold
+            ? Scaffold(
+                body: _errorBuild(ref, message, context),
+              )
+            : _errorBuild(ref, message, context);
+      },
+      loading: () => withLoadingScaffold
+          ? Scaffold(body: _loadingBuild())
+          : _loadingBuild(),
+    );
+  }
+
+  Center _loadingBuild() {
+    return Center(
+      child: SpinKitFadingCube(
+        color: KColors.white,
+      ),
+    );
+  }
+
+  Center _errorBuild(WidgetRef ref, String message, BuildContext context) {
+    return Center(
+      child: InkWell(
+        radius: KRadiuses.r30,
+        borderRadius: BorderRadius.circular(KRadiuses.r30),
+        onTap: () {
+          ref.invalidate(provider);
+        },
+        child: Container(
+          clipBehavior: Clip.antiAliasWithSaveLayer,
+          decoration: BoxDecoration(
+            color: KColors.white,
             borderRadius: BorderRadius.circular(KRadiuses.r30),
-            onTap: () {
-              ref.invalidate(provider);
-            },
-            child: Container(
-              clipBehavior: Clip.antiAliasWithSaveLayer,
-              decoration: BoxDecoration(
-                color: KColors.white,
-                borderRadius: BorderRadius.circular(KRadiuses.r30),
-              ),
-              child: Padding(
-                padding: const EdgeInsets.all(KPaddings.p30),
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Text(
-                      message,
-                      style: TextStyle(color: Theme.of(context).primaryColor),
-                    ),
-                    const SizedBox(height: KSizes.s10),
-                    Icon(
-                      Icons.refresh_outlined,
-                      color: Theme.of(context).primaryColor,
-                    ),
-                  ],
+          ),
+          child: Padding(
+            padding: const EdgeInsets.all(KPaddings.p30),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Text(
+                  message,
+                  style: TextStyle(color: Theme.of(context).primaryColor),
                 ),
-              ),
+                const SizedBox(height: KSizes.s10),
+                Icon(
+                  Icons.refresh_outlined,
+                  color: Theme.of(context).primaryColor,
+                ),
+              ],
             ),
           ),
-        );
-      },
-      loading: () => Center(
-        child: SpinKitFadingCube(
-          color: KColors.white,
         ),
       ),
     );
