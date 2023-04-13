@@ -29,7 +29,7 @@ class AuthRepository {
 
       return response.when(success: (_, user) {
         userType = _amsApi.cachedUserType;
-        return user!.intoUser(userType!);
+        return user?.intoUser(userType!);
       }, failure: (error) {
         throw error;
       });

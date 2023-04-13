@@ -1,12 +1,7 @@
-import 'dart:async';
-
 import 'package:ams_frontend/src/konstants/kcolors.dart';
-import 'package:ams_frontend/src/konstants/kints.dart';
-import 'package:ams_frontend/src/routing/routing.dart';
 import 'package:ams_frontend/src/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:go_router/go_router.dart';
 
 import '../../../../konstants/kdoubles.dart';
 import '../../../../konstants/kstrings.dart';
@@ -19,29 +14,6 @@ class SplashView extends StatefulWidget {
 }
 
 class _SplashViewState extends State<SplashView> {
-  late Timer _timer;
-
-  void _start() {
-    _timer = Timer(
-      KDurations.splash,
-      () {
-        context.goNamed(AppRoute.home.name);
-      },
-    );
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    _start();
-  }
-
-  @override
-  void dispose() {
-    _timer.cancel();
-    super.dispose();
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(

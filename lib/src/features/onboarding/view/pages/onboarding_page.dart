@@ -1,9 +1,7 @@
 import 'package:ams_frontend/src/konstants/konstants.dart';
-import 'package:ams_frontend/src/routing/routing.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:ams_frontend/src/features/onboarding/view/controllers/onboarding_controller.dart';
-import 'package:go_router/go_router.dart';
 
 import '../widgets/onboarding_widget.dart';
 
@@ -14,12 +12,6 @@ class OnboardingPage extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final onboardingState = ref.watch(onboardingConrollerProvider);
     final pageController = PageController();
-
-    ref.listen(onboardingConrollerProvider, (previous, next) {
-      next.whenOrNull(completed: () {
-        context.goNamed(AppRoute.home.name);
-      });
-    });
 
     return onboardingState.maybeWhen(
       orElse: () => CircularProgressIndicator(color: KColors.lightBlue),
@@ -62,10 +54,10 @@ class OnboardingPage extends ConsumerWidget {
                       }
                     },
                     style: ElevatedButton.styleFrom(
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(KSizes.s25),
-                      ),backgroundColor: KColors.purple
-                    ),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(KSizes.s25),
+                        ),
+                        backgroundColor: KColors.purple),
                     child: Icon(
                       index < onboardingList.length - 1
                           ? Icons.next_plan_outlined

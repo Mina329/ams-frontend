@@ -1,3 +1,4 @@
+import 'package:ams_frontend/src/common/common.dart';
 import 'package:ams_frontend/src/features/auth/view/controllers/auth_controller.dart';
 import 'package:ams_frontend/src/konstants/kdoubles.dart';
 import 'package:ams_frontend/src/routing/routing.dart';
@@ -22,7 +23,7 @@ class SignedBuilder extends StatelessWidget {
     Widget unsignedBuild() => Center(
           child: InkWell(
             onTap: () {
-              context.goNamed(AppRoute.login.name);
+              context.goNamed(AppRoutes.login);
             },
             child: Card(
               child: Padding(

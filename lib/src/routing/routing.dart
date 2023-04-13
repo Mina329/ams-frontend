@@ -1,8 +1,7 @@
-import 'package:ams_frontend/src/features/auth/repositories/auth_repository.dart';
+import 'package:ams_frontend/src/features/auth/view/controllers/auth_controller.dart';
 import 'package:ams_frontend/src/features/auth/view/pages/login_page.dart';
 import 'package:ams_frontend/src/features/home/view/pages/home_page.dart';
-import 'package:ams_frontend/src/features/onboarding/repositories/onboarding_repository.dart';
-import 'package:ams_frontend/src/features/onboarding/view/pages/onboarding_page.dart';
+import 'package:ams_frontend/src/features/onboarding/view/view.dart';
 import 'package:ams_frontend/src/features/settings/view/view.dart';
 import 'package:ams_frontend/src/features/splash/view/pages/splash_page.dart';
 import 'package:ams_frontend/src/features/subjects/view/pages/subject_page.dart';
@@ -10,29 +9,43 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
-enum AppRoute {
-  onboarding,
-  home,
-  login,
-  subjects,
-  settings,
-  splash;
+class AppRoutes {
+  static const String onboarding = "onBoarding";
+  static const String home = "home";
+  static const String login = "login";
+  static const String subjects = "subjects";
+  static const String settings = "settings";
+  static const String splash = "splash";
 }
 
 final goRouterProvider = Provider.autoDispose<GoRouter>((ref) {
-  final onboardingRepository = ref.watch(onboardingRepositoryProvider);
-  final authRepository = ref.watch(authRepositoryProvider);
+  final onboardingState = ref.watch(onboardingConrollerProvider);
+  final authController = ref.watch(authControllerProvider);
   return GoRouter(
-    initialLocation: '/${AppRoute.splash.name}',
+    initialLocation: '/',
     debugLogDiagnostics: true,
     redirect: (context, state) {
+      final isSigend = authController.whenOrNull(
+        data: (value) => value.when(
+          signed: (_) => true,
+          unsigned: () => false,
+        ),
+      );
+
+      final isOnboarding = onboardingState.when(
+        completed: () => true,
+        notCompleted: (_) => false,
+      );
+
+      const splashRoute = '/${AppRoutes.splash}';
+
       if (state.subloc == '/') {
-        if (!onboardingRepository.isOnBoardingComplete()) {
-          return '/${AppRoute.onboarding.name}';
-        } else if (!authRepository.userCached) {
-          return '/${AppRoute.login.name}';
-        } else {
-          return '/';
+        if (!isOnboarding) {
+          return '/${AppRoutes.onboarding}';
+        } else if (isSigend == null) {
+          return state.location == splashRoute ? null : splashRoute;
+        } else if (!isSigend) {
+          return '/${AppRoutes.login}';
         }
       }
       return null;
@@ -40,21 +53,14 @@ final goRouterProvider = Provider.autoDispose<GoRouter>((ref) {
     routes: [
       GoRoute(
         path: '/',
-        name: AppRoute.home.name,
+        name: AppRoutes.home,
         pageBuilder: (context, state) => const MaterialPage(
           child: HomePage(),
         ),
         routes: [
           GoRoute(
-            path: AppRoute.login.name,
-            name: AppRoute.login.name,
-            pageBuilder: (context, state) => const MaterialPage(
-              child: SignPage(),
-            ),
-          ),
-          GoRoute(
-            path: '${AppRoute.subjects.name}/:id',
-            name: AppRoute.subjects.name,
+            path: '${AppRoutes.subjects}/:id',
+            name: AppRoutes.subjects,
             pageBuilder: (context, state) {
               final String? id = state.params['id'];
               if (id != null) {
@@ -68,15 +74,8 @@ final goRouterProvider = Provider.autoDispose<GoRouter>((ref) {
             },
           ),
           GoRoute(
-            path: AppRoute.onboarding.name,
-            name: AppRoute.onboarding.name,
-            pageBuilder: (context, state) => const MaterialPage(
-              child: OnboardingPage(),
-            ),
-          ),
-          GoRoute(
-            path: AppRoute.settings.name,
-            name: AppRoute.settings.name,
+            path: AppRoutes.settings,
+            name: AppRoutes.settings,
             pageBuilder: (context, state) => const MaterialPage(
               child: SettingsPage(),
             ),
@@ -84,46 +83,26 @@ final goRouterProvider = Provider.autoDispose<GoRouter>((ref) {
         ],
       ),
       GoRoute(
-        path: '/${AppRoute.splash.name}',
-        name: AppRoute.splash.name,
+        path: '/${AppRoutes.splash}',
+        name: AppRoutes.splash,
         pageBuilder: (context, state) => const MaterialPage(
           child: SplashView(),
+        ),
+      ),
+      GoRoute(
+        path: '/${AppRoutes.login}',
+        name: AppRoutes.login,
+        pageBuilder: (context, state) => const MaterialPage(
+          child: SignPage(),
+        ),
+      ),
+      GoRoute(
+        path: '/${AppRoutes.onboarding}',
+        name: AppRoutes.onboarding,
+        pageBuilder: (context, state) => const MaterialPage(
+          child: OnboardingPage(),
         ),
       ),
     ],
   );
 });
-
-extension RoutingExt on BuildContext {
-  void goNamedSafe(
-    String name, {
-    Map<String, String> params = const <String, String>{},
-    Map<String, dynamic> queryParams = const <String, dynamic>{},
-    Object? extra,
-  }) {
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      goNamed(
-        name,
-        params: params,
-        queryParams: queryParams,
-        extra: extra,
-      );
-    });
-  }
-
-  void pushNamedSafe(
-    String name, {
-    Map<String, String> params = const <String, String>{},
-    Map<String, dynamic> queryParams = const <String, dynamic>{},
-    Object? extra,
-  }) {
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      pushNamed(
-        name,
-        params: params,
-        queryParams: queryParams,
-        extra: extra,
-      );
-    });
-  }
-}

@@ -1,6 +1,7 @@
 import 'package:ams_frontend/src/features/subjects/models/subject_model.dart';
 import 'package:ams_frontend/src/routing/routing.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 class SubjectDrawerItem extends StatelessWidget {
   final Subject subject;
@@ -11,7 +12,7 @@ class SubjectDrawerItem extends StatelessWidget {
     return ListTile(
       title: Text(subject.name),
       onTap: () {
-        context.goNamedSafe(AppRoute.subjects.name, params: {'id': subject.id});
+        context.goNamed(AppRoutes.subjects, params: {'id': subject.id});
       },
     );
   }

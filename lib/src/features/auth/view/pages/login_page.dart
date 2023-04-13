@@ -23,17 +23,6 @@ class _SignPageState extends ConsumerState<SignPage> {
   Widget build(BuildContext context) {
     ref.watch(authControllerProvider);
 
-    ref.listen(authControllerProvider, (previous, next) {
-      next.maybeDataAndReport(
-        context,
-        (authStateAsync) {
-          authStateAsync.whenOrNull(signed: (user) {
-            context.goNamedSafe(AppRoute.home.name);
-          });
-        },
-      );
-    });
-
     return Scaffold(
       resizeToAvoidBottomInset: false,
       body: Container(
