@@ -50,7 +50,7 @@ class SignedBuilder extends StatelessWidget {
       withErrorScaffold: withUnsignedScaffold,
       withLoadingScaffold: withUnsignedScaffold,
       provider: authControllerProvider,
-      builder: (AuthState authState) => authState.when(
+      data: (AuthState authState) => authState.when(
         signed: (user) => builder(user),
         unsigned: () => withUnsignedScaffold
             ? Scaffold(

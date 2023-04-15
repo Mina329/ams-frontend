@@ -1,15 +1,12 @@
-import 'package:ams_frontend/src/apis/api_error.dart';
-import 'package:ams_frontend/src/konstants/kcolors.dart';
+import 'package:ams_frontend/src/common/common.dart';
 import 'package:ams_frontend/src/konstants/kdoubles.dart';
 import 'package:ams_frontend/src/konstants/kints.dart';
 import 'package:another_flushbar/flushbar.dart';
 import 'package:cron/cron.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_spinkit/flutter_spinkit.dart';
 
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-
 
 extension ThemeModeExt on ThemeMode {
   IconData get icon => this == ThemeMode.dark
@@ -88,5 +85,26 @@ extension ToastExt on BuildContext {
       margin: const EdgeInsets.all(KSizes.s10),
       borderRadius: BorderRadius.circular(KSizes.s10),
     ).show(this);
+  }
+}
+
+extension WidgetRefExt<State> on WidgetRef {
+  void onErrorShowModalBottomSheet(ProviderBase<AsyncValue<State>> provider) {
+    final state = watch(provider);
+    if (state.hasError) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        showModalBottomSheet(
+          isDismissible: false,
+          isScrollControlled: false,
+          context: context,
+          builder: (context) => Padding(
+            padding: const EdgeInsets.all(KSizes.s10),
+            child: AsyncDataBuilder(
+              provider: provider,
+            ),
+          ),
+        );
+      });
+    }
   }
 }
