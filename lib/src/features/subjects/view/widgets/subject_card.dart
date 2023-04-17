@@ -1,4 +1,5 @@
 import 'package:ams_frontend/src/features/subjects/models/subject_model.dart';
+import 'package:ams_frontend/src/konstants/kcolors.dart';
 import 'package:ams_frontend/src/konstants/kdoubles.dart';
 import 'package:ams_frontend/src/utils/utils.dart';
 import 'package:flutter/material.dart';
@@ -6,36 +7,34 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class SubjectCard extends ConsumerWidget {
   final Subject subject;
+
   const SubjectCard(this.subject, {super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return Card(
-      elevation: KElevations.e20,
+      elevation: KElevations.e10,
       shadowColor: Theme.of(context).primaryColor,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(KRadiuses.r40),
       ),
       child: Padding(
-        padding: const EdgeInsets.all(KPaddings.p30),
+        padding: const EdgeInsets.all(KPaddings.p10),
         child: Column(
           children: [
-            Row(
-              children: [
-                Expanded(
-                  child: ListTile(
-                    title: SelectableText(
-                      subject.name,
-                      style:
-                          Theme.of(context).textTheme.headlineMedium?.copyWith(
-                                color: Theme.of(context).colorScheme.secondary,
-                              ),
-                    ),
-                    subtitle: SelectableText(subject.id),
+            Text(
+              subject.name,
+              style: Theme.of(context).textTheme.headlineMedium?.copyWith(
+                    color: KColors.purple,
                   ),
-                ),
-                const Placeholder(),
-              ],
+            ),
+            SizedBox(
+              height: MediaQuery.of(context).size.height * KRatios.r002,
+            ),
+            Container(
+              width: 300,
+              height: 300,
+              color: Colors.black,
             ),
             ListTile(
               title: Text(
@@ -43,23 +42,36 @@ class SubjectCard extends ConsumerWidget {
                 style: Theme.of(context)
                     .textTheme
                     .headlineSmall
-                    ?.copyWith(color: Theme.of(context).colorScheme.secondary),
+                    ?.copyWith(color: KColors.purple),
               ),
-              subtitle: SelectableText(subject.instructor.name),
+              subtitle: Text(subject.instructor.name),
             ),
             ListTile(
               title: Text(
-                'time'.hardcoded,
+                'Time'.hardcoded,
                 style: Theme.of(context)
                     .textTheme
                     .headlineSmall
-                    ?.copyWith(color: Theme.of(context).colorScheme.secondary),
+                    ?.copyWith(color: KColors.purple),
               ),
-              subtitle: SelectableText(subject.cronExpr.toExprString()),
+              subtitle: Text(context.l10n.time(subject.createAt)),
             ),
           ],
         ),
       ),
+    );
+  }
+}
+
+class SubjectInfoView extends ConsumerWidget {
+  final Subject subject;
+
+  const SubjectInfoView(this.subject, {super.key});
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    return SingleChildScrollView(
+      child: SubjectCard(subject),
     );
   }
 }

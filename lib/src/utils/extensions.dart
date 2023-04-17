@@ -1,3 +1,4 @@
+import 'package:ams_frontend/src/common/common.dart';
 import 'package:ams_frontend/src/konstants/kdoubles.dart';
 import 'package:ams_frontend/src/konstants/kints.dart';
 import 'package:another_flushbar/flushbar.dart';
@@ -14,14 +15,12 @@ extension ThemeModeExt on ThemeMode {
 
   ThemeMode get inverse =>
       this == ThemeMode.dark ? ThemeMode.light : ThemeMode.dark;
+
+  String l10n(BuildContext context) =>
+      this == ThemeMode.dark ? context.l10n.darkMode : context.l10n.lightMode;
 }
 
 extension ScheduleToString on Schedule {
-  String toHumanString() {
-    // todo
-    throw UnimplementedError();
-  }
-
   String toExprString() {
     final minutes = this.minutes?.map((e) => '$e').join(',') ?? '';
     final hours = this.hours?.map((e) => '$e').join(',');
@@ -39,24 +38,6 @@ extension AppLocaleExt on BuildContext {
 
 extension StringHardCodedExt on String {
   String get hardcoded => this;
-}
-
-extension AsyncValueExt<T> on AsyncValue<T> {
-  void maybeDataAndReport(
-    BuildContext context,
-    void Function(T)? onData,
-  ) {
-    whenOrNull(
-      data: onData != null
-          ? (data) {
-              onData(data);
-            }
-          : null,
-      error: (error, stackTrace) {
-        context.toast(error.toString(), level: ToastLevel.error);
-      },
-    );
-  }
 }
 
 enum ToastLevel {
@@ -94,7 +75,7 @@ extension ToastExt on BuildContext {
       flushbarStyle: FlushbarStyle.FLOATING,
       reverseAnimationCurve: Curves.decelerate,
       forwardAnimationCurve: Curves.elasticOut,
-      duration: const Duration(seconds: KDurations.milli500 * 8),
+      duration: KDurations.toast,
       icon: Icon(
         icon,
         color: color,
@@ -104,5 +85,26 @@ extension ToastExt on BuildContext {
       margin: const EdgeInsets.all(KSizes.s10),
       borderRadius: BorderRadius.circular(KSizes.s10),
     ).show(this);
+  }
+}
+
+extension WidgetRefExt<State> on WidgetRef {
+  void onErrorShowModalBottomSheet(ProviderBase<AsyncValue<State>> provider) {
+    final state = watch(provider);
+    if (state.hasError) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        showModalBottomSheet(
+          isDismissible: false,
+          isScrollControlled: false,
+          context: context,
+          builder: (context) => Padding(
+            padding: const EdgeInsets.all(KSizes.s10),
+            child: AsyncDataBuilder(
+              provider: provider,
+            ),
+          ),
+        );
+      });
+    }
   }
 }

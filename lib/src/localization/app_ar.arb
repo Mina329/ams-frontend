@@ -3,15 +3,19 @@
   "@appTitle": {
     "description": "The title of the application"
   },
-  "welcome":"Welcome",
+  "splashTitle": "Attendance App",
+  "welcome":"مرحبا",
   "login": "Log In",
   "loginTitle": "Login",
   "userEmail": "User Email",
   "password": "Password",
   "forgotPassword": "Forgot Password ?",
   
-  "homeTitle": "Attendance Management System",
-  "homeDrawerItem": "Home",
+  "homeTitle": "Attendance App",
+  "homeDrawerItem": "الرئيسية",
+  "todayAttendence": "Today's Attendance",
+  "details" : "Details",
+  "subjectCalendar": "Subject's Calendar",
 
   "settingsTitle": "الاعدادات",
   "settingsDrawerItem": "Settings",
@@ -20,11 +24,32 @@
   "aboutDrawerItem": "About",
   
   "attendee": "Attendee",
+  "user": "User",
   "instructor": "Instructor",
   "loginAs": "Login As",
   
   "logginSuccess": "Logged in successfully",
 
-  "subjects": "Subjects"
+  "subjects": "Subjects",
+  "noRecordFound": "No Record Found",
+  "faceId": "Face ID",
+  "id": "ID",
+  "qrCode": "QR Code",
+
+  "appearance": "المظهر",
+  "themeMode": "السمة",
+
+  "darkMode": "فاتح",
+  "lightMode": "داكن",
   
+  "language": "اللغة",
+  "langValue": "العربية",
+
+  "attendances": "الحضور",
+  "attendees": "الملتحقين",
+
+  "info": "معلومات",
+  "time": "{time}",
+  "retry": "اعادة المحاولة",
+  "enrolled": "الملتحقون"
 }

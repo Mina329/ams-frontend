@@ -7,6 +7,7 @@ import 'package:ams_frontend/src/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:go_router/go_router.dart';
 
 class AppDrawerWidget extends StatelessWidget {
   const AppDrawerWidget({super.key});
@@ -65,19 +66,6 @@ class DrawerHeaderWidget extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final authStateAsync = ref.watch(authControllerProvider);
 
-    ref.listen(authControllerProvider, (previous, next) {
-      next.maybeDataAndReport(
-        context,
-        (authStateAsync) {
-          authStateAsync.whenOrNull(
-            unsigned: () {
-              context.goNamedSafe(AppRoute.login.name);
-            },
-          );
-        },
-      );
-    });
-
     return authStateAsync.maybeWhen(
       data: (authState) => Container(
         height: KSizes.s50 * 4,
@@ -86,9 +74,10 @@ class DrawerHeaderWidget extends ConsumerWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            const CircleAvatar(
+            CircleAvatar(
+              backgroundColor: KColors.purple,
               radius: KSizes.s30,
-              child: Icon(
+              child: const Icon(
                 FontAwesomeIcons.houseFloodWater,
                 size: KSizes.s20,
               ),
@@ -140,15 +129,28 @@ class DrawerHeaderWidget extends ConsumerWidget {
 }
 
 enum DrawerItem {
-  home.route(KIcons.home, AppRoute.home),
-  settings.route(KIcons.settings, AppRoute.settings),
+  home.route(KIcons.home),
+  settings.route(KIcons.settings),
   about(KIcons.about);
 
-  const DrawerItem.route(this.icon, this.route);
-  const DrawerItem(this.icon) : route = null;
+  const DrawerItem.route(this.icon);
+  const DrawerItem(this.icon);
 
   final IconData icon;
-  final AppRoute? route;
+
+  void call(BuildContext context) {
+    switch (this) {
+      case DrawerItem.home:
+        context.replaceNamed(AppRoutes.home);
+        break;
+      case DrawerItem.settings:
+        context.goNamed(AppRoutes.settings);
+        break;
+      case DrawerItem.about:
+        showAboutDialog(context: context);
+        break;
+    }
+  }
 }
 
 extension DrawerItemL10n on DrawerItem {
@@ -175,9 +177,7 @@ class DrawerItemsList extends StatelessWidget {
           ListTile(
             leading: Icon(item.icon),
             title: Text(item.l10n(context)),
-            onTap: item.route != null
-                ? () => context.goNamedSafe(item.route!.name)
-                : null,
+            onTap: () => item.call(context),
           )
       ],
     );

@@ -31,14 +31,8 @@ class MyApp extends ConsumerWidget {
         ],
         supportedLocales: KLocales.supported,
         locale: settingsState.locale,
-        theme: AppTheme.light(
-          scheme: settingsState.scheme,
-          useMaterial3: settingsState.useMaterial3,
-        ),
-        darkTheme: AppTheme.dark(
-          scheme: settingsState.scheme,
-          useMaterial3: settingsState.useMaterial3,
-        ),
+        theme: AppTheme.light,
+        darkTheme: AppTheme.dark,
         themeMode: settingsState.mode,
         routerConfig: goRouter,
         debugShowCheckedModeBanner: false,

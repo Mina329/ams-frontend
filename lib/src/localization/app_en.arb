@@ -3,6 +3,7 @@
   "@appTitle": {
     "description": "The title of the application"
   },
+  "splashTitle": "Attendance App",
   "welcome":"Welcome",
   "login": "Log In",
   "loginTitle": "Login",
@@ -10,8 +11,11 @@
   "password": "Password",
   "forgotPassword": "Forgot Password ?",
   
-  "homeTitle": "Attendance Management System",
+  "homeTitle": "Attendance App",
   "homeDrawerItem": "Home",
+  "todayAttendence": "Today's Attendance",
+  "details" : "Details",
+  "subjectCalendar": "Subject's Calendar",
 
   "settingsTitle": "Settings",
   "settingsDrawerItem": "Settings",
@@ -20,11 +24,40 @@
   "aboutDrawerItem": "About",
   
   "attendee": "Attendee",
+  "user": "User",
   "instructor": "Instructor",
   "loginAs": "Login As",
   
   "logginSuccess": "Logged in successfully",
 
-  "subjects": "Subjects"
+  "subjects": "Subjects",
+  "noRecordFound": "No Record Found",
+  "faceId": "Face ID",
+  "id": "ID",
+  "qrCode": "QR Code",
+
+  "appearance": "Appearance",
+  "themeMode": "Theme",
   
+  "darkMode": "Dark",
+  "lightMode": "Light",
+
+  "language": "Language",
+  "langValue": "English",
+  
+  "attendances": "Attendances",
+  "attendees": "Attendees",
+
+  "info": "info",
+  "time": "{time}",
+  "@time": {
+    "placeholders": {
+      "time": {
+        "type": "DateTime",
+        "format": "yMd"
+      }
+    }
+  },
+  "retry": "Try Again",
+  "enrolled": "Enrolled"
 }

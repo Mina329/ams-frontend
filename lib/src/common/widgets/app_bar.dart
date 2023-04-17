@@ -9,10 +9,10 @@ class AppBarWidget extends AppBar {
       List<Widget> actions = const []})
       : super(
           title: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.start,
             children: [
               Icon(icon),
-              const SizedBox(width: KSizes.s10),
+              const SizedBox(width: KSizes.s20),
               Text(title),
             ],
           ),

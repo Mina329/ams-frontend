@@ -1,11 +1,11 @@
 export 'dtos/dtos.dart';
 
-import 'dart:io';
-
 import 'package:ams_frontend/src/apis/apis.dart';
 import 'package:ams_frontend/src/common/common.dart';
+import 'package:ams_frontend/src/common/env.dart';
 import 'package:ams_frontend/src/utils/utils.dart';
 import 'package:dio/dio.dart';
+import 'package:flutter/foundation.dart';
 import 'package:pretty_dio_logger/pretty_dio_logger.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -23,7 +23,7 @@ class AMSApi {
 
   // constructor
   AMSApi(this._dio, this._sharedPreferences) {
-    _dio.options.baseUrl = 'http://192.168.1.4:3000/api';
+    _dio.options.baseUrl = EnvVars.apiUrl;
     _dio.options.validateStatus = (_) => true;
     _dio.interceptors.add(PrettyDioLogger(
       request: true,
@@ -98,7 +98,7 @@ class AMSApi {
 
     return ResponseDto.fromJson(
       user.data,
-      (p0) => UserDto.fromJson(p0 as dynamic),
+      (p0) => UserDto.fromJson(p0),
     );
   }
 
@@ -107,45 +107,45 @@ class AMSApi {
     required UserType userType,
     required AuthPayloadDto authPayload,
   }) async {
-    try {
-      var response = await _dio.post(
-        '/${userType.name}s/login',
-        data: authPayload.toJson(),
-      );
-      final authBody = ResponseDto.fromJson(
-        response.data,
-        (p0) => AuthBodyDto.fromJson(p0 as dynamic),
-      );
-      if (!authBody.status) {
-        throw ApiError.authorization(authBody.message);
-      }
-      _cachedJWTToken = authBody.data?.token;
+    var response = await _dio.post(
+      '/${userType.name}s/login',
+      data: authPayload.toJson(),
+    );
+
+    final authBody = ResponseDto.fromJson(
+      response.data,
+      (p0) => AuthBodyDto.fromJson(p0),
+    );
+
+    final user = await authBody.when(success: (_, authBody) async {
+      _cachedJWTToken = authBody?.token;
+
       response = await _dio.get('/${userType.name}s/login');
       final user = ResponseDto.fromJson(
         response.data,
-        (p0) => UserDto.fromJson(p0 as dynamic),
+        (p0) => UserDto.fromJson(p0),
       );
-      if (user.data != null) {
+
+      user.whenOrNull(success: (_, user) {
         cachedUserType = userType;
-      }
+      });
+
       return user;
-    } on DioError catch (e) {
-      throw ApiError.internal(e.toString());
-    }
+    }, failure: (error) {
+      throw error;
+    });
+
+    return user;
   }
 
   // get a subject by [subjectId]
   Future<ResponseDto<SubjectDto>> subject(String subjectId) async {
-    try {
-      final response = await _dio.get('/subjects/$subjectId');
+    final response = await _dio.get('/subjects/$subjectId');
 
-      return ResponseDto.fromJson(
-        response.data,
-        (p0) => SubjectDto.fromJson(p0 as dynamic),
-      );
-    } on DioError catch (error) {
-      throw ApiError.internal(error.toString());
-    }
+    return ResponseDto.fromJson(
+      response.data,
+      (p0) => SubjectDto.fromJson(p0),
+    );
   }
 
   // get subjects list filtered by user [id] and [userType]
@@ -175,7 +175,7 @@ class AMSApi {
   // get users list filtered by [subject] or [face]
   Future<ResponseDto<List<UserDto>>> attendees({
     String? subjectId,
-    File? image,
+    Uint8List? image,
   }) async {
     if (subjectId != null && image != null) {
       throw const ApiError.invalidOperation(
@@ -187,7 +187,7 @@ class AMSApi {
       response = await _dio.get('/subjects/$subjectId/attendees');
     } else if (image != null) {
       final formData = FormData.fromMap({
-        'image': MultipartFile.fromBytes(await image.readAsBytes()),
+        'image': MultipartFile.fromBytes(image),
       });
       response = await _dio.post('/attendees/image', data: formData);
     } else {
@@ -204,9 +204,17 @@ class AMSApi {
 
   // get attendances list filtered by [subjectId]
   Future<ResponseDto<List<AttendanceDto>>> attendances(
-    String subjectId,
-  ) async {
-    final response = await _dio.get('/attendances/subjects/$subjectId');
+    String subjectId, {
+    String? attendeeId,
+  }) async {
+    Response response;
+    if (attendeeId == null) {
+      response = await _dio.get('/attendances/subjects/$subjectId');
+    } else {
+      response = await _dio.get(
+        '/${UserType.attendee}s/$attendeeId/subjects/$subjectId/attendances',
+      );
+    }
     return ResponseDto.fromJson(response.data, (p0) {
       List<AttendanceDto> attendances = [];
       for (var user in p0 as List<dynamic>) {
@@ -217,19 +225,21 @@ class AMSApi {
   }
 
   // take attendance by [subjectId] and [attendeeId]
-  Future<ResponseDto<void>> takeAttendance({
-    required subjectId,
-    required attendeeId,
+  Future<ResponseDto<AttendanceDto>> takeAttendance({
+    required String subjectId,
+    required String attendeeId,
   }) async {
     final response = await _dio.put(
       '/attendances/subjects/$subjectId/attendees/$attendeeId',
     );
-
-    return ResponseDto.fromJson(response.data, (p0) {});
+    return ResponseDto.fromJson(
+      response.data,
+      (p0) => AttendanceDto.fromJson(p0),
+    );
   }
 }
 
-@riverpod
+@Riverpod(keepAlive: true)
 AMSApi amsApi(AmsApiRef ref) {
   return AMSApi(Dio(), ref.watch(sharedPreferencesProvider));
 }

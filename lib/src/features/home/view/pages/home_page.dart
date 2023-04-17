@@ -1,5 +1,9 @@
+import 'package:ams_frontend/src/apis/AMSApi/ams_api.dart';
 import 'package:ams_frontend/src/common/widgets/widgets.dart';
 import 'package:ams_frontend/src/features/auth/view/controllers/auth_controller.dart';
+import 'package:ams_frontend/src/features/auth/view/widgets/sigend_builder.dart';
+import 'package:ams_frontend/src/features/home/view/pages/attendee_home_page.dart';
+import 'package:ams_frontend/src/features/home/view/pages/instructor_home_page.dart';
 import 'package:ams_frontend/src/konstants/konstants.dart';
 import 'package:ams_frontend/src/utils/utils.dart';
 import 'package:flutter/material.dart';
@@ -16,33 +20,32 @@ class HomePage extends ConsumerWidget {
             context.toast(context.l10n.logginSuccess);
           }));
     });
-
     return Scaffold(
       appBar: AppBarWidget(
         icon: FontAwesomeIcons.house,
         title: context.l10n.homeTitle,
       ),
       drawer: const AppDrawerWidget(),
-      body: Column(
-        children: [
-          Container(
-            color: Colors.amber,
-            width: double.infinity,
-            height: KSizes.s60,
-            child: const Text('subjects'),
+      body: Container(
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            colors: [
+              KColors.gradiant1,
+              KColors.gradiant2,
+            ],
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
           ),
-          Expanded(
-            child: ListView.builder(
-              itemBuilder: (context, index) => Container(
-                color: Colors.lime,
-                width: double.infinity,
-                height: KSizes.s60,
-                margin: const EdgeInsets.all(KMargins.m20),
-              ),
-              itemCount: 10,
-            ),
+        ),
+        child: Container(
+          color: KColors.dark50Opacity,
+          width: double.infinity,
+          child: SignedBuilder(
+            builder: (user) => user.type == UserType.instructor
+                ? InstructorHomePage(user.id)
+                : AttendeeHomePage(user.id),
           ),
-        ],
+        ),
       ),
     );
   }
