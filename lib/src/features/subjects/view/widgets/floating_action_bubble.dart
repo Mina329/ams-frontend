@@ -10,48 +10,64 @@ class FloatingActionBubble extends StatelessWidget {
   final Function() onTapFaceID;
   final Function() onTapQrCode;
   final Function() onTapId;
+  final Function()? onSubmit;
 
-  const FloatingActionBubble(
-      {Key? key,
-      required this.onTapFaceID,
-      required this.onTapQrCode,
-      required this.onTapId})
-      : super(key: key);
+  const FloatingActionBubble({
+    Key? key,
+    required this.onTapFaceID,
+    required this.onTapQrCode,
+    required this.onTapId,
+    this.onSubmit,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return SpeedDial(
-      icon: KIcons.takeAttendance,
+      icon: KIcons.take_attendance_outline,
+      activeIcon: KIcons.take_attendance,
       iconTheme: IconThemeData(
-        color: KColors.lightCyan,
+        color: KColors.white,
       ),
-      backgroundColor: KColors.white,
+      backgroundColor: Theme.of(context).primaryColor,
       renderOverlay: false,
       spacing: KSizes.s10,
       elevation: KElevations.e20,
       animationCurve: Curves.fastOutSlowIn,
       children: [
         SpeedDialChild(
-            child: Icon(KIcons.camera, color: KColors.white),
-            backgroundColor: KColors.lightCyan,
-            label: context.l10n.faceId,
-            onTap: onTapFaceID),
+          child: Icon(KIcons.camera, color: KColors.white),
+          backgroundColor: KColors.lightCyan,
+          label: context.l10n.faceId,
+          onTap: onTapFaceID,
+        ),
         SpeedDialChild(
+          child: Icon(
+            KIcons.qrCode,
+            color: KColors.white,
+          ),
+          backgroundColor: KColors.lightCyan,
+          label: context.l10n.qrCode,
+          onTap: onTapQrCode,
+        ),
+        SpeedDialChild(
+          child: Icon(
+            KIcons.id,
+            color: KColors.white,
+          ),
+          backgroundColor: KColors.lightCyan,
+          label: context.l10n.id,
+          onTap: onTapId,
+        ),
+        if (onSubmit != null)
+          SpeedDialChild(
             child: Icon(
-              KIcons.qrCode,
+              Icons.save_alt_outlined,
               color: KColors.white,
             ),
             backgroundColor: KColors.lightCyan,
-            label: context.l10n.qrCode,
-            onTap: onTapQrCode),
-        SpeedDialChild(
-            child: Icon(
-              KIcons.id,
-              color: KColors.white,
-            ),
-            backgroundColor: KColors.lightCyan,
-            label: context.l10n.id,
-            onTap: onTapId)
+            label: 'submit'.hardcoded,
+            onTap: onSubmit,
+          )
       ],
     );
   }

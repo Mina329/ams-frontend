@@ -1,12 +1,11 @@
 export 'dtos/dtos.dart';
 
-import 'dart:io';
-
 import 'package:ams_frontend/src/apis/apis.dart';
 import 'package:ams_frontend/src/common/common.dart';
 import 'package:ams_frontend/src/common/env.dart';
 import 'package:ams_frontend/src/utils/utils.dart';
 import 'package:dio/dio.dart';
+import 'package:flutter/foundation.dart';
 import 'package:pretty_dio_logger/pretty_dio_logger.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -176,7 +175,7 @@ class AMSApi {
   // get users list filtered by [subject] or [face]
   Future<ResponseDto<List<UserDto>>> attendees({
     String? subjectId,
-    File? image,
+    Uint8List? image,
   }) async {
     if (subjectId != null && image != null) {
       throw const ApiError.invalidOperation(
@@ -188,7 +187,7 @@ class AMSApi {
       response = await _dio.get('/subjects/$subjectId/attendees');
     } else if (image != null) {
       final formData = FormData.fromMap({
-        'image': MultipartFile.fromBytes(await image.readAsBytes()),
+        'image': MultipartFile.fromBytes(image),
       });
       response = await _dio.post('/attendees/image', data: formData);
     } else {

@@ -85,7 +85,7 @@ class SettingsPage extends ConsumerWidget {
                     initialValue: settingsState.useMaterial3,
                     onToggle: onUseMaterial3Toggle,
                     leading: Icon(
-                      KIcons.enableMaterial3,
+                      KIcons.enable_material3,
                       color: KColors.white,
                     ),
                     title: Text('Enable Material 3'.hardcoded),

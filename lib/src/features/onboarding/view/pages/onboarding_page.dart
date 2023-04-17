@@ -5,6 +5,8 @@ import 'package:ams_frontend/src/features/onboarding/view/controllers/onboarding
 
 import '../widgets/onboarding_widget.dart';
 
+// TODO: try liquid_swipe package
+// TODO: try animated_text_kit package
 class OnboardingPage extends ConsumerWidget {
   const OnboardingPage({super.key});
 

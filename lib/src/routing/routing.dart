@@ -10,12 +10,13 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 class AppRoutes {
-  static const String onboarding = "onBoarding";
+  static const String onboarding = "onboarding";
   static const String home = "home";
   static const String login = "login";
   static const String subjects = "subjects";
   static const String settings = "settings";
   static const String splash = "splash";
+  static const String noInternet = "noInternet";
 }
 
 final goRouterProvider = Provider.autoDispose<GoRouter>((ref) {
@@ -25,11 +26,14 @@ final goRouterProvider = Provider.autoDispose<GoRouter>((ref) {
     initialLocation: '/',
     debugLogDiagnostics: true,
     redirect: (context, state) {
-      final isSigend = authController.whenOrNull(
-        data: (value) => value.when(
-          signed: (_) => true,
-          unsigned: () => false,
+      bool isAuthenticated = false;
+      bool isLoading = false;
+
+      authController.whenOrNull(
+        data: (value) => value.whenOrNull(
+          signed: (_) => isAuthenticated = true,
         ),
+        loading: () => isLoading = true,
       );
 
       final isOnboarding = onboardingState.when(
@@ -37,14 +41,12 @@ final goRouterProvider = Provider.autoDispose<GoRouter>((ref) {
         notCompleted: (_) => false,
       );
 
-      const splashRoute = '/${AppRoutes.splash}';
-
       if (state.subloc == '/') {
-        if (!isOnboarding) {
+        if (isLoading) {
+          return '/${AppRoutes.splash}';
+        } else if (!isOnboarding) {
           return '/${AppRoutes.onboarding}';
-        } else if (isSigend == null) {
-          return state.location == splashRoute ? null : splashRoute;
-        } else if (!isSigend) {
+        } else if (!isAuthenticated) {
           return '/${AppRoutes.login}';
         }
       }

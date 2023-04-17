@@ -12,57 +12,54 @@ class SubjectCard extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return SizedBox(
-        width: MediaQuery.of(context).size.width,
-        height: MediaQuery.of(context).size.height * KRatios.r075,
-        child: Card(
-          elevation: KElevations.e10,
-          shadowColor: Theme.of(context).primaryColor,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(KRadiuses.r40),
-          ),
-          child: Padding(
-            padding: const EdgeInsets.all(KPaddings.p10),
-            child: Column(
-              children: [
-                Text(
-                  subject.name,
-                  style: Theme.of(context).textTheme.headlineMedium?.copyWith(
-                        color: KColors.purple,
-                      ),
-                ),
-                SizedBox(
-                  height: MediaQuery.of(context).size.height * KRatios.r002,
-                ),
-                Container(
-                  width: 300,
-                  height: 300,
-                  color: Colors.black,
-                ),
-                ListTile(
-                  title: Text(
-                    context.l10n.instructor,
-                    style: Theme.of(context)
-                        .textTheme
-                        .headlineSmall
-                        ?.copyWith(color: KColors.purple),
+    return Card(
+      elevation: KElevations.e10,
+      shadowColor: Theme.of(context).primaryColor,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(KRadiuses.r40),
+      ),
+      child: Padding(
+        padding: const EdgeInsets.all(KPaddings.p10),
+        child: Column(
+          children: [
+            Text(
+              subject.name,
+              style: Theme.of(context).textTheme.headlineMedium?.copyWith(
+                    color: KColors.purple,
                   ),
-                  subtitle: Text(subject.instructor.name),
-                ),
-                ListTile(
-                  title: Text(
-                    'Time'.hardcoded,
-                    style: Theme.of(context)
-                        .textTheme
-                        .headlineSmall
-                        ?.copyWith(color: KColors.purple),
-                  ),
-                  subtitle: Text(context.l10n.time(subject.createAt)),
-                ),
-              ],
             ),
-          ),
-        ));
+            SizedBox(
+              height: MediaQuery.of(context).size.height * KRatios.r002,
+            ),
+            Container(
+              width: 300,
+              height: 300,
+              color: Colors.black,
+            ),
+            ListTile(
+              title: Text(
+                context.l10n.instructor,
+                style: Theme.of(context)
+                    .textTheme
+                    .headlineSmall
+                    ?.copyWith(color: KColors.purple),
+              ),
+              subtitle: Text(subject.instructor.name),
+            ),
+            ListTile(
+              title: Text(
+                'Time'.hardcoded,
+                style: Theme.of(context)
+                    .textTheme
+                    .headlineSmall
+                    ?.copyWith(color: KColors.purple),
+              ),
+              subtitle: Text(context.l10n.time(subject.createAt)),
+            ),
+          ],
+        ),
+      ),
+    );
   }
 }
 
@@ -73,8 +70,8 @@ class SubjectInfoView extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return Column(
-      children: [SubjectCard(subject)],
+    return SingleChildScrollView(
+      child: SubjectCard(subject),
     );
   }
 }

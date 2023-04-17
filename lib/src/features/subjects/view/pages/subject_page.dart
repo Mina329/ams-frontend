@@ -4,6 +4,7 @@ import 'package:ams_frontend/src/features/subjects/view/pages/attendee_subject_p
 import 'package:ams_frontend/src/features/subjects/view/pages/instructor_subject_page.dart';
 import 'package:flutter/material.dart';
 
+// TODO: try shimmer package
 class SubjectDetailsPage extends StatelessWidget {
   final String subjectId;
 
@@ -18,7 +19,7 @@ class SubjectDetailsPage extends StatelessWidget {
                 user.id,
                 subjectId: subjectId,
               )
-            : InstructorSubjectPAge(
+            : InstructorSubjectPage(
                 subjectId: subjectId,
               ),
       ),

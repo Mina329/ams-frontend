@@ -53,10 +53,11 @@
   "@time": {
     "placeholders": {
       "time": {
-      "type": "DateTime",
-      "format": "yMd"
+        "type": "DateTime",
+        "format": "yMd"
       }
     }
-  }
-  
+  },
+  "retry": "Try Again",
+  "enrolled": "Enrolled"
 }

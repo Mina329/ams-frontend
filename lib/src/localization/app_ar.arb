@@ -49,5 +49,7 @@
   "attendees": "الملتحقين",
 
   "info": "معلومات",
-  "time": "{time}"
+  "time": "{time}",
+  "retry": "اعادة المحاولة",
+  "enrolled": "الملتحقون"
 }

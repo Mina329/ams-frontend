@@ -73,7 +73,7 @@ class AttendeeSubjectPage extends ConsumerWidget {
           children: [
             AsyncDataBuilder(
               provider: subjectProvider(subjectId),
-              builder: (Subject subject) => ListView.builder(
+              data: (Subject subject) => ListView.builder(
                 itemCount: KRatios.r100.toInt(),
                 itemBuilder: (BuildContext context, int index) =>
                     SubjectInfoView(subject),
@@ -82,7 +82,7 @@ class AttendeeSubjectPage extends ConsumerWidget {
             AsyncDataBuilder(
               withRefreshIndicator: true,
               provider: SubjectAttendancesProvider(subjectId),
-              builder: (List<Attendance> attendances) =>
+              data: (List<Attendance> attendances) =>
                   AttendancesListView(attendances),
             ),
           ],

@@ -1,6 +1,6 @@
-
 import 'package:ams_frontend/src/apis/apis.dart';
 import 'package:ams_frontend/src/konstants/konstants.dart';
+import 'package:ams_frontend/src/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
@@ -10,14 +10,14 @@ class AsyncDataBuilder<State, P extends ProviderBase<AsyncValue<State>>>
   const AsyncDataBuilder({
     super.key,
     required this.provider,
-    required this.builder,
+    this.data,
     this.withRefreshIndicator = false,
     this.withErrorScaffold = false,
     this.withLoadingScaffold = false,
   });
 
   final P provider;
-  final Widget Function(State data) builder;
+  final Widget Function(State data)? data;
   final bool withRefreshIndicator;
 
   final bool withErrorScaffold;
@@ -27,14 +27,12 @@ class AsyncDataBuilder<State, P extends ProviderBase<AsyncValue<State>>>
   Widget build(BuildContext context, WidgetRef ref) {
     final asyncValue = ref.watch(provider);
 
-    Future<void> onRefresh() async {
-      ref.invalidate(provider);
-    }
-
     return withRefreshIndicator
         ? RefreshIndicator(
             color: KColors.lightCyan,
-            onRefresh: onRefresh,
+            onRefresh: () async {
+              ref.invalidate(provider);
+            },
             child: _dataWidget(asyncValue, ref, context),
           )
         : _dataWidget(asyncValue, ref, context);
@@ -47,25 +45,33 @@ class AsyncDataBuilder<State, P extends ProviderBase<AsyncValue<State>>>
   ) {
     return asyncValue.when(
       skipLoadingOnRefresh: false,
-      data: builder,
+      data: data ?? (State _) => Container(),
       error: (error, __) {
-        late String message;
+        String? msg;
 
         if (error is ApiError) {
-          message = error.maybeWhen(
-            unauthorized: (message) => message,
-            invalidOperation: (message) => message,
-            orElse: () => error.toString(),
+          error.when(
+            network: () {},
+            notFound: () {},
+            unauthorized: (message) {
+              msg = message;
+            },
+            faceRecognition: () {},
+            badRequest: () {},
+            invalidOperation: (message) {
+              msg = message;
+            },
+            internal: () {},
           );
-        } else {
-          message = error.toString();
         }
+
+        msg ??= 'error happend'.hardcoded;
 
         return withErrorScaffold
             ? Scaffold(
-                body: _errorBuild(ref, message, context),
+                body: _errorBuild(ref, msg!, error, context),
               )
-            : _errorBuild(ref, message, context);
+            : _errorBuild(ref, msg!, error, context);
       },
       loading: () => withLoadingScaffold
           ? Scaffold(body: _loadingBuild())
@@ -81,14 +87,16 @@ class AsyncDataBuilder<State, P extends ProviderBase<AsyncValue<State>>>
     );
   }
 
-  Center _errorBuild(WidgetRef ref, String message, BuildContext context) {
+  Center _errorBuild(
+    WidgetRef ref,
+    String message,
+    Object error,
+    BuildContext context,
+  ) {
+    final color = Theme.of(context).primaryColor;
     return Center(
-      child: InkWell(
-        radius: KRadiuses.r30,
+      child: Material(
         borderRadius: BorderRadius.circular(KRadiuses.r30),
-        onTap: () {
-          ref.invalidate(provider);
-        },
         child: Container(
           clipBehavior: Clip.antiAliasWithSaveLayer,
           decoration: BoxDecoration(
@@ -100,14 +108,46 @@ class AsyncDataBuilder<State, P extends ProviderBase<AsyncValue<State>>>
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
-                Text(
-                  message,
-                  style: TextStyle(color: Theme.of(context).primaryColor),
+                Align(
+                  alignment: Alignment.centerLeft,
+                  child: Text(
+                    message,
+                    style: Theme.of(context)
+                        .textTheme
+                        .titleLarge
+                        ?.copyWith(color: color),
+                  ),
                 ),
                 const SizedBox(height: KSizes.s10),
-                Icon(
-                  Icons.refresh_outlined,
-                  color: Theme.of(context).primaryColor,
+                Text(
+                  error.toString(),
+                  maxLines: 10,
+                  style: Theme.of(context)
+                      .textTheme
+                      .bodyMedium
+                      ?.copyWith(color: color),
+                ),
+                const SizedBox(height: KSizes.s20),
+                ElevatedButton(
+                  style: ButtonStyle(
+                    backgroundColor: MaterialStatePropertyAll(color),
+                    iconColor: MaterialStatePropertyAll(KColors.white),
+                    foregroundColor: MaterialStatePropertyAll(KColors.white),
+                    elevation: const MaterialStatePropertyAll(KElevations.e10),
+                    padding: const MaterialStatePropertyAll(
+                      EdgeInsets.symmetric(vertical: KPaddings.p10),
+                    ),
+                  ),
+                  onPressed: () {
+                    ref.invalidate(provider);
+                  },
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+                      Text(context.l10n.retry),
+                      const Icon(Icons.refresh_outlined),
+                    ],
+                  ),
                 ),
               ],
             ),

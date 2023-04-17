@@ -17,8 +17,9 @@ class KIcons {
   static const IconData attendees_outline = Icons.people_outline;
 
   static const IconData logout = Icons.logout_rounded;
-  static const IconData enableMaterial3 = Icons.interests_rounded;
-  static const IconData takeAttendance = Icons.checklist_rounded;
+  static const IconData enable_material3 = Icons.interests_rounded;
+  static const IconData take_attendance = Icons.checklist;
+  static const IconData take_attendance_outline = Icons.checklist_outlined;
   static const IconData camera = Icons.camera_alt_outlined;
   static const IconData qrCode = Icons.qr_code_2_outlined;
   static const IconData id = Icons.perm_identity_outlined;

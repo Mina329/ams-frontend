@@ -13,5 +13,5 @@ Future<List<User>> subjectAttendees(
 ) async {
   await Utils.debugDelay();
   final repo = await ref.watch(usersRepositoryProvider.future);
-  return await repo.getAttendees(subjectId);
+  return await repo.getAttendees(subjectId: subjectId);
 }

@@ -1,9 +1,6 @@
 import 'package:ams_frontend/src/apis/AMSApi/ams_api.dart';
 import 'package:ams_frontend/src/features/auth/models/user_model.dart';
-import 'package:ams_frontend/src/features/auth/repositories/auth_repository.dart';
 import 'package:ams_frontend/src/features/subjects/models/subject_model.dart';
-import 'package:riverpod_annotation/riverpod_annotation.dart';
-
 
 class SubjectsRepository {
   final AMSApi _amsApi;
