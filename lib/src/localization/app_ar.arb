@@ -49,7 +49,8 @@
   "attendees": "الملتحقين",
 
   "info": "معلومات",
-  "time": "{time}",
+  "dtyMMMd": "{time}",
+  "dtjms": "{time}",
   "retry": "اعادة المحاولة",
   "enrolled": "الملتحقون"
 }

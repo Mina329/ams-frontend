@@ -3,7 +3,9 @@ import 'dart:io';
 import 'package:ams_frontend/src/common/common.dart';
 import 'package:ams_frontend/src/features/auth/models/models.dart';
 import 'package:ams_frontend/src/features/subjects/models/models.dart';
+import 'package:ams_frontend/src/features/subjects/services/services.dart';
 import 'package:ams_frontend/src/features/subjects/view/controllers/attendances_controller.dart';
+import 'package:ams_frontend/src/features/subjects/view/pages/attendance_report_page.dart';
 import 'package:ams_frontend/src/features/subjects/view/widgets/floating_action_bubble.dart';
 import 'package:ams_frontend/src/konstants/konstants.dart';
 import 'package:ams_frontend/src/utils/utils.dart';
@@ -42,6 +44,7 @@ class InstructorSubjectPage extends ConsumerWidget {
       pControllerProvider.select((value) => value.attendees.isNotEmpty),
     );
     final subjectAsync = ref.watch(pSubjectProvider);
+    final subject = ref.watch(pSubjectProvider);
 // #endregion
 
 // #region ref.listen
@@ -78,6 +81,19 @@ class InstructorSubjectPage extends ConsumerWidget {
         builder: (context) => QrCodeAttendance(subjectId),
       );
     }
+
+    void onGroupSelected(List<Attendance> attendances) {
+      subject.whenOrNull(data: (subject) async {
+        final pdf = await ref.read(attendanceReportServiceProvider).generate(
+              subject: subject,
+              attendances: attendances,
+            );
+
+        Navigator.of(context).push(MaterialPageRoute(
+          builder: (context) => AttendanceReportPage(pdfData: pdf),
+        ));
+      });
+    }
 // #endregion
 
     return Scaffold(
@@ -93,7 +109,7 @@ class InstructorSubjectPage extends ConsumerWidget {
       floatingActionButton: FloatingActionBubble(
         onTapFaceID: onTapFaceID,
         onTapQrCode: onTapQrCode,
-        onTapId: () {},
+        onTapId: () => throw UnimplementedError(), // ! TODO: Not implemented
         onSubmit: onSubmit,
       ),
       bottomNavigationBar: ConvexAppBar(
@@ -152,8 +168,10 @@ class InstructorSubjectPage extends ConsumerWidget {
             AsyncDataBuilder(
               withRefreshIndicator: true,
               provider: pSubjectAttendancesProvider,
-              data: (List<Attendance> attendances) =>
-                  AttendancesListView(attendances),
+              data: (List<Attendance> attendances) => AttendancesListView(
+                attendances,
+                onGroupSelected: onGroupSelected,
+              ),
             ),
             AsyncDataBuilder(
               withRefreshIndicator: true,

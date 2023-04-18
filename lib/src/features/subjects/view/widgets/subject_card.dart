@@ -54,7 +54,7 @@ class SubjectCard extends ConsumerWidget {
                     .headlineSmall
                     ?.copyWith(color: KColors.purple),
               ),
-              subtitle: Text(context.l10n.time(subject.createAt)),
+              subtitle: Text(context.l10n.dtyMMMd(subject.createAt)),
             ),
           ],
         ),

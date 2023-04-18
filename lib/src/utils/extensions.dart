@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:intl/intl.dart';
 
 extension ThemeModeExt on ThemeMode {
   IconData get icon => this == ThemeMode.dark
@@ -106,5 +107,11 @@ extension WidgetRefExt<State> on WidgetRef {
         );
       });
     }
+  }
+}
+
+extension DateTimeExt on DateTime {
+  String yyyyMMddjms() {
+    return DateFormat.jms().add_yMMMd().format(this);
   }
 }
