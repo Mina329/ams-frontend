@@ -46,7 +46,7 @@ class SignedBuilder extends StatelessWidget {
           ),
         );
 
-    return AsyncDataBuilder(
+    return GenericAsyncBuilder(
       withErrorScaffold: withUnsignedScaffold,
       withLoadingScaffold: withUnsignedScaffold,
       provider: authControllerProvider,

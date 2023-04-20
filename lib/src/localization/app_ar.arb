@@ -51,6 +51,7 @@
   "info": "معلومات",
   "dtyMMMd": "{time}",
   "dtjms": "{time}",
+  "duration": "Duration",
   "retry": "اعادة المحاولة",
   "enrolled": "الملتحقون"
 }

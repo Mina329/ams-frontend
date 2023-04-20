@@ -1,6 +1,8 @@
 import 'package:ams_frontend/src/common/common.dart';
+import 'package:ams_frontend/src/konstants/kcolors.dart';
 import 'package:ams_frontend/src/konstants/kdoubles.dart';
 import 'package:ams_frontend/src/konstants/kints.dart';
+import 'package:ams_frontend/src/utils/utils.dart';
 import 'package:another_flushbar/flushbar.dart';
 import 'package:cron/cron.dart';
 import 'package:flutter/material.dart';
@@ -72,35 +74,39 @@ extension ToastExt on BuildContext {
       titleColor: color,
       message: message,
       messageColor: color,
-      flushbarPosition: FlushbarPosition.BOTTOM,
+      flushbarPosition: FlushbarPosition.TOP,
       flushbarStyle: FlushbarStyle.FLOATING,
-      reverseAnimationCurve: Curves.decelerate,
-      forwardAnimationCurve: Curves.elasticOut,
+      reverseAnimationCurve: Curves.fastLinearToSlowEaseIn,
+      forwardAnimationCurve: Curves.fastLinearToSlowEaseIn,
       duration: KDurations.toast,
+      borderColor: color,
+      barBlur: 1,
+      backgroundColor: KColors.white.withOpacity(0.9),
       icon: Icon(
         icon,
         color: color,
       ),
       leftBarIndicatorColor: color,
-      backgroundColor: color.withAlpha(30),
       margin: const EdgeInsets.all(KSizes.s10),
       borderRadius: BorderRadius.circular(KSizes.s10),
     ).show(this);
   }
 }
 
+// TODO: deprecated
 extension WidgetRefExt<State> on WidgetRef {
   void onErrorShowModalBottomSheet(ProviderBase<AsyncValue<State>> provider) {
     final state = watch(provider);
     if (state.hasError) {
       WidgetsBinding.instance.addPostFrameCallback((_) {
+        Utils.logger.wtf('testing');
         showModalBottomSheet(
           isDismissible: false,
           isScrollControlled: false,
           context: context,
           builder: (context) => Padding(
             padding: const EdgeInsets.all(KSizes.s10),
-            child: AsyncDataBuilder(
+            child: GenericAsyncBuilder(
               provider: provider,
             ),
           ),

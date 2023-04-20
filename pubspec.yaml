@@ -46,6 +46,7 @@ dependencies:
   printing: ^5.10.3
   qr_code_scanner: ^1.0.1
   riverpod_annotation: ^2.0.2
+  rxdart: ^0.27.7
   settings_ui: ^2.0.2
   shared_preferences: ^2.0.18
   shimmer: ^2.0.0

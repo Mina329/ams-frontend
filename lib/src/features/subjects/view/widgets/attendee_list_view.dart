@@ -1,11 +1,13 @@
 import 'package:ams_frontend/src/features/auth/models/models.dart';
 import 'package:ams_frontend/src/features/subjects/view/controllers/attendances_controller.dart';
-import 'package:ams_frontend/src/features/subjects/view/widgets/enrolled_list_view.dart';
 import 'package:ams_frontend/src/konstants/kcolors.dart';
 import 'package:ams_frontend/src/konstants/kdoubles.dart';
+import 'package:ams_frontend/src/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
+
+import '../view.dart';
 
 class AttendeesListView extends ConsumerWidget {
   const AttendeesListView(this.subjectId, {super.key});
@@ -26,6 +28,19 @@ class AttendeesListView extends ConsumerWidget {
       ref.read(pAttendancesController.notifier).removeAttendee(attendee);
     }
 // #endregion
+
+    ref.listen(
+      pAttendancesController,
+      (previous, next) {
+        if (next.error != null) {
+          context.toast(next.error!, level: ToastLevel.warning);
+        }
+
+        if (next.isSubmitted) {
+          ref.invalidate(pAttendancesController);
+        }
+      },
+    );
 
     final attendees = attendancesState.attendees;
     final isLoading = attendancesState.isLoading;

@@ -68,6 +68,9 @@
       }
     }
   },
+  
+  "duration": "Duration",
+  "dr": "{duration}",
 
   "retry": "Try Again",
   "enrolled": "Enrolled"

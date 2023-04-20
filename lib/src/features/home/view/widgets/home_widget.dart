@@ -1,3 +1,4 @@
+import 'package:ams_frontend/src/features/home/models/todays_attendance_summary.dart';
 import 'package:ams_frontend/src/konstants/kints.dart';
 import 'package:ams_frontend/src/utils/extensions.dart';
 import 'package:flutter/material.dart';
@@ -6,45 +7,49 @@ import 'package:table_calendar/table_calendar.dart';
 import '../../../../konstants/kcolors.dart';
 import '../../../../konstants/kdoubles.dart';
 
-class TodayAttendanceCard extends StatelessWidget {
-  const TodayAttendanceCard({Key? key}) : super(key: key);
+class TodayAttendancesCard extends StatelessWidget {
+  const TodayAttendancesCard(this.summary, {Key? key}) : super(key: key);
+
+  final TodayAttendanceSummary summary;
 
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-        height: 100,
-        width: MediaQuery.of(context).size.width,
-        child: Card(
-          color: KColors.white,
-          child: Padding(
-            padding: const EdgeInsets.all(KPaddings.p10),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  "Subject Name",
-                  style: TextStyle(
-                      color: KColors.darkBlue,
-                      fontSize: KSizes.s20,
-                      fontWeight: FontWeight.w600),
+      height: 100,
+      width: MediaQuery.of(context).size.width,
+      child: Card(
+        color: KColors.white,
+        child: Padding(
+          padding: const EdgeInsets.all(KPaddings.p10),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                summary.subject.name,
+                style: TextStyle(
+                  color: KColors.darkBlue,
+                  fontSize: KSizes.s20,
+                  fontWeight: FontWeight.w600,
                 ),
-                const SizedBox(
-                  height: KSizes.s10,
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: const [
-                    AttendanceRatioChart(
-                      presentCount: 24,
-                      absentCount: 6,
-                      totalCount: 30,
-                    )
-                  ],
-                )
-              ],
-            ),
+              ),
+              const SizedBox(
+                height: KSizes.s10,
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  AttendanceRatioChart(
+                    presentCount: summary.present.length,
+                    absentCount: summary.absent.length,
+                    totalCount: summary.absent.length + summary.present.length,
+                  )
+                ],
+              )
+            ],
           ),
-        ));
+        ),
+      ),
+    );
   }
 }
 

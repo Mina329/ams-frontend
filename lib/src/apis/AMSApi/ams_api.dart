@@ -237,7 +237,37 @@ class AMSApi {
       (p0) => AttendanceDto.fromJson(p0),
     );
   }
+
+  Future<ResponseDto<List<AttendanceDto>>> takeAttendances({
+    required String subjectId,
+    required List<String> attendeeIds,
+  }) async {
+    final response = await _dio.post(
+      '/attendances/subjects/$subjectId',
+      data: CreateAttendancesDto(attendeeIds: attendeeIds).toJson(),
+    );
+    return ResponseDto.fromJson(
+      response.data,
+      (p0) {
+        List<AttendanceDto> attendances = [];
+
+        for (var json in p0 as List<dynamic>) {
+          attendances.add(AttendanceDto.fromJson(json));
+        }
+
+        return attendances;
+      },
+    );
+  }
+
+  Future<ResponseDto<void>> deleteAttendance(String attendanceId) async {
+    final response = await _dio.delete('/attendances/$attendanceId');
+
+    return ResponseDto.fromJson(response.data, (p0) {});
+  }
 }
+
+// take many attendances by [subjectId] and [attendeeId]
 
 @Riverpod(keepAlive: true)
 AMSApi amsApi(AmsApiRef ref) {
