@@ -1,11 +1,11 @@
 import 'package:ams_frontend/src/features/home/models/todays_attendance_summary.dart';
 import 'package:ams_frontend/src/konstants/kints.dart';
-import 'package:ams_frontend/src/utils/extensions.dart';
 import 'package:flutter/material.dart';
 import 'package:table_calendar/table_calendar.dart';
 
 import '../../../../konstants/kcolors.dart';
 import '../../../../konstants/kdoubles.dart';
+import '../../models/todays_event.dart';
 
 class TodayAttendancesCard extends StatelessWidget {
   const TodayAttendancesCard(this.summary, {Key? key}) : super(key: key);
@@ -135,9 +135,9 @@ class AttendanceRatioChart extends StatelessWidget {
 }
 
 class Calender extends StatefulWidget {
-  final Map<DateTime, String> eventDescriptions;
+  const Calender(this.events, {super.key});
 
-  const Calender({super.key, required this.eventDescriptions});
+  final List<TodayEvent> events;
 
   @override
   State<Calender> createState() => _CalenderState();
@@ -213,47 +213,9 @@ class _CalenderState extends State<Calender> {
         return isSameDay(_selectedDay, day);
       },
       eventLoader: (day) {
-        List<String> events = [];
-        widget.eventDescriptions.forEach((key, value) {
-          if (isSameDay(key, day)) {
-            events.add(value);
-          }
-        });
-        return events.isNotEmpty
-            ? [
-                Container(
-                  width: 5,
-                  height: 5,
-                  decoration: const BoxDecoration(
-                    color: Colors.redAccent, // Change the color here
-                    shape: BoxShape.circle,
-                  ),
-                )
-              ]
-            : [];
+        return widget.events.where((e) => isSameDay(e.date, day)).toList();
       },
-      onDaySelected: (selectedDay, focusedDay) {
-        if (!isSameDay(_selectedDay, selectedDay)) {
-          setState(() {
-            _selectedDay = selectedDay;
-            _focusedDay = focusedDay;
-          });
-        }
-
-        widget.eventDescriptions.forEach((key, value) {
-          if (isSameDay(key, focusedDay)) {
-            showDialog(
-              context: context,
-              builder: (context) {
-                return AlertDialog(
-                  title: Text(context.l10n.details),
-                  content: Text('day: $key, event: $value'),
-                );
-              },
-            );
-          }
-        });
-      },
+      onDaySelected: (selectedDay, focusedDay) {},
       onFormatChanged: (format) {
         if (_calendarFormat != format) {
           setState(() {

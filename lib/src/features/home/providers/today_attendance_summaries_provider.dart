@@ -27,7 +27,7 @@ Future<List<TodayAttendanceSummary>> todayAttendanceSummaries(
         );
 
     final enrolled = await ref.watch(
-      SubjectAttendeesProvider(subject.id).future,
+      subjectAttendeesProvider(subject.id).future,
     );
 
     final present = attendances.map((a) => a.attendee).toList();
