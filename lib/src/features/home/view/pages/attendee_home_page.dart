@@ -15,28 +15,32 @@ class AttendeeHomePage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.center,
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        Text(
-          context.l10n.subjectCalendar,
-          style: TextStyle(
-            fontSize: KSizes.s25,
-            color: KColors.white,
+    return GenericAsyncBuilder(
+      withRefreshIndicator: true,
+      provider: todayEventsProvider(limit: 10),
+      data: (List<TodayEvent> events) => SingleChildScrollView(
+        child: Container(
+          constraints:
+              BoxConstraints(minHeight: MediaQuery.of(context).size.height),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              const SizedBox(
+                height: KSizes.s10,
+              ),
+              Text(
+                context.l10n.subjectCalendar,
+                style: TextStyle(
+                  fontSize: KSizes.s25,
+                  color: KColors.white,
+                ),
+              ),
+              Calender(events),
+            ],
           ),
         ),
-        GenericAsyncBuilder(
-          withRefreshIndicator: true,
-          provider: todayEventsProvider(limit: 10),
-          data: (List<TodayEvent> events) => Calender(events),
-        ),
-        TextButton(
-            onPressed: () {
-              ref.invalidate(todayEventsProvider(limit: 10));
-            },
-            child: const Text('refresh')),
-      ],
+      ),
     );
   }
 }
