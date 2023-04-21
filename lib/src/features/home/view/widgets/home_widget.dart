@@ -147,85 +147,165 @@ class _CalenderState extends State<Calender> {
   CalendarFormat _calendarFormat = CalendarFormat.month;
   DateTime _focusedDay = DateTime.now();
   DateTime? _selectedDay;
+  List<TodayEvent> _selectedEvents = [];
 
   @override
   Widget build(BuildContext context) {
-    return TableCalendar(
-      calendarStyle: CalendarStyle(
-        selectedDecoration: const BoxDecoration().copyWith(
-          color: KColors.purple,
-          shape: BoxShape.circle,
-        ),
-        todayDecoration: const BoxDecoration().copyWith(
-          color: KColors.purple.withAlpha(KAlphas.a80),
-          shape: BoxShape.circle,
-        ),
-        holidayTextStyle: const TextStyle(
-          color: Colors.white,
-        ),
-        outsideTextStyle: const TextStyle(
-          color: Colors.black45,
-        ),
-        weekendTextStyle: const TextStyle(
-          color: Colors.white,
-        ),
-        defaultTextStyle: const TextStyle(
-          color: Colors.white,
-        ),
-      ),
-      daysOfWeekStyle: DaysOfWeekStyle(
-        weekdayStyle: TextStyle(
-          color: KColors.white,
-        ),
-        weekendStyle: TextStyle(
-          color: KColors.white,
-        ),
-      ),
-      headerStyle: HeaderStyle(
-        titleTextStyle: TextStyle(
-          color: KColors.white,
-        ),
-        formatButtonTextStyle: TextStyle(
-          color: KColors.white,
-        ),
-        formatButtonDecoration: BoxDecoration(
-          border: Border.all(
-            color: KColors.white,
+    return Column(
+      children: [
+        TableCalendar(
+          calendarStyle: CalendarStyle(
+            selectedDecoration: const BoxDecoration().copyWith(
+              color: KColors.purple,
+              shape: BoxShape.circle,
+            ),
+            todayDecoration: const BoxDecoration().copyWith(
+              color: KColors.purple.withAlpha(KAlphas.a80),
+              shape: BoxShape.circle,
+            ),
+            holidayTextStyle: const TextStyle(
+              color: Colors.white,
+            ),
+            outsideTextStyle: const TextStyle(
+              color: Colors.black45,
+            ),
+            weekendTextStyle: const TextStyle(
+              color: Colors.white,
+            ),
+            defaultTextStyle: const TextStyle(
+              color: Colors.white,
+            ),
           ),
-          borderRadius: const BorderRadius.all(
-            Radius.circular(KSizes.s10),
+          daysOfWeekStyle: DaysOfWeekStyle(
+            weekdayStyle: TextStyle(
+              color: KColors.white,
+            ),
+            weekendStyle: TextStyle(
+              color: KColors.white,
+            ),
+          ),
+          headerStyle: HeaderStyle(
+            titleTextStyle: TextStyle(
+              color: KColors.white,
+            ),
+            formatButtonTextStyle: TextStyle(
+              color: KColors.white,
+            ),
+            formatButtonDecoration: BoxDecoration(
+              border: Border.all(
+                color: KColors.white,
+              ),
+              borderRadius: const BorderRadius.all(
+                Radius.circular(KSizes.s10),
+              ),
+            ),
+            leftChevronIcon: Icon(
+              Icons.chevron_left,
+              color: KColors.white,
+            ),
+            rightChevronIcon: Icon(
+              Icons.chevron_right,
+              color: KColors.white,
+            ),
+          ),
+          firstDay: DateTime.utc(2010, 10, 16),
+          lastDay: DateTime.utc(2030, 3, 14),
+          focusedDay: _focusedDay,
+          calendarFormat: _calendarFormat,
+          selectedDayPredicate: (day) {
+            return isSameDay(_selectedDay, day);
+          },
+          eventLoader: (day) {
+            return widget.events.where((e) => isSameDay(e.date, day)).toList();
+          },
+          onDaySelected: (selectedDay, focusedDay) {
+            setState(() {
+              _selectedDay = selectedDay;
+              _selectedEvents = widget.events
+                  .where((e) => isSameDay(e.date, selectedDay))
+                  .toList();
+            });
+          },
+          onFormatChanged: (format) {
+            if (_calendarFormat != format) {
+              setState(() {
+                _calendarFormat = format;
+              });
+            }
+          },
+          onPageChanged: (focusedDay) {
+            _focusedDay = focusedDay;
+          },
+        ),
+        if (_selectedDay != null && _selectedEvents.isNotEmpty)
+          ListView.builder(
+            shrinkWrap: true,
+            itemCount: _selectedEvents.length,
+            itemBuilder: (context, index) {
+              final event = _selectedEvents[index];
+              return EventCard(
+                  eventName: event.subjects[0].name,
+                  eventDescription:
+                      "${event.date.hour}:${event.date.minute}:${event.date.second}");
+            },
+          ),
+      ],
+    );
+  }
+}
+
+class EventCard extends StatelessWidget {
+  EventCard({Key? key, required this.eventName, required this.eventDescription})
+      : super(key: key);
+  String eventName, eventDescription;
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Card(
+        margin: EdgeInsets.zero,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(KRadiuses.r10),
+          side: BorderSide(
+            color: Theme.of(context).colorScheme.background,
+            width: 2,
           ),
         ),
-        leftChevronIcon: Icon(
-          Icons.chevron_left,
-          color: KColors.white,
-        ),
-        rightChevronIcon: Icon(
-          Icons.chevron_right,
-          color: KColors.white,
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Padding(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: KPaddings.p10,
+                ),
+                child: ListTile(
+                  contentPadding: EdgeInsets.zero,
+                  leading: const CircleAvatar(
+                    child: Icon(Icons.subject),
+                  ),
+                  title: Text(eventName),
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: KPaddings.p05,
+                ),
+                child: Row(
+                  children: [
+                    const Spacer(),
+                    Text(eventDescription),
+                    const SizedBox(width: KSizes.s10),
+                    const Icon(Icons.timer_sharp),
+                  ],
+                ),
+              )
+            ],
+          ),
         ),
       ),
-      firstDay: DateTime.utc(2010, 10, 16),
-      lastDay: DateTime.utc(2030, 3, 14),
-      focusedDay: _focusedDay,
-      calendarFormat: _calendarFormat,
-      selectedDayPredicate: (day) {
-        return isSameDay(_selectedDay, day);
-      },
-      eventLoader: (day) {
-        return widget.events.where((e) => isSameDay(e.date, day)).toList();
-      },
-      onDaySelected: (selectedDay, focusedDay) {},
-      onFormatChanged: (format) {
-        if (_calendarFormat != format) {
-          setState(() {
-            _calendarFormat = format;
-          });
-        }
-      },
-      onPageChanged: (focusedDay) {
-        _focusedDay = focusedDay;
-      },
     );
   }
 }
