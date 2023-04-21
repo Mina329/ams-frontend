@@ -5,6 +5,28 @@ import 'package:easy_cron/easy_cron.dart';
 
 final parser = UnixCronParser();
 
+extension EasyCronExt on CronSchedule {
+  Schedule into() => Schedule(
+        seconds: seconds,
+        hours: hours,
+        days: daysOfMonth,
+        weekdays: daysOfWeek,
+        minutes: minutes,
+        months: months,
+      );
+}
+
+extension CronExt on Schedule {
+  CronSchedule into() => CronSchedule(
+        seconds: seconds?.toSet(),
+        hours: hours?.toSet(),
+        daysOfMonth: days?.toSet(),
+        daysOfWeek: weekdays?.toSet(),
+        minutes: minutes?.toSet(),
+        months: months?.toSet(),
+      );
+}
+
 class ScheduleJsonConverter extends JsonConverter<CronSchedule, String> {
   const ScheduleJsonConverter();
 
@@ -13,13 +35,7 @@ class ScheduleJsonConverter extends JsonConverter<CronSchedule, String> {
     final cron = Schedule.parse('0 14 * * 1 *');
     Utils.logger.d(cron.hours);
     Utils.logger.d(cron.weekdays);
-    return CronSchedule(
-      minutes: cron.minutes?.toSet(),
-      hours: cron.hours?.toSet(),
-      daysOfWeek: cron.weekdays?.toSet(),
-      months: cron.months?.toSet(),
-      daysOfMonth: cron.days?.toSet(),
-    );
+    return cron.into();
   }
 
   @override

@@ -1,4 +1,3 @@
-import 'package:ams_frontend/src/utils/utils.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../models/models.dart';
@@ -8,14 +7,12 @@ part 'subjects_providers.g.dart';
 
 @Riverpod(keepAlive: true)
 Future<List<Subject>> userSubjects(UserSubjectsRef ref) async {
-  await Utils.debugDelay();
   final repo = await ref.watch(subjectsRepositoryProvider.future);
   return await repo.getAllSubjectsForUser();
 }
 
 @riverpod
 Future<Subject> subject(SubjectRef ref, String subjectId) async {
-  await Utils.debugDelay();
   final repo = await ref.watch(subjectsRepositoryProvider.future);
   return await repo.getOne(subjectId);
 }

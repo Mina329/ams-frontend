@@ -3,7 +3,6 @@ import 'dart:async';
 import 'package:ams_frontend/src/apis/AMSApi/ams_api.dart';
 import 'package:ams_frontend/src/features/auth/models/user_model.dart';
 import 'package:ams_frontend/src/features/auth/repositories/auth_repository.dart';
-import 'package:ams_frontend/src/utils/utils.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
@@ -21,7 +20,6 @@ class AuthState with _$AuthState {
 class AuthController extends _$AuthController {
   @override
   FutureOr<AuthState> build() async {
-    Utils.debugDelay();
     final user = await ref.watch(authRepositoryProvider).login();
     return user != null ? AuthState.signed(user) : const AuthState.unsigned();
   }
@@ -31,7 +29,6 @@ class AuthController extends _$AuthController {
       required String password,
       required UserType userType}) async {
     state = const AsyncValue.loading();
-    await Utils.debugDelay();
     state = await AsyncValue.guard(() async {
       final user = await ref.read(authRepositoryProvider).login(
             email: email,
