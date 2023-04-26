@@ -1,6 +1,6 @@
 import 'package:ams_frontend/src/features/subjects/models/models.dart';
 import 'package:ams_frontend/src/features/subjects/providers/providers.dart';
-import 'package:ams_frontend/src/utils/utils.dart';
+import 'package:cron/cron.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../models/todays_event.dart';
@@ -23,8 +23,16 @@ Future<List<TodayEvent>> todayEvents(
   for (int i = 0; i < limit; i++) {
     final date = now.add(Duration(days: i));
     for (var subject in subjects) {
-      if (subject.cronExpr.daysOfMonth?.contains(date.day) ?? false) {
-        Utils.logger.wtf(subject.cronExpr.daysOfMonth);
+      final cron = Schedule(
+        hours: [for (var i = 0; i < 24; i++) i],
+        seconds: [for (var i = 0; i < 60; i++) i],
+        minutes: [for (var i = 0; i < 60; i++) i],
+        days: subject.cronExpr.daysOfMonth?.toList(),
+        months: subject.cronExpr.months?.toList(),
+        weekdays: subject.cronExpr.daysOfWeek?.toList(),
+      );
+
+      if (cron.shouldRunAt(date)) {
         if (map[date] == null) map[date] = [];
         map[date] = [subject, ...?map[date]];
       }

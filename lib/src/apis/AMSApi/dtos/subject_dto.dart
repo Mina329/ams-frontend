@@ -1,8 +1,8 @@
 import 'package:ams_frontend/src/apis/AMSApi/dtos/user_dto.dart';
+import 'package:cron/cron.dart';
 import 'package:easy_cron/easy_cron.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
-import 'json_converters/duration_json_converter.dart';
 import 'json_converters/schedule_json_converter.dart';
 
 part 'subject_dto.freezed.dart';

@@ -17,11 +17,12 @@ class AttendeeHomePage extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     return GenericAsyncBuilder(
       withRefreshIndicator: true,
-      provider: todayEventsProvider(limit: 10),
+      provider: todayEventsProvider(limit: 50),
       data: (List<TodayEvent> events) => SingleChildScrollView(
         child: Container(
-          constraints:
-              BoxConstraints(minHeight: MediaQuery.of(context).size.height),
+          constraints: BoxConstraints(
+            minHeight: MediaQuery.of(context).size.height,
+          ),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisSize: MainAxisSize.min,
