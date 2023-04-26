@@ -1,19 +1,20 @@
 import 'package:ams_frontend/src/konstants/kcolors.dart';
 import 'package:ams_frontend/src/utils/utils.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 import '../../../../konstants/kdoubles.dart';
 import '../../../../konstants/kstrings.dart';
 
-class SplashView extends StatefulWidget {
+class SplashView extends ConsumerStatefulWidget {
   const SplashView({Key? key}) : super(key: key);
 
   @override
-  State<SplashView> createState() => _SplashViewState();
+  ConsumerState<SplashView> createState() => _SplashViewState();
 }
 
-class _SplashViewState extends State<SplashView> {
+class _SplashViewState extends ConsumerState<SplashView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(

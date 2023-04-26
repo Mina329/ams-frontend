@@ -18,9 +18,7 @@ class AttendancesRepository {
 
     final apiAttendances = response.requireData!;
 
-    return apiAttendances
-        .map((attendance) => attendance.intoAttendance())
-        .toList();
+    return apiAttendances.map((a) => a.intoAttendance()).toList();
   }
 
   Future<Attendance> takeAttendance({
@@ -35,5 +33,23 @@ class AttendancesRepository {
     final apiAttendance = response.requireData!;
 
     return apiAttendance.intoAttendance();
+  }
+
+  Future<List<Attendance>> takeAttendances({
+    required String subjectId,
+    required List<String> attendeeIds,
+  }) async {
+    final response = await _amsApi.takeAttendances(
+      subjectId: subjectId,
+      attendeeIds: attendeeIds,
+    );
+
+    final apiAttendances = response.requireData!;
+
+    return apiAttendances.map((a) => a.intoAttendance()).toList();
+  }
+
+  Future<void> deleteAttendance(String attendanceId) async {
+    await _amsApi.deleteAttendance(attendanceId);
   }
 }

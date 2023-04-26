@@ -5,9 +5,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 
-class AsyncDataBuilder<State, P extends ProviderBase<AsyncValue<State>>>
+class GenericAsyncBuilder<State, P extends ProviderBase<AsyncValue<State>>>
     extends ConsumerWidget {
-  const AsyncDataBuilder({
+  const GenericAsyncBuilder({
     super.key,
     required this.provider,
     this.data,
@@ -52,7 +52,9 @@ class AsyncDataBuilder<State, P extends ProviderBase<AsyncValue<State>>>
         if (error is ApiError) {
           error.when(
             network: () {},
-            notFound: () {},
+            notFound: (message) {
+              msg = message;
+            },
             unauthorized: (message) {
               msg = message;
             },
@@ -62,6 +64,13 @@ class AsyncDataBuilder<State, P extends ProviderBase<AsyncValue<State>>>
               msg = message;
             },
             internal: () {},
+            duplcate: (message) {
+              msg = message;
+            },
+            duplicateAttendance: (subjectId, attendeeId) {
+              // TODO: use localized strings
+              msg = 'attendee $attendeeId already taken';
+            },
           );
         }
 
@@ -81,8 +90,10 @@ class AsyncDataBuilder<State, P extends ProviderBase<AsyncValue<State>>>
 
   Center _loadingBuild() {
     return Center(
-      child: SpinKitFadingCube(
-        color: KColors.white,
+      child: Center(
+        child: SpinKitFadingCube(
+          color: KColors.white,
+        ),
       ),
     );
   }

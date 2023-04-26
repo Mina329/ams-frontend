@@ -10,6 +10,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
+// TODO: use the pdf package to generate subjects table
 class HomePage extends ConsumerWidget {
   const HomePage({super.key});
 

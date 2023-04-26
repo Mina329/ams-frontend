@@ -17,3 +17,14 @@ class AttendanceDto with _$AttendanceDto {
   factory AttendanceDto.fromJson(Map<String, Object?> json) =>
       _$AttendanceDtoFromJson(json);
 }
+
+@freezed
+@freezed
+class CreateAttendancesDto with _$CreateAttendancesDto {
+  const factory CreateAttendancesDto({
+    required List<String> attendeeIds,
+  }) = _CreateAttendancesDto;
+
+  factory CreateAttendancesDto.fromJson(Map<String, Object?> json) =>
+      _$CreateAttendancesDtoFromJson(json);
+}

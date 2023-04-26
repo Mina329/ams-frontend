@@ -49,15 +49,29 @@
   "attendees": "Attendees",
 
   "info": "info",
-  "time": "{time}",
-  "@time": {
+
+  "dtyMMMd": "{time}",
+  "@dtyMMMd": {
     "placeholders": {
       "time": {
         "type": "DateTime",
-        "format": "yMd"
+        "format": "yMMMd"
       }
     }
   },
+  "dtjms": "{time}",
+  "@dtjms": {
+    "placeholders": {
+      "time": {
+        "type": "DateTime",
+        "format": "jms"
+      }
+    }
+  },
+  
+  "duration": "Duration",
+  "dr": "{duration}",
+
   "retry": "Try Again",
   "enrolled": "Enrolled"
 }

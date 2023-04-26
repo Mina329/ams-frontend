@@ -1,8 +1,9 @@
 import 'package:ams_frontend/src/apis/AMSApi/ams_api.dart';
+import 'package:ams_frontend/src/common/common.dart';
 import 'package:ams_frontend/src/features/auth/view/controllers/auth_controller.dart';
 import 'package:ams_frontend/src/features/auth/view/widgets/login_button.dart';
 import 'package:ams_frontend/src/konstants/konstants.dart';
-import 'package:ams_frontend/src/utils/extensions.dart';
+import 'package:ams_frontend/src/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -23,8 +24,6 @@ class _SignPageState extends ConsumerState<SignPage> {
 
   @override
   Widget build(BuildContext context) {
-    ref.onErrorShowModalBottomSheet(authControllerProvider);
-
     final height = MediaQuery.of(context).size.height;
 
     return Scaffold(
@@ -143,6 +142,13 @@ class _SignPageState extends ConsumerState<SignPage> {
                       ],
                     ),
                   ),
+                ),
+              ),
+              const SizedBox(height: KSizes.s20),
+              Padding(
+                padding: const EdgeInsets.all(KPaddings.p20),
+                child: GenericAsyncBuilder(
+                  provider: authControllerProvider,
                 ),
               ),
             ],

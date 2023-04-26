@@ -12,7 +12,6 @@ Future<List<Attendance>> subjectAttendances(
   String subjectId, {
   String? attendeeId,
 }) async {
-  await Utils.debugDelay();
   final repo = await ref.watch(attendancesRepositoryProvider.future);
   return repo.getAttendances(subjectId, attendeeId: attendeeId);
 }

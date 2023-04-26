@@ -1,3 +1,4 @@
+import 'package:ams_frontend/src/apis/api_error.dart';
 import 'package:ams_frontend/src/features/auth/models/models.dart';
 import 'package:ams_frontend/src/features/subjects/providers/providers.dart';
 import 'package:ams_frontend/src/features/subjects/repositories/repositores.dart';
@@ -11,13 +12,29 @@ part 'attendances_controller.freezed.dart';
 
 // TODO: handle error state.
 
-@freezed
+@Freezed(copyWith: false)
 class AttendancesState with _$AttendancesState {
-  const factory AttendancesState({
+  AttendancesState._();
+
+  factory AttendancesState({
     @Default(false) bool isLoading,
     @Default([]) List<User> attendees,
     @Default(false) bool isSubmitted,
+    @Default(null) String? error,
   }) = _AttendancesState;
+
+  AttendancesState copyWith({
+    bool? isLoading,
+    List<User>? attendees,
+    bool? isSubmitted,
+    String? error,
+  }) =>
+      AttendancesState(
+        isLoading: error == null ? isLoading ?? false : false,
+        error: error,
+        attendees: attendees ?? this.attendees,
+        isSubmitted: isSubmitted ?? false,
+      );
 }
 
 @riverpod
@@ -27,7 +44,7 @@ class AttendancesController extends _$AttendancesController {
   @override
   AttendancesState build(String subjectId) {
     _subjectId = subjectId;
-    return const AttendancesState();
+    return AttendancesState();
   }
 
   void removeAttendee(User attendee) {
@@ -38,7 +55,6 @@ class AttendancesController extends _$AttendancesController {
     Utils.logger.i('removed an attendee from attendances list');
   }
 
-  // TODO: fix this error
   Future<void> takeByQr({
     required String attendeeId,
   }) async {
@@ -58,10 +74,7 @@ class AttendancesController extends _$AttendancesController {
     final attendee = attendees[index];
 
     // state change
-    state = state.copyWith(
-      attendees: [attendee, ...state.attendees],
-      isLoading: false,
-    );
+    state = state.copyWith(attendees: {attendee, ...state.attendees}.toList());
     Utils.logger.i('added a new attendee to the attendances list');
   }
 
@@ -83,13 +96,10 @@ class AttendancesController extends _$AttendancesController {
     if (!previous.contains(attendee)) {
       // state change
       state = state.copyWith(
-        attendees: [attendee, ...state.attendees],
-        isLoading: false,
+        attendees: {attendee, ...state.attendees}.toList(),
       );
       Utils.logger.i('attendee a new attendee to the attendances list');
     } else {
-      // state change
-      state = state.copyWith(isLoading: false);
       Utils.logger.i('attendee already present');
     }
   }
@@ -99,12 +109,31 @@ class AttendancesController extends _$AttendancesController {
     state = state.copyWith(isLoading: true);
 
     final repo = await ref.watch(attendancesRepositoryProvider.future);
-    for (var attendee in state.attendees) {
-      await repo.takeAttendance(subjectId: subjectId, attendeeId: attendee.id);
+    try {
+      await repo.takeAttendances(
+        subjectId: subjectId,
+        attendeeIds: state.attendees.map((e) => e.id).toList(),
+      );
+    } on ApiError catch (error) {
+      late String errorMsg;
+      error.maybeWhen(
+        orElse: () {
+          errorMsg = error.toString();
+        },
+        duplicateAttendance: (subjectId, attendeeId) {
+          final index = state.attendees.indexWhere((e) => e.id == attendeeId);
+          final attendee = state.attendees[index];
+          errorMsg = "${attendee.name} 's attendance already taken";
+        },
+      );
+
+      // state change
+      state = state.copyWith(error: errorMsg);
+      return;
     }
 
     // state change
-    state = state.copyWith(isLoading: false, isSubmitted: true);
+    state = state.copyWith(isSubmitted: true, attendees: []);
     Utils.logger.i('submitted attendances successfully');
   }
 }

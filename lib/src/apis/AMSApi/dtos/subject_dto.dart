@@ -1,4 +1,5 @@
 import 'package:ams_frontend/src/apis/AMSApi/dtos/user_dto.dart';
+import 'package:cron/cron.dart';
 import 'package:easy_cron/easy_cron.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
@@ -17,7 +18,7 @@ class SubjectDto with _$SubjectDto {
     @ScheduleJsonConverter() required CronSchedule cronExpr,
     required DateTime updatedAt,
   }) = _SubjectDto;
-  
+
   factory SubjectDto.fromJson(Map<String, Object?> json) =>
       _$SubjectDtoFromJson(json);
 }

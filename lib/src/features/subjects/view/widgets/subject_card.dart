@@ -46,16 +46,22 @@ class SubjectCard extends ConsumerWidget {
               ),
               subtitle: Text(subject.instructor.name),
             ),
-            ListTile(
-              title: Text(
-                'Time'.hardcoded,
-                style: Theme.of(context)
-                    .textTheme
-                    .headlineSmall
-                    ?.copyWith(color: KColors.purple),
-              ),
-              subtitle: Text(context.l10n.time(subject.createAt)),
-            ),
+            Row(
+              children: [
+                Expanded(
+                  child: ListTile(
+                    title: Text(
+                      'Time'.hardcoded,
+                      style: Theme.of(context)
+                          .textTheme
+                          .headlineSmall
+                          ?.copyWith(color: KColors.purple),
+                    ),
+                    subtitle: Text(context.l10n.dtyMMMd(subject.createAt)),
+                  ),
+                ),
+              ],
+            )
           ],
         ),
       ),
