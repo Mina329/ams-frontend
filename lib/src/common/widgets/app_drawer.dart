@@ -1,3 +1,4 @@
+import 'package:ams_frontend/src/common/env.dart';
 import 'package:ams_frontend/src/features/auth/view/controllers/auth_controller.dart';
 import 'package:ams_frontend/src/features/subjects/providers/providers.dart';
 import 'package:ams_frontend/src/features/subjects/view/widgets/subject_drawer_item.dart';
@@ -6,7 +7,6 @@ import 'package:ams_frontend/src/routing/routing.dart';
 import 'package:ams_frontend/src/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:go_router/go_router.dart';
 
 class AppDrawerWidget extends StatelessWidget {
@@ -74,12 +74,34 @@ class DrawerHeaderWidget extends ConsumerWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            CircleAvatar(
-              backgroundColor: KColors.purple,
-              radius: KSizes.s30,
-              child: const Icon(
-                FontAwesomeIcons.houseFloodWater,
-                size: KSizes.s20,
+            Container(
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(1000),
+              ),
+              clipBehavior: Clip.antiAlias,
+              child: authState.when(
+                signed: (user) => Container(
+                  clipBehavior: Clip.antiAlias,
+                  width: KSizes.s110,
+                  height: KSizes.s110,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(1000),
+                    color: Colors.transparent,
+                  ),
+                  child: user.image != null
+                      ? Image.network('${EnvVars.apiAssets}/${user.image}')
+                      : const Icon(
+                          Icons.person_outline,
+                        ),
+                ),
+                unsigned: () => CircleAvatar(
+                  backgroundColor: KColors.purple,
+                  radius: KSizes.s30,
+                  child: const Icon(
+                    Icons.no_accounts_outlined,
+                    size: KSizes.s20,
+                  ),
+                ),
               ),
             ),
             const SizedBox(height: KSizes.s20),

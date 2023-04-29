@@ -1,6 +1,5 @@
 import 'package:ams_frontend/src/apis/AMSApi/ams_api.dart';
 import 'package:ams_frontend/src/features/auth/models/user_model.dart';
-import 'package:cron/cron.dart';
 import 'package:easy_cron/easy_cron.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
@@ -11,7 +10,7 @@ class Subject with _$Subject {
   const factory Subject({
     required String id,
     required String name,
-    required User instructor,
+    required User? instructor,
     required DateTime createAt,
     required CronSchedule cronExpr,
     required DateTime updatedAt,
@@ -22,7 +21,7 @@ extension IntoSubject on SubjectDto {
   Subject intoSubject() => Subject(
         id: id,
         name: name,
-        instructor: instructor.intoUser(UserType.instructor),
+        instructor: instructor?.intoUser(UserType.instructor),
         createAt: createAt,
         cronExpr: cronExpr,
         updatedAt: updatedAt,

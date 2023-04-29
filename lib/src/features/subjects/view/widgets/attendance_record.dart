@@ -1,3 +1,4 @@
+import 'package:ams_frontend/src/common/env.dart';
 import 'package:ams_frontend/src/konstants/konstants.dart';
 import 'package:ams_frontend/src/utils/extensions.dart';
 import 'package:flutter/material.dart';
@@ -18,6 +19,11 @@ class AttendanceRecord extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    String? image = attendance.attendee.image;
+    if (attendance.attendee.image != null) {
+      image = '${EnvVars.apiAssets}/$image';
+    }
+
     var card = Card(
       margin: EdgeInsets.zero,
       shape: RoundedRectangleBorder(
@@ -37,8 +43,15 @@ class AttendanceRecord extends StatelessWidget {
             ),
             child: ListTile(
               contentPadding: EdgeInsets.zero,
-              leading: const CircleAvatar(
-                child: Icon(Icons.person),
+              leading: Container(
+                decoration:
+                    BoxDecoration(borderRadius: BorderRadius.circular(1000)),
+                clipBehavior: Clip.antiAlias,
+                child: CircleAvatar(
+                  child: image != null
+                      ? Image.network(image)
+                      : const Icon(Icons.person),
+                ),
               ),
               title: Text(attendance.attendee.name),
             ),

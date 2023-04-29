@@ -10,6 +10,7 @@ class UserDto with _$UserDto {
     required int number,
     required String name,
     required String email,
+    String? image,
     required DateTime createAt,
     required DateTime updatedAt,
   }) = _UserDto;

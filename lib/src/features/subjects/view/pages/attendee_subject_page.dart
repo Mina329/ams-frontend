@@ -10,7 +10,6 @@ import '../../../../konstants/kicons.dart';
 import '../../../../konstants/kints.dart';
 import '../../providers/providers.dart';
 import '../view.dart';
-import '../widgets/attendances_list_view.dart';
 
 class AttendeeSubjectPage extends ConsumerWidget {
   AttendeeSubjectPage(this.attendeeId, {Key? key, required this.subjectId})
@@ -26,7 +25,7 @@ class AttendeeSubjectPage extends ConsumerWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text(subject.maybeWhen(
-          orElse: () => "Subject".hardcoded,
+          orElse: () => context.l10n.subject,
           data: (data) => data.name,
         )),
       ),
@@ -48,11 +47,6 @@ class AttendeeSubjectPage extends ConsumerWidget {
             activeIcon: KIcons.about,
             icon: KIcons.about_outline,
             title: context.l10n.info,
-          ),
-          TabItem(
-            activeIcon: KIcons.attendances,
-            icon: KIcons.attendances_outline,
-            title: context.l10n.attendances,
           ),
         ],
         onTap: (index) {
@@ -78,12 +72,6 @@ class AttendeeSubjectPage extends ConsumerWidget {
                 itemBuilder: (BuildContext context, int index) =>
                     SubjectInfoView(subject),
               ),
-            ),
-            GenericAsyncBuilder(
-              withRefreshIndicator: true,
-              provider: SubjectAttendancesProvider(subjectId),
-              data: (List<Attendance> attendances) =>
-                  AttendancesListView(attendances),
             ),
           ],
         ),

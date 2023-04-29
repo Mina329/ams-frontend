@@ -65,7 +65,7 @@ class FloatingActionBubble extends StatelessWidget {
               color: KColors.white,
             ),
             backgroundColor: KColors.lightCyan,
-            label: 'submit'.hardcoded,
+            label: context.l10n.submit,
             onTap: onSubmit,
           )
       ],

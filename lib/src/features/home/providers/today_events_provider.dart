@@ -21,7 +21,7 @@ Future<List<TodayEvent>> todayEvents(
   final now = DateTime.now();
 
   for (int i = 0; i < limit; i++) {
-    final date = now.add(Duration(days: i));
+    var date = now.add(Duration(days: i));
     for (var subject in subjects) {
       final cron = Schedule(
         hours: [for (var i = 0; i < 24; i++) i],

@@ -38,7 +38,7 @@ class AttendanceReportService {
           pw.SizedBox(height: 10),
           _buildFieldValueRow('Subject', subject.name),
           pw.SizedBox(height: 5),
-          _buildFieldValueRow('Instructor', subject.instructor.name),
+          _buildFieldValueRow('Instructor', subject.instructor!.name),
           pw.SizedBox(height: 5),
           _buildFieldValueRow('Date', DateTime.now().yyyyMMddjms()),
         ],

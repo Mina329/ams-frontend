@@ -1,3 +1,4 @@
+import 'package:ams_frontend/src/common/env.dart';
 import 'package:ams_frontend/src/features/subjects/models/subject_model.dart';
 import 'package:ams_frontend/src/konstants/kcolors.dart';
 import 'package:ams_frontend/src/konstants/kdoubles.dart';
@@ -12,6 +13,9 @@ class SubjectCard extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final dt = subject.cronExpr.next().time;
+    final time = '${context.l10n.dtEEEE(dt)} ${context.l10n.dtjms(dt)}';
+
     return Card(
       elevation: KElevations.e10,
       shadowColor: Theme.of(context).primaryColor,
@@ -29,35 +33,64 @@ class SubjectCard extends ConsumerWidget {
                   ),
             ),
             SizedBox(
-              height: MediaQuery.of(context).size.height * KRatios.r002,
+              height: MediaQuery.of(context).size.height * KRatios.r006,
             ),
-            Container(
-              width: 300,
-              height: 300,
-              color: Colors.black,
-            ),
-            ListTile(
-              title: Text(
-                context.l10n.instructor,
-                style: Theme.of(context)
-                    .textTheme
-                    .headlineSmall
-                    ?.copyWith(color: KColors.purple),
+            if (subject.instructor != null)
+              Row(
+                children: [
+                  Expanded(
+                    child: ListTile(
+                      title: Text(
+                        context.l10n.instructor,
+                        style: Theme.of(context)
+                            .textTheme
+                            .headlineSmall
+                            ?.copyWith(color: KColors.purple),
+                      ),
+                      subtitle: Text(subject.instructor!.name),
+                      trailing: Container(
+                        clipBehavior: Clip.antiAlias,
+                        width: KSizes.s50,
+                        height: KSizes.s50,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(1000),
+                          color: Colors.transparent,
+                        ),
+                        child: subject.instructor?.image != null
+                            ? Image.network(
+                                '${EnvVars.apiAssets}/${subject.instructor?.image}')
+                            : const Icon(
+                                Icons.person_outline,
+                              ),
+                      ),
+                    ),
+                  ),
+                ],
               ),
-              subtitle: Text(subject.instructor.name),
-            ),
             Row(
               children: [
                 Expanded(
                   child: ListTile(
                     title: Text(
-                      'Time'.hardcoded,
+                      context.l10n.addedIn,
                       style: Theme.of(context)
                           .textTheme
                           .headlineSmall
                           ?.copyWith(color: KColors.purple),
                     ),
                     subtitle: Text(context.l10n.dtyMMMd(subject.createAt)),
+                  ),
+                ),
+                Expanded(
+                  child: ListTile(
+                    title: Text(
+                      context.l10n.time,
+                      style: Theme.of(context)
+                          .textTheme
+                          .headlineSmall
+                          ?.copyWith(color: KColors.purple),
+                    ),
+                    subtitle: Text(time),
                   ),
                 ),
               ],

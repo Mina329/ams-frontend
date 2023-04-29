@@ -68,10 +68,25 @@
       }
     }
   },
+  "dtEEEE": "{time}",
+  "@dtEEEE": {
+    "placeholders": {
+      "time": {
+        "type": "DateTime",
+        "format": "EEEE"
+      }
+    }
+  },
   
   "duration": "Duration",
   "dr": "{duration}",
 
   "retry": "Try Again",
-  "enrolled": "Enrolled"
+  "enrolled": "Enrolled",
+  "subject": "Subject",
+  "time": "Time",
+  "addedIn": "Added In",
+  "submit": "Submit",
+  "absents": "Absents",
+  "presents": "Presents"
 }

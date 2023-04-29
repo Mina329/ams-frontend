@@ -10,6 +10,7 @@ class KSizes {
   static const double s50 = 50.0;
   static const double s60 = 60.0;
   static const double s100 = 60.0;
+  static const double s110 = 110.0;
   static const double s1000 = 1000.0;
 }
 

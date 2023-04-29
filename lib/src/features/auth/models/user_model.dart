@@ -11,6 +11,7 @@ class User with _$User {
     required String name,
     required String email,
     required UserType type,
+    String? image,
     required DateTime createAt,
     required DateTime updatedAt,
   }) = _User;
@@ -23,6 +24,7 @@ extension IntoUser on UserDto {
         name: name,
         email: email,
         type: userType,
+        image: image,
         createAt: createAt,
         updatedAt: updatedAt,
       );

@@ -1,4 +1,5 @@
 import 'package:ams_frontend/src/common/common.dart';
+import 'package:ams_frontend/src/common/env.dart';
 import 'package:ams_frontend/src/features/auth/models/models.dart';
 import 'package:ams_frontend/src/konstants/konstants.dart';
 import 'package:flutter/material.dart';
@@ -35,8 +36,17 @@ class AttendeeRecord extends StatelessWidget {
           children: [
             Expanded(
               child: ListTile(
-                leading: const CircleAvatar(
-                  child: Icon(Icons.person),
+                leading: Container(
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(1000),
+                  ),
+                  clipBehavior: Clip.antiAliasWithSaveLayer,
+                  child: CircleAvatar(
+                    child: attendee.image != null
+                        ? Image.network(
+                            '${EnvVars.apiAssets}/${attendee.image}')
+                        : const Icon(Icons.person),
+                  ),
                 ),
                 title: CopiableText(attendee.name),
                 subtitle: CopiableText(attendee.id),

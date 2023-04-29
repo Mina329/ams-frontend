@@ -1,5 +1,6 @@
 import 'package:ams_frontend/src/features/home/models/todays_attendance_summary.dart';
 import 'package:ams_frontend/src/konstants/kints.dart';
+import 'package:ams_frontend/src/utils/extensions.dart';
 import 'package:flutter/material.dart';
 import 'package:table_calendar/table_calendar.dart';
 
@@ -111,7 +112,7 @@ class AttendanceRatioChart extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
-                '$presentCount Present',
+                '$presentCount ${context.l10n.presents}',
                 style: TextStyle(
                   fontSize: 12,
                   fontWeight: FontWeight.bold,
@@ -119,7 +120,7 @@ class AttendanceRatioChart extends StatelessWidget {
                 ),
               ),
               Text(
-                '$absentCount Absent',
+                '$absentCount ${context.l10n.absents}',
                 style: TextStyle(
                   fontSize: 12,
                   fontWeight: FontWeight.bold,
@@ -221,9 +222,9 @@ class _CalenderState extends State<Calender> {
           onDaySelected: (selectedDay, focusedDay) {
             setState(() {
               _selectedDay = selectedDay;
-              _selectedEvents = widget.events
-                  .where((e) => isSameDay(e.date, selectedDay))
-                  .toList();
+              _selectedEvents = widget.events.where((e) {
+                return isSameDay(e.date, selectedDay);
+              }).toList();
             });
           },
           onFormatChanged: (format) {
@@ -243,10 +244,13 @@ class _CalenderState extends State<Calender> {
             itemCount: _selectedEvents.length,
             itemBuilder: (context, index) {
               final event = _selectedEvents[index];
+              final dt = event.subjects[index].cronExpr.next().time;
+
+              final time =
+                  '${context.l10n.dtEEEE(dt)} ${context.l10n.dtjms(dt)}';
               return EventCard(
-                  eventName: event.subjects[0].name,
-                  eventDescription:
-                      "${event.date.hour}:${event.date.minute}:${event.date.second}");
+                  eventName: event.subjects[index].name,
+                  eventDescription: time);
             },
           ),
       ],
