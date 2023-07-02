@@ -12,10 +12,9 @@ import '../../providers/providers.dart';
 import '../view.dart';
 
 class AttendeeSubjectPage extends ConsumerWidget {
-  AttendeeSubjectPage(this.attendeeId, {Key? key, required this.subjectId})
-      : super(key: key);
+  AttendeeSubjectPage({Key? key, required this.subjectId}) : super(key: key);
 
-  final String attendeeId, subjectId;
+  final String subjectId;
   final navBarKey = GlobalKey<ConvexAppBarState>();
   final pageController = PageController();
 

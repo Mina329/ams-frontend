@@ -16,7 +16,6 @@ class SubjectDetailsPage extends StatelessWidget {
       body: SignedBuilder(
         builder: (user) => user.type == UserType.attendee
             ? AttendeeSubjectPage(
-                user.id,
                 subjectId: subjectId,
               )
             : InstructorSubjectPage(

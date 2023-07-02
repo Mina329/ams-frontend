@@ -1,1 +1,1 @@
-export './today_events_provider.dart';
+export './today_attendance_summaries_provider.dart';

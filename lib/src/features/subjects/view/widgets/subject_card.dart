@@ -4,16 +4,16 @@ import 'package:ams_frontend/src/konstants/kcolors.dart';
 import 'package:ams_frontend/src/konstants/kdoubles.dart';
 import 'package:ams_frontend/src/utils/utils.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:auto_size_text/auto_size_text.dart';
 
-class SubjectCard extends ConsumerWidget {
+class SubjectInfoCardWidget extends StatelessWidget {
   final Subject subject;
 
-  const SubjectCard(this.subject, {super.key});
+  const SubjectInfoCardWidget(this.subject, {super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final dt = subject.cronExpr.next().time;
+  Widget build(BuildContext context) {
+    final dt = DateTime.now();
     final time = '${context.l10n.dtEEEE(dt)} ${context.l10n.dtjms(dt)}';
 
     return Card(
@@ -26,11 +26,12 @@ class SubjectCard extends ConsumerWidget {
         padding: const EdgeInsets.all(KPaddings.p10),
         child: Column(
           children: [
-            Text(
+            AutoSizeText(
               subject.name,
               style: Theme.of(context).textTheme.headlineMedium?.copyWith(
                     color: KColors.purple,
                   ),
+              maxLines: 1,
             ),
             SizedBox(
               height: MediaQuery.of(context).size.height * KRatios.r006,
@@ -81,18 +82,6 @@ class SubjectCard extends ConsumerWidget {
                     subtitle: Text(context.l10n.dtyMMMd(subject.createAt)),
                   ),
                 ),
-                Expanded(
-                  child: ListTile(
-                    title: Text(
-                      context.l10n.time,
-                      style: Theme.of(context)
-                          .textTheme
-                          .headlineSmall
-                          ?.copyWith(color: KColors.purple),
-                    ),
-                    subtitle: Text(time),
-                  ),
-                ),
               ],
             )
           ],
@@ -102,15 +91,38 @@ class SubjectCard extends ConsumerWidget {
   }
 }
 
-class SubjectInfoView extends ConsumerWidget {
+class SubjectInfoView extends StatelessWidget {
   final Subject subject;
 
   const SubjectInfoView(this.subject, {super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  Widget build(BuildContext context) {
     return SingleChildScrollView(
-      child: SubjectCard(subject),
+      child: Column(
+        children: [
+          SubjectInfoCardWidget(subject),
+          for (var subjectDate in subject.dates) ...[
+            Card(
+              elevation: KElevations.e10,
+              shadowColor: Theme.of(context).primaryColor,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(KRadiuses.r20),
+              ),
+              child: ListTile(
+                title: Text(
+                  subjectDate.dayOfWeek.name.toUpperCase(),
+                  style: TextStyle(
+                    color: KColors.purple,
+                  ),
+                ),
+                subtitle: Text(
+                    '${subjectDate.startTime.format(context)} - ${subjectDate.endTime.format(context)}'),
+              ),
+            )
+          ],
+        ],
+      ),
     );
   }
 }

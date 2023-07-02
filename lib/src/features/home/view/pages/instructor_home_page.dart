@@ -1,13 +1,11 @@
 import 'package:ams_frontend/src/common/common.dart';
 import 'package:ams_frontend/src/features/home/models/todays_attendance_summary.dart';
 import 'package:ams_frontend/src/features/home/providers/today_attendance_summaries_provider.dart';
+import 'package:ams_frontend/src/features/home/view/widgets/widgets.dart';
+import 'package:ams_frontend/src/konstants/konstants.dart';
 import 'package:ams_frontend/src/utils/extensions.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-
-import '../../../../konstants/kcolors.dart';
-import '../../../../konstants/kdoubles.dart';
-import '../widgets/home_widget.dart';
 
 class InstructorHomePage extends ConsumerWidget {
   const InstructorHomePage(this.instructorId, {Key? key}) : super(key: key);
@@ -41,7 +39,7 @@ class InstructorHomePage extends ConsumerWidget {
                   context,
                   index,
                 ) =>
-                    TodayAttendancesCard(summaries[index]),
+                    TodayAttendancesWidget(summaries[index]),
                 itemCount: summaries.length,
               ),
             ),

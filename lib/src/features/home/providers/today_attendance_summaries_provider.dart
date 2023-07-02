@@ -1,8 +1,8 @@
-import 'package:ams_frontend/src/features/subjects/providers/providers.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:table_calendar/table_calendar.dart';
 
-import '../models/todays_attendance_summary.dart';
+import 'package:ams_frontend/src/features/home/models/models.dart';
+import 'package:ams_frontend/src/features/subjects/providers/providers.dart';
 
 part 'today_attendance_summaries_provider.g.dart';
 
