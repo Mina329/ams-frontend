@@ -42,13 +42,13 @@ class _SplashViewState extends ConsumerState<SplashView> {
             SizedBox(
               height: MediaQuery.of(context).size.height * KRatios.r004,
             ),
-            SvgPicture.asset(
-              KImages.splashLogo,
-              height: MediaQuery.of(context).size.height * KRatios.r030,
-              width: MediaQuery.of(context).size.width * KRatios.r030,
-            ),
             SizedBox(
-              height: MediaQuery.of(context).size.height * KRatios.r010,
+              height:MediaQuery.of(context).size.height * KRatios.r040 ,
+              child: SvgPicture.asset(
+                KImages.splashLogo,
+                height: MediaQuery.of(context).size.height * KRatios.r030,
+                width: MediaQuery.of(context).size.width * KRatios.r030,
+              ),
             ),
             Center(
               child: SizedBox(
